@@ -6,7 +6,8 @@ import ProgressBar from "../progressbar";
 import bitcoin from '@/public/bitcoin.png'
 import ethereum from '@/public/ethereum.png'
 
-export default function Topbar(){
+export default function TopBar(){
+  // let iconStyles = { color: "blue" };
     return(
         <div className="flex items-center gap-8 p-3 ">
           <div className="text-[12px] text-white flex items-center">
@@ -33,7 +34,7 @@ export default function Topbar(){
           </div>
           <div className=" text-[12px] text-white flex items-center">
             <div className="">
-              <RiArrowUpSFill />
+              <RiArrowUpSFill className = 'text-[#01F1E3]' />
             </div>
             <span className="ml-2">1.69T</span>
           </div>
