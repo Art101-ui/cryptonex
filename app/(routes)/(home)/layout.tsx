@@ -11,7 +11,7 @@ export default function Layout({children}:{children:React.ReactNode}){
     
     return(
         <div className=" px-[72px] ">
-            <div className=" bg-white flex w-[500px] h-[53px] rounded-md">
+            <div className=" bg-white flex w-[450px] h-[45px] rounded-md mb-6">
                 <Button page='coin'>Coins</Button>
                 <Button page='converter'>Converter</Button>
             </div>
