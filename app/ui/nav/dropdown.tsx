@@ -22,10 +22,10 @@ const menulist=[
 export default function DropDown(){
     const [dropdown, setDropdown] = useState(false)
     return(
-        <div>
-            <div onClick={()=>setDropdown(prev=>!prev)} className="p-3 bg-[#CCCCFA66] w-[104px] flex items-center gap-1 mb-2 rounded">
+        <div className="flex flex-col">
+            <div onClick={()=>setDropdown(prev=>!prev)} className="p-3 bg-[#CCCCFA66] h-full w-[104px] flex items-center gap-1 mb-2 rounded">
                 <PiCurrencyDollarSimpleFill/>
-                <span>USD</span>
+                <span className="text-sm">USD</span>
                 {dropdown ? <IoIosArrowUp/> : <IoIosArrowDown/> }
             </div>
              {dropdown &&
@@ -44,5 +44,4 @@ export default function DropDown(){
         </div>
     )
 }
-
 
