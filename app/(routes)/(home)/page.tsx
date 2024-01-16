@@ -16,6 +16,9 @@ import { useEffect, useState } from "react";
 import { getDayNumber, reduceData } from "@/app/lib/utilis";
 import VolumeChart from "@/app/ui/home/volumechart";
 import clsx from "clsx";
+import CoinListHeading from "@/app/ui/home/coinlistheading";
+import Coin from "@/app/ui/home/coin";
+import CoinList from "@/app/ui/home/coinlist";
 
 
 Chart.register(CategoryScale)
@@ -78,6 +81,8 @@ export default function Home() {
     }
     getData()
   }, [timeline])
+
+  
 
   function reformDataLength(listOfArray:[]){
     let newArr:[]=[]
@@ -165,7 +170,7 @@ export default function Home() {
 
   return (
     <div>
-      <main>
+      <main className=" mb-10">
         <div className="flex justify-between items-center mb-6">
           <p>Select the currency to view statistics</p>
           <button className=" bg-white rounded py-2 px-3 flex items-center justify-center">
@@ -212,9 +217,21 @@ export default function Home() {
               {item.value}</div>
           )
          })}
-      </div>
-        
+      </div>    
       </main>
+      <section>
+        <div className="mb-6">
+          <div className="mb-3">
+            <CoinListHeading/>
+          </div>
+        
+
+           <CoinList/>
+          
+         
+        </div>
+        
+      </section>
     </div>
   )
 }
