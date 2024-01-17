@@ -2,14 +2,15 @@ import { timeline } from "@material-tailwind/react"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import Coin from "./coin";
-import { FetchedDataProps } from "@/app/lib/type";
+import { FetchedDataProps, StatusProps } from "@/app/lib/type";
 
-type StatusProps = 'loading' | 'error' | 'success'
 
 
 export default function CoinList(){
     const [data,setData] = useState<FetchedDataProps[]>([])
     const [status,setStatus] = useState<StatusProps>('loading')
+
+    
     useEffect(() => {
         setStatus('loading')
         async function getData(){

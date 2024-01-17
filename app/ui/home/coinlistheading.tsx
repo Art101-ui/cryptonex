@@ -8,7 +8,7 @@ export default function CoinListHeading(){
            <li className="  w-1/5 text-center">24h%</li> 
            <li className="  w-1/5 text-center">7d%</li> 
            <li className="  w-1/2 ">24h volume/Market Cap</li> 
-           <li className="  w-1/2 ">24h volume/Total supply</li> 
+           <li className="  w-1/2 ">Circulating supply/Total supply</li> 
            <li className="  w-1/3 text-center">Last 7d</li> 
         </ul>
     )

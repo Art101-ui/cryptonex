@@ -14,4 +14,9 @@ export function reduceData(listOfArray:[], timefactor:number): [] {
     return result;
   }
 
+
+export function getPercentage(a:number,b:number){
+    return Math.floor((a/b)*100)
+}
+
   

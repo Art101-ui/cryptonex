@@ -224,11 +224,7 @@ export default function Home() {
           <div className="mb-3">
             <CoinListHeading/>
           </div>
-        
-
            <CoinList/>
-          
-         
         </div>
         
       </section>

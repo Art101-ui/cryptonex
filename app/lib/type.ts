@@ -13,3 +13,5 @@ export type FetchedDataProps={
     total_supply:number,
     chartData:[]
   }
+
+export  type StatusProps = 'loading' | 'error' | 'success'
