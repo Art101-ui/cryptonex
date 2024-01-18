@@ -33,14 +33,12 @@ export default function TopBar(){
             <span className="ml-2">622</span>
           </div>
           <div className=" text-[12px] text-white flex items-center">
-            <div className="">
               <RiArrowUpSFill className = 'text-[#01F1E3]' />
-            </div>
             <span className="ml-2">1.69T</span>
           </div>
           <div className="flex items-center text-[12px] text-white">
             <span className="mr-2">$124.45B</span>
-            <div className='h-1 w-[53px]  bg-gray-300'>
+            <div className='h-1 rounded-sm w-[53px]  bg-gray-300'>
               <ProgressBar color="bg-white" percentage={25}/>
            </div>
           </div>
@@ -53,7 +51,7 @@ export default function TopBar(){
               height={16}
               />
               {40}%
-            <div className=' ml-2 h-1 w-[53px] bg-gray-300'>
+            <div className=' rounded-sm ml-2 h-1 w-[53px] bg-gray-300'>
               <ProgressBar color="bg-[#F7931A]" percentage={40}/>
             </div>
           </div>
@@ -66,7 +64,7 @@ export default function TopBar(){
               height={16}
               />
               {21}%
-            <div className=' ml-2 h-1 w-[53px] bg-gray-300'>
+            <div className=' rounded-sm ml-2 h-1 w-[53px] bg-gray-300'>
               <ProgressBar color="bg-[#849DFF]" percentage={21}/>
             </div>
           </div>
