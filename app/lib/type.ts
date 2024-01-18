@@ -14,4 +14,4 @@ export type FetchedDataProps={
     chartData:[]
   }
 
-export  type StatusProps = 'loading' | 'error' | 'success'
+export  type StatusProps = 'loading' | 'error' | 'success' | 'idle'
