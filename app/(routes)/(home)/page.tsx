@@ -119,13 +119,7 @@ export default function Home() {
           gradient.addColorStop(1, "rgba(116, 116, 242, 0.08)");
           return gradient;
         },
-        borderColor: (context: ScriptableContext<"line">) => {
-          const ctx = context.chart.ctx;
-          const gradient = ctx.createLinearGradient(0, 0, 0, 0);
-          gradient.addColorStop(0, "rgba(116, 116, 242, 1)");
-          gradient.addColorStop(1, "rgba(116, 116, 242, 0.6)");
-          return gradient;
-        },
+        borderColor: "rgba(116, 116, 242, 1)",
         borderWidth: 1,
         tension:0.8,
         pointRadius:0,
@@ -159,7 +153,7 @@ export default function Home() {
           gradient.addColorStop(1, "rgba(179, 116, 242, 0.6");
           return gradient;
         },
-        borderWidth: 1
+        borderWidth: 2
       }
     ]
   }
@@ -199,7 +193,7 @@ export default function Home() {
       <div className=" flex items-center mb-6  justify-between">
         <div className=" w-[570px]  h-[400px] p-5 bg-white rounded-md">
 
-         {isLoading ? <div>Loading...</div>:<PriceChart chartData={priceChart}/> }
+         {isLoading ? <div>Loading...</div>:<PriceChart showHeading={true} height=' h-[250px]' chartData={priceChart}/> }
         </div>
         <div className=" w-[570px]  h-[400px] p-5 bg-white rounded-md">
          {isLoading ? <div>Loading...</div>:<VolumeChart  chartData={volumeChart}/>}
