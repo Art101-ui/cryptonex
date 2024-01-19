@@ -15,8 +15,6 @@ export default function CoinList(){
     
     useEffect(() => {
       const observer = new IntersectionObserver(onIntersection)
-      console.log(observer)
-      console.log(elementRef.current)
       if(observer && elementRef.current){
         observer.observe(elementRef.current)
       }
@@ -34,7 +32,6 @@ export default function CoinList(){
           getData()
           
        }
-       console.log(entries)
     }
     
     async function getData(){
