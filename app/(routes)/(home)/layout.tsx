@@ -18,7 +18,7 @@ export default function Layout({children}:{children:React.ReactNode}){
   ];
     const pathname =  usePathname()
     return(
-        <div className=" px-[72px] ">
+        <div className=" px-[72px] pb-[40px]  ">
             <div className=" bg-white flex w-[450px] h-[45px] rounded-md mb-6">
                 {links.map(link=>{
                   return(
