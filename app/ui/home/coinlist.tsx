@@ -3,6 +3,7 @@ import axios from "axios"
 import { useEffect, useState, useRef } from "react"
 import Coin from "./coin";
 import { FetchedDataProps, StatusProps } from "@/app/lib/type";
+import Link from "next/link";
 
 
 
@@ -73,7 +74,9 @@ export default function CoinList(){
          {
             data.map((item,index)=>{
                 return(
-                    <Coin key={item.id} coinData={item} index={index+1}/>
+                   <Link href={`/coinInfo/${item.name}`}>
+                     <Coin key={item.id} coinData={item} index={index+1}/>              
+                   </Link>
                 )
             })
          }

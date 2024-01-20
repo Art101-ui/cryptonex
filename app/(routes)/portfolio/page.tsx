@@ -9,7 +9,7 @@ import Modal from "@/app/ui/portfolio/modal"
 export default function Portfolio(){
     const [modal,setModal] = useState(false)
     return (
-        <div className="">
+        <div>
             {modal && 
               <div onClick={()=>setModal(false)} className="  absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center bg-[#262437]/30 backdrop-blur-sm">
                 <div onClick={(e)=>{

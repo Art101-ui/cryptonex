@@ -32,7 +32,7 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
             },
             borderColor: coinData.seven_day > 0 ? 'rgba(0, 177, 167, 1)' : 'rgba(254, 34, 100, 1)',
             borderWidth: 2,
-            tension:0.8,
+            tension:0.4,
             pointRadius:0,
             fill: 'start',
           }
