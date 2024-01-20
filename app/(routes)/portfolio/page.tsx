@@ -15,7 +15,7 @@ export default function Portfolio(){
                 <div onClick={(e)=>{
                     e.stopPropagation()
                 }}>
-                    <Modal/>
+                    <Modal onModal={setModal}/>
                 </div>
               </div>
             }

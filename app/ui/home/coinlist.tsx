@@ -67,15 +67,6 @@ export default function CoinList(){
           setStatus('error')
         }
       }
-
-      
-
-     console.log(elementRef)
-
-      // const isLoading = status === 'loading'
-      // if(isLoading){
-      //   return <div>Loading...</div>
-      // }
     
       return(
         <div className="flex flex-col  gap-2">

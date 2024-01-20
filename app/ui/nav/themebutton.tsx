@@ -6,7 +6,7 @@ export default function ThemeButton(){
     const [theme, setTheme] = useState(false);
 
     return(
-        <div onClick={()=>setTheme(prev=>!prev)} className="p-3 bg-[#CCCCFA66] rounded items-center flex">
+        <div onClick={()=>setTheme(prev=>!prev)} className="p-3 bg-[#CCCCFA66] rounded cursor-pointer items-center flex">
            {theme ? <IoMoonOutline className = 'w-[24px] h-[24px]' /> : <IoSunnyOutline className = 'w-[24px] h-[24px]' /> }
         </div>
     )
