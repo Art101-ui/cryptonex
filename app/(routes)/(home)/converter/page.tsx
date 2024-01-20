@@ -95,7 +95,7 @@ export default function Converter(){
         },
         borderColor: "rgba(116, 116, 242, 1)",
         borderWidth: 2,
-        tension:0.8,
+        tension:0.4,
         pointRadius:0,
         fill: 'start',
       }

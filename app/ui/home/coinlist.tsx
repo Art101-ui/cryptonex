@@ -3,6 +3,7 @@ import axios from "axios"
 import { useEffect, useState, useRef } from "react"
 import Coin from "./coin";
 import { FetchedDataProps, StatusProps } from "@/app/lib/type";
+import Link from "next/link";
 
 
 
@@ -67,22 +68,15 @@ export default function CoinList(){
           setStatus('error')
         }
       }
-
-      
-
-     console.log(elementRef)
-
-      // const isLoading = status === 'loading'
-      // if(isLoading){
-      //   return <div>Loading...</div>
-      // }
     
       return(
         <div className="flex flex-col  gap-2">
          {
             data.map((item,index)=>{
                 return(
-                    <Coin key={item.id} coinData={item} index={index+1}/>
+                   <Link href={`/coinInfo/${item.name}`}>
+                     <Coin key={item.id} coinData={item} index={index+1}/>              
+                   </Link>
                 )
             })
          }
