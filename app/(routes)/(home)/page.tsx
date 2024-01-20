@@ -62,9 +62,6 @@ type FunctionProp ={
 export default function Home() {
  const [requestState,setRequestedState] = useState<RequestStateProps>({ status: 'idle' })
  const [timeline,setTimeline] = useState<number | string>(1)
-
- 
-
  
   useEffect(() => {
     setRequestedState({status:'loading'})
