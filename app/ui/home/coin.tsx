@@ -43,7 +43,7 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
             <li className=' w-1/12 text-center '>{index}</li>
             <li className='flex  justify-start w-1/3  items-center'>
               <Image 
-                className=" mr-2 object-contain"
+                className=" mr-2"
                 src= {coinData.image}
                 alt="flash_circle"
                 width={30}

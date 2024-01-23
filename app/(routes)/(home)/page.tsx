@@ -13,150 +13,286 @@ import PriceChart from "@/app/ui/home/pricechart";
 import { CategoryScale, ScriptableContext } from "chart.js";
 import Chart from "chart.js/auto";
 import { useEffect, useState } from "react";
-import { getDayNumber, reduceData } from "@/app/lib/utilis";
+import { getDayNumber, reduceData, convertToThousand } from "@/app/lib/utilis";
 import VolumeChart from "@/app/ui/home/volumechart";
 import clsx from "clsx";
 import CoinListHeading from "@/app/ui/home/coinlistheading";
 import Coin from "@/app/ui/home/coin";
 import CoinList from "@/app/ui/home/coinlist";
+import { ChartDataProps, StatusProps } from "@/app/lib/type";
+import { request } from "http";
 
 
 Chart.register(CategoryScale)
 const coinlist=[
-  {id:0, coin:'Bitcoin (BTC)'},
-  {id:1, coin:'Ethereum (ETH)'},
-  {id:2, coin:'Tether (USDT)'},
-  {id:3, coin:'Doge Coin (DGC)'},
-  {id:4, coin:'Doge Coin (DGC)'},
-  {id:5, coin:'Doge Coin (DGC)'},
-  {id:6, coin:'Doge Coin (DGC)'},
-  {id:7, coin:'Doge Coin (DGC)'},
+  {id:'bitcoin', coin:'Bitcoin (BTC)'},
+  {id:'ethereum', coin:'Ethereum (ETH)'},
+  {id:'tether', coin:'Tether (USDT)'},
+  {id:'usd-coin', coin:'USDC (USDC)'},
+  {id:'dogecoin', coin:'Doge Coin (DGC)'},
+  {id:'litecoin', coin:'Litecoin (LTC)'},
+  {id:'solana', coin:'Solana (SOL)'},
+  {id:'ripple', coin:'XRP (XRP)'},
+  {id:'binancecoin', coin:'BNB (BNB)'},
 ]
 
 const timelineData= [
- 
-{id: 0, value: '1D', days:1},
-{id: 1, value: '7D', days:7}, 
-{id: 2, value: '14D',days:14}, 
-{id: 3, value: '1M', days:30},
-{id: 4, value: '1Y', days:365}, 
-{id: 5, value: '5Y', days:1825},
-{id: 6, value: 'Max', days:'max'}
+  {id: 0, value: '1D', days:1},
+  {id: 1, value: '7D', days:7}, 
+  {id: 2, value: '14D',days:14}, 
+  {id: 3, value: '1M', days:30},
+  {id: 4, value: '1Y', days:365}, 
+  {id: 5, value: '5Y', days:1825},
+  {id: 6, value: 'Max', days:'max'}
 ]
 
-type FetchedDataProps={
-  prices:[],
-  market_caps:[],
-  total_volumes:[]
-}
 
-type RequestStateProps =
-  | { status: 'idle' }
-  | { status: 'loading' }
-  | { status: 'success', data: FetchedDataProps }
-  | { status: 'error', error: Error };
 
-type FunctionProp ={
-  listOfArray:[],
+type RequestDataProps ={
+  id: string,
+  data:any
 }
+type CoinListProp ={
+    id: string;
+    coin: string;
+}[]
+
 export default function Home() {
- const [requestState,setRequestedState] = useState<RequestStateProps>({ status: 'idle' })
+  const [status, setStatus] = useState<StatusProps>('idle')
+ const [requestData,setRequestedData] = useState<RequestDataProps[]>([])
  const [timeline,setTimeline] = useState<number | string>(1)
- 
-  useEffect(() => {
-    setRequestedState({status:'loading'})
-    async function getData(){
-      try {
-        const response = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${timeline}`)
-        const data = await response.data
-        console.log(data)
-        setRequestedState({ status: 'success', data: data })
-      } catch (error:any) {
-        console.log(error)
-        setRequestedState({ status: 'error', error: error })
-      }
-    }
-    getData()
-  }, [timeline])
-
+ const [coins, setCoins] = useState<CoinListProp>(coinlist)
+ const [selectedIds,setSelectedIds] = useState<string[]>(['bitcoin'])
+ const [compareData,setCompareData] = useState([])
   
+ useEffect(() => {
+   const abortController = new AbortController();
+   const signal = abortController.signal;
+   async function getData(){
+     setStatus('loading')
+     if(selectedIds.length > 0){
+       const latestId = selectedIds[selectedIds.length-1]
+       
+       console.log(latestId)
+       if(!requestData.some(data=>data.id === latestId)){
+         try { 
+           const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${latestId}/market_chart?vs_currency=usd&days=1`,{signal})
+           setStatus('success')
+           setRequestedData((prev)=>[...prev,{id:latestId,data:response.data}])
+         } catch (error:any) {
+           console.log(error)
+           setStatus('error')
+         }
+       }else{
+        setStatus('idle')
+        return
+       }
+     }
+   }
+    getData()
+    return () => abortController.abort();
+  }, [selectedIds])
 
-  function reformDataLength(listOfArray:[]){
-    let newArr:[]=[]
-    if(listOfArray.length > 100 && listOfArray.length < 750){
-      newArr = reduceData(listOfArray,20)
-    }else if(listOfArray.length <= 2000 ){
-        newArr = reduceData(listOfArray,80)
-    }else if(listOfArray.length <= 4000 ){
-        newArr = reduceData(listOfArray,200)
-    }
-    return newArr
+
+  async function getDataByTimeLine(days:any){
+    setStatus('loading')  
+        try {
+          selectedIds.map(async(item)=>{
+            const response =  await axios.get(`https://api.coingecko.com/api/v3/coins/${item}/market_chart?vs_currency=usd&days=${days}`)
+            setRequestedData((prevData) => {
+             return prevData.map((value) => {
+               if (value.id === item) {
+                 return { ...value, data: response.data } as RequestDataProps;
+               }
+               return value;
+             });
+           });
+            
+           })
+         //  const coinData = await Promise.all(request)
+          setStatus('success')
+        } catch (error:any) {
+          console.log(error)
+          setStatus('error')
+        }
+  }
+
+
+  console.log(requestData)
+  function handleSelect(id:string){ 
+    if (selectedIds.some(selectedId=>selectedId===id)) {
+      setSelectedIds(selectedIds.filter(selectedId=>selectedId!==id))
+      setRequestedData(requestData.filter(item=>item.id !== id))
+    }else{
+      if(selectedIds.length<3){
+        setSelectedIds([...selectedIds,id])
+      }else{
+        return
+      }
+    }   
   }
   
-  var prices = requestState.status==='success' ? reformDataLength(requestState.data.prices) : []
-  var volumes = requestState.status==='success' ? reformDataLength(requestState.data.total_volumes) : []
 
-  const reformedPrices = prices.map((item)=>{
-    return {time:getDayNumber(item[0]), value:item[1]}
-  }) 
-  const reformedVolumes =volumes.map((item)=>{
-    return {time:getDayNumber(item[0]), value:item[1]}
-  })
+  // function reformDataLength(listOfArray:[]){
+  //   let newArr:[]=[]
+  //   if(listOfArray.length > 100 && listOfArray.length < 750){
+  //     newArr = reduceData(listOfArray,20)
+  //   }else if(listOfArray.length <= 2000 ){
+  //       newArr = reduceData(listOfArray,80)
+  //   }else if(listOfArray.length <= 4000 ){
+  //       newArr = reduceData(listOfArray,200)
+  //   }
+  //   return newArr
+  // }
+
+  const prices = requestData.map(item=>{
+    let newArr:[]=[]
+    if(item.data.prices.length > 100 && item.data.prices.length < 750){
+      newArr = reduceData(item.data.prices,20)
+    }else if(item.data.prices.length <= 2000 ){
+        newArr = reduceData(item.data.prices,80)
+    }else if(item.data.prices.length <= 4000 ){
+        newArr = reduceData(item.data.prices,200)
+    }
+    return newArr
+  })||[]
+
+  const volumes = status==='success'? requestData.map(item=>{
+    let newArr:[]=[]
+    if(item.data.total_volumes.length > 100 && item.data.total_volumes.length < 750){
+      newArr = reduceData(item.data.total_volumes,20)
+    }else if(item.data.total_volumes.length <= 2000 ){
+        newArr = reduceData(item.data.total_volumes,80)
+    }else if(item.data.total_volumes.length <= 4000 ){
+        newArr = reduceData(item.data.total_volumes,200)
+    }
+    return newArr
+  }):[]
+
+  // Price Chart
+  const firstreformedPrice = prices && prices.length > 0 ?  prices[0].map((item)=>{
+      return {time:getDayNumber(item[0]), value:item[1]}
+    }) : [] 
+  const secondreformedPrice = prices && prices.length > 1 ? prices[1].map((item)=>{
+      return {time:getDayNumber(item[0]), value:item[1]}
+    }) : [] 
+
+  const thirdreformedPrice = prices && prices.length > 2 ? prices[2].map((item)=>{
+      return {time:getDayNumber(item[0]), value:item[1]}
+    }) : [] 
+
+    // Volume Chart
+  // const firstreformedVolume = volumes[0].map((item)=>{
+  //     return {time:getDayNumber(item[0]), value:item[1]}
+  //   }) || [] 
+  // const secondreformedVolume = volumes[1].map((item)=>{
+  //     return {time:getDayNumber(item[0]), value:item[1]}
+  //   }) || [] 
+  // const thirdreformedVolume = volumes[2].map((item)=>{
+  //     return {time:getDayNumber(item[0]), value:item[1]}
+  //   }) || [] 
+
+  
+  // var prices = status==='success' ? reformDataLength(requestData[0].prices) : []
+  // var volumes = status==='success' ? reformDataLength(requestData.total_volumes) : []
+
+  // const reformedPrices = prices.map((item)=>{
+  //   return {time:getDayNumber(item[0]), value:item[1]}
+  // }) 
+  // const reformedVolumes =volumes.map((item)=>{
+  //   return {time:getDayNumber(item[0]), value:item[1]}
+  // })
+  
   
   var priceChart = {
-    labels: reformedPrices.map((data) => data.time), 
+    labels: firstreformedPrice.map((data) => data.time), 
     datasets: [
       {
         label: "Bitcoin",
-        data: reformedPrices.map((data) => data.value),
+        data: firstreformedPrice.map((data) => data.value),
         backgroundColor: (context: ScriptableContext<"line">) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 250);
-          gradient.addColorStop(0, "rgba(116, 116, 242, 1)");
+          gradient.addColorStop(0, "rgba(116, 116, 242, 0.7)");
           gradient.addColorStop(1, "rgba(116, 116, 242, 0.08)");
           return gradient;
         },
         borderColor: "rgba(116, 116, 242, 1)",
+        yAxisID:'y-axis-1',
         borderWidth: 1,
         tension:0.4,
         pointRadius:0,
         fill: 'start',
-      }
-    ]
-  }
-//   rgba(116, 116, 242, 0.6)
-// rgba(116, 116, 242, 0.01)
-
-// "rgba(157, 98, 217, 1)",
-//           "rgba(179, 116, 242, 0.01)"
-
-  var volumeChart = {
-    labels: reformedVolumes.map((data) => data.time), 
-    datasets: [
+      },
       {
-        label: "Bitcoin",
-        data: reformedVolumes.map((data) => data.value),
+        label: "Ethereum",
+        data: secondreformedPrice.map((data) => data.value),
         backgroundColor: (context: ScriptableContext<"line">) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 250);
-          gradient.addColorStop(0, "rgba(157, 98, 217, 1)");
-          gradient.addColorStop(1, "rgba(179, 116, 242, 0.08");
+          gradient.addColorStop(0, "rgba(38, 161, 123, 0.7)");
+          gradient.addColorStop(1, "rgba(38, 161, 123, 0.08)");
           return gradient;
         },
-        borderColor: (context: ScriptableContext<"line">) => {
+        borderColor: "rgba(38, 161, 123, 1)",
+        borderWidth: 1,
+        yAxisID:'y-axis-2',
+        tension:0.4,
+        pointRadius:0,
+        fill: 'start',
+      },
+      {
+        label: "Tether",
+        data: thirdreformedPrice.map((data) => data.value),
+        backgroundColor: (context: ScriptableContext<"line">) => {
           const ctx = context.chart.ctx;
-          const gradient = ctx.createLinearGradient(0, 0, 0, 0);
-          gradient.addColorStop(0, "rgba(157, 98, 217, 1)");
-          gradient.addColorStop(1, "rgba(179, 116, 242, 0.6");
+          const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+          gradient.addColorStop(0, "rgba(254, 34, 100, 0.7)");
+          gradient.addColorStop(1, "rgba(254, 34, 100, 0.08)");
           return gradient;
         },
-        borderWidth: 2
-      }
+        borderColor: "rgba(254, 34, 100, 1)",
+        borderWidth: 1,
+        yAxisID:'y-axis-3',
+        tension:0.4,
+        pointRadius:0,
+        fill: 'start',
+      },
     ]
   }
 
+  console.log('first chart',firstreformedPrice)
+  console.log('second chart',secondreformedPrice)
+  console.log('third chart',thirdreformedPrice)
 
-  const isLoading = requestState.status === 'loading'
+
+  // var volumeChart = {
+  //   labels: reformedVolumes.map((data) => data.time), 
+  //   datasets: [
+  //     {
+  //       label: "Bitcoin",
+  //       data: reformedVolumes.map((data) => data.value),
+  //       backgroundColor: (context: ScriptableContext<"line">) => {
+  //         const ctx = context.chart.ctx;
+  //         const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+  //         gradient.addColorStop(0, "rgba(157, 98, 217, 1)");
+  //         gradient.addColorStop(1, "rgba(179, 116, 242, 0.08");
+  //         return gradient;
+  //       },
+  //       borderColor: (context: ScriptableContext<"line">) => {
+  //         const ctx = context.chart.ctx;
+  //         const gradient = ctx.createLinearGradient(0, 0, 0, 0);
+  //         gradient.addColorStop(0, "rgba(157, 98, 217, 1)");
+  //         gradient.addColorStop(1, "rgba(179, 116, 242, 0.6");
+  //         return gradient;
+  //       },
+  //       borderWidth: 2
+  //     }
+  //   ]
+  // }
+
+
+  const isLoading = status === 'loading'
   
 
   return (
@@ -177,10 +313,10 @@ export default function Home() {
               modules={[Navigation]}
               style={{marginRight:'25px',marginLeft:'25px',position: 'unset' }}
           >
-              {coinlist.map((item,index)=>{
+              {coins.map((item,index)=>{
                 return (
                   <SwiperSlide  key={item.id} className=' px-2'>
-                    <CoinBox coin={item.coin}/>
+                    <CoinBox onSelect={handleSelect} selectedIds={selectedIds} coin={item}/>
                   </SwiperSlide>
                 )
               })}
@@ -192,9 +328,9 @@ export default function Home() {
 
          {isLoading ? <div>Loading...</div>:<PriceChart showHeading={true} height=' h-[250px]' chartData={priceChart}/> }
         </div>
-        <div className=" w-[570px]  h-[400px] p-5 bg-white rounded-md">
+        {/* <div className=" w-[570px]  h-[400px] p-5 bg-white rounded-md">
          {isLoading ? <div>Loading...</div>:<VolumeChart  chartData={volumeChart}/>}
-        </div>
+        </div> */}
       </div>
       <div className=" bg-[#CCCCFA] h-[42px] w-[490px] p-[2px]  gap-2 rounded-md flex">
          {timelineData.map((item,index)=>{
@@ -203,7 +339,10 @@ export default function Home() {
               "  px-5 py-2 text-[14px] grow flex items-center p-2 rounded-md cursor-pointer ",
               {'bg-[#6161D6]' : timeline === item.days}
             )}
-            onClick={()=>setTimeline(item.days)}
+            onClick={()=>{
+              setTimeline(item.days)
+              getDataByTimeLine(item.days)
+            }}
             >
               {item.value}</div>
           )
@@ -221,4 +360,4 @@ export default function Home() {
       </section>
     </div>
   )
-}
+        }

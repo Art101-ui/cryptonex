@@ -21,7 +21,7 @@ function PriceChart({showHeading, chartData,height }:{showHeading?:boolean,chart
               text: ""
             },
             legend: {
-              display: true,
+              display: false
               
             },
           },
@@ -31,12 +31,28 @@ function PriceChart({showHeading, chartData,height }:{showHeading?:boolean,chart
                 display:false
               }
             },
-            y:{
+            "y-axis-1": {
+              display: false,
+              grid:{
+                display:false
+              },
+              beginAtZero: false
+            },
+            "y-axis-2":{
               display:false,
               grid:{
                 display:false
-              }
-            }
+              },
+              beginAtZero: false
+            },
+            "y-axis-3":{
+              display:false,
+              grid:{
+                display:false
+              },
+              beginAtZero: false
+            },
+            
           }
         }}
       />
