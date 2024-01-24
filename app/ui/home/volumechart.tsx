@@ -22,21 +22,44 @@ function VolumeChart({ chartData }:{chartData:any}) {
               text: ""
             },
             legend: {
-              display: true
+              display: false
             }
           },
           scales:{
             x:{
+              stacked:true,
               grid:{
                 display:false
               }
             },
             y:{
+              stacked:true,
               display:false,
               grid:{
                 display:false
               }
-            }
+            },
+            "y-axis-1": {
+              display: false,
+              grid:{
+                display:false
+              },
+              beginAtZero: false
+            },
+            "y-axis-2":{
+              display:false,
+              grid:{
+                display:false
+              },
+              beginAtZero: false
+            },
+            "y-axis-3":{
+              display:false,
+              grid:{
+                display:false
+              },
+              beginAtZero: false
+            },
           }
         }}
       />

@@ -10,7 +10,7 @@ import { Navigation } from 'swiper/modules';
 
 import CoinBox from "@/app/ui/home/coinbox";
 import PriceChart from "@/app/ui/home/pricechart";
-import { CategoryScale, ScriptableContext } from "chart.js";
+import { CategoryScale, ScriptableContext, } from "chart.js";
 import Chart from "chart.js/auto";
 import { useEffect, useState } from "react";
 import { getDayNumber, reduceData, convertToThousand } from "@/app/lib/utilis";
@@ -98,16 +98,21 @@ export default function Home() {
     setStatus('loading')  
         try {
           selectedIds.map(async(item)=>{
-            const response =  await axios.get(`https://api.coingecko.com/api/v3/coins/${item}/market_chart?vs_currency=usd&days=${days}`)
-            setRequestedData((prevData) => {
-             return prevData.map((value) => {
-               if (value.id === item) {
-                 return { ...value, data: response.data } as RequestDataProps;
-               }
-               return value;
+            try {
+              const response =  await axios.get(`https://api.coingecko.com/api/v3/coins/${item}/market_chart?vs_currency=usd&days=${days}`)
+              setRequestedData((prevData) => {
+               return prevData.map((value) => {
+                 if (value.id === item) {
+                   return { ...value, data: response.data } as RequestDataProps;
+                 }
+                 return value;
+               });
              });
-           });
-            
+              
+            } catch (error:any) {
+              setStatus('error')
+              console.log(error)
+            }    
            })
          //  const coinData = await Promise.all(request)
           setStatus('success')
@@ -157,7 +162,7 @@ export default function Home() {
     return newArr
   })||[]
 
-  const volumes = status==='success'? requestData.map(item=>{
+  const volumes =  requestData.map(item=>{
     let newArr:[]=[]
     if(item.data.total_volumes.length > 100 && item.data.total_volumes.length < 750){
       newArr = reduceData(item.data.total_volumes,20)
@@ -167,7 +172,7 @@ export default function Home() {
         newArr = reduceData(item.data.total_volumes,200)
     }
     return newArr
-  }):[]
+  })||[]
 
   // Price Chart
   const firstreformedPrice = prices && prices.length > 0 ?  prices[0].map((item)=>{
@@ -182,15 +187,15 @@ export default function Home() {
     }) : [] 
 
     // Volume Chart
-  // const firstreformedVolume = volumes[0].map((item)=>{
-  //     return {time:getDayNumber(item[0]), value:item[1]}
-  //   }) || [] 
-  // const secondreformedVolume = volumes[1].map((item)=>{
-  //     return {time:getDayNumber(item[0]), value:item[1]}
-  //   }) || [] 
-  // const thirdreformedVolume = volumes[2].map((item)=>{
-  //     return {time:getDayNumber(item[0]), value:item[1]}
-  //   }) || [] 
+  const firstreformedVolume =volumes && volumes.length > 0 ? volumes[0].map((item)=>{
+      return {time:getDayNumber(item[0]), value:item[1]}
+    }) : [] 
+  const secondreformedVolume =volumes && volumes.length > 1 ? volumes[1].map((item)=>{
+      return {time:getDayNumber(item[0]), value:item[1]}
+    }) : [] 
+  const thirdreformedVolume =volumes && volumes.length > 2 ? volumes[2].map((item)=>{
+      return {time:getDayNumber(item[0]), value:item[1]}
+    }) : [] 
 
   
   // var prices = status==='success' ? reformDataLength(requestData[0].prices) : []
@@ -266,30 +271,62 @@ export default function Home() {
   console.log('third chart',thirdreformedPrice)
 
 
-  // var volumeChart = {
-  //   labels: reformedVolumes.map((data) => data.time), 
-  //   datasets: [
-  //     {
-  //       label: "Bitcoin",
-  //       data: reformedVolumes.map((data) => data.value),
-  //       backgroundColor: (context: ScriptableContext<"line">) => {
-  //         const ctx = context.chart.ctx;
-  //         const gradient = ctx.createLinearGradient(0, 0, 0, 250);
-  //         gradient.addColorStop(0, "rgba(157, 98, 217, 1)");
-  //         gradient.addColorStop(1, "rgba(179, 116, 242, 0.08");
-  //         return gradient;
-  //       },
-  //       borderColor: (context: ScriptableContext<"line">) => {
-  //         const ctx = context.chart.ctx;
-  //         const gradient = ctx.createLinearGradient(0, 0, 0, 0);
-  //         gradient.addColorStop(0, "rgba(157, 98, 217, 1)");
-  //         gradient.addColorStop(1, "rgba(179, 116, 242, 0.6");
-  //         return gradient;
-  //       },
-  //       borderWidth: 2
-  //     }
-  //   ]
-  // }
+  var volumeChart = {
+    labels: firstreformedVolume.map((data) => data.time), 
+    datasets: [
+      {
+        label: "Bitcoin",
+        data: firstreformedVolume.map((data) => data.value),
+        backgroundColor: (context: ScriptableContext<"line">) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+          gradient.addColorStop(0, "rgba(116, 116, 242, 0.7)");
+          gradient.addColorStop(1, "rgba(116, 116, 242, 0.08)");
+          return gradient;
+        },
+        borderColor: "rgba(116, 116, 242, 1)",
+        yAxisID:'y-axis-1',
+        borderWidth: 1,
+        tension:0.4,
+        pointRadius:0,
+        fill: 'start',
+      },
+      {
+        label: "Ethereum",
+        data: secondreformedVolume.map((data) => data.value),
+        backgroundColor: (context: ScriptableContext<"line">) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+          gradient.addColorStop(0, "rgba(38, 161, 123, 0.7)");
+          gradient.addColorStop(1, "rgba(38, 161, 123, 0.08)");
+          return gradient;
+        },
+        borderColor: "rgba(38, 161, 123, 1)",
+        borderWidth: 1,
+        yAxisID:'y-axis-2',
+        tension:0.4,
+        pointRadius:0,
+        fill: 'start',
+      },
+      {
+        label: "Tether",
+        data: thirdreformedVolume.map((data) => data.value),
+        backgroundColor: (context: ScriptableContext<"line">) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+          gradient.addColorStop(0, "rgba(254, 34, 100, 0.7)");
+          gradient.addColorStop(1, "rgba(254, 34, 100, 0.08)");
+          return gradient;
+        },
+        borderColor: "rgba(254, 34, 100, 1)",
+        borderWidth: 1,
+        yAxisID:'y-axis-3',
+        tension:0.4,
+        pointRadius:0,
+        fill: 'start',
+      },
+    ]
+  }
 
 
   const isLoading = status === 'loading'
@@ -328,9 +365,9 @@ export default function Home() {
 
          {isLoading ? <div>Loading...</div>:<PriceChart showHeading={true} height=' h-[250px]' chartData={priceChart}/> }
         </div>
-        {/* <div className=" w-[570px]  h-[400px] p-5 bg-white rounded-md">
+        <div className=" w-[570px]  h-[400px] p-5 bg-white rounded-md">
          {isLoading ? <div>Loading...</div>:<VolumeChart  chartData={volumeChart}/>}
-        </div> */}
+        </div>
       </div>
       <div className=" bg-[#CCCCFA] h-[42px] w-[490px] p-[2px]  gap-2 rounded-md flex">
          {timelineData.map((item,index)=>{
