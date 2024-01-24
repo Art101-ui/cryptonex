@@ -54,16 +54,19 @@ type RequestDataProps ={
 }
 type CoinListProp ={
     id: string;
-    coin: string;
-}[]
+    name:string,
+    price:number,
+    image:string,
+    percentage:number
+}
 
 export default function Home() {
   const [status, setStatus] = useState<StatusProps>('idle')
  const [requestData,setRequestedData] = useState<RequestDataProps[]>([])
  const [timeline,setTimeline] = useState<number | string>(1)
- const [coins, setCoins] = useState<CoinListProp>(coinlist)
+ const [coins, setCoins] = useState<CoinListProp[]>([])
  const [selectedIds,setSelectedIds] = useState<string[]>(['bitcoin'])
- const [compareData,setCompareData] = useState([])
+ const [coinstatus,setcoinStatus] = useState<StatusProps>('idle')
   
  useEffect(() => {
    const abortController = new AbortController();
@@ -93,6 +96,37 @@ export default function Home() {
     return () => abortController.abort();
   }, [selectedIds])
 
+  useEffect(() => {
+    const abortController = new AbortController()
+    const signal = abortController.signal
+    async function getMainCoin() {
+      setcoinStatus('loading')
+      try {
+        const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en',{signal})
+        const formattedData:CoinListProp[]
+         = response.data.map((item:any)=>{
+          return {
+            id:item.id,
+            name:item.name,
+            price:item.current_price,
+            image:item.image,
+            percentage:item.price_change_percentage_24h
+          }
+        })
+        setCoins(formattedData)
+        setcoinStatus('success')
+      } catch (error) {
+        console.log(error)
+        setcoinStatus('error')
+      }
+      
+    }
+    getMainCoin()
+  
+    return ()=>abortController.abort()
+  }, [])
+  
+  console.log(coins)
 
   async function getDataByTimeLine(days:any){
     setStatus('loading')  
@@ -350,7 +384,7 @@ export default function Home() {
               modules={[Navigation]}
               style={{marginRight:'25px',marginLeft:'25px',position: 'unset' }}
           >
-              {coins.map((item,index)=>{
+              {coinstatus === 'loading' ? <div>Loading...</div> : coins.map((item)=>{
                 return (
                   <SwiperSlide  key={item.id} className=' px-2'>
                     <CoinBox onSelect={handleSelect} selectedIds={selectedIds} coin={item}/>
