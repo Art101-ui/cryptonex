@@ -1,3 +1,4 @@
+import { formatDate } from "@/app/lib/utilis";
 import React from "react";
 import { Line } from "react-chartjs-2";
 
@@ -6,9 +7,9 @@ function PriceChart({showHeading, chartData,height }:{showHeading?:boolean,chart
   return (
     <div className={`chart-container w-full ${height}`}>
       {showHeading && <div>
-        <h1 className=" text-[20px]">Volume 24h</h1>
+        <h1 className=" text-[20px]">Bitcoin (BTC)</h1>
         <h3 className=" text-[28px]">$807.243 bin</h3>
-        <p className=" text-[16px]">September 29, 2023</p>
+        <p className=" text-[16px]">{formatDate()}</p>
       </div>}
       <Line
         data={chartData}
@@ -21,7 +22,7 @@ function PriceChart({showHeading, chartData,height }:{showHeading?:boolean,chart
               text: ""
             },
             legend: {
-              display: true,
+              display: false
               
             },
           },
@@ -31,12 +32,28 @@ function PriceChart({showHeading, chartData,height }:{showHeading?:boolean,chart
                 display:false
               }
             },
-            y:{
+            "y-axis-1": {
+              display: false,
+              grid:{
+                display:false
+              },
+              beginAtZero: false
+            },
+            "y-axis-2":{
               display:false,
               grid:{
                 display:false
-              }
-            }
+              },
+              beginAtZero: false
+            },
+            "y-axis-3":{
+              display:false,
+              grid:{
+                display:false
+              },
+              beginAtZero: false
+            },
+            
           }
         }}
       />
