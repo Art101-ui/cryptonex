@@ -38,7 +38,7 @@ export default function CoinList(){
     async function getData(){
         setStatus('loading')
         try {
-          const response = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=${page}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&locale=en`)
+          const response = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=${page}&sparkline=true&price_change_percentage=1h%2C24h%2C7d&x_cg_demo_api_key=CG-8CfAjVRc52vDuq5qtrTNDD1p`)
           const data = await response.data
           if(data.length === 0){
             sethasMore(false)
@@ -57,7 +57,6 @@ export default function CoinList(){
                 circulating_supply:item.circulating_supply,
                 total_supply:item.total_supply,
                 chartData:item.sparkline_in_7d.price
-  
               }));
             setData(prev=>[...prev, ...formattedData])
             setPage(prev=>prev+1)
@@ -74,7 +73,7 @@ export default function CoinList(){
          {
             data.map((item,index)=>{
                 return(
-                   <Link href={`/coinInfo/${item.name}`}>
+                   <Link href={`/coinInfo/${item.name.toLowerCase()}`}>
                      <Coin key={item.id} coinData={item} index={index+1}/>              
                    </Link>
                 )

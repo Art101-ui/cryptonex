@@ -11,7 +11,7 @@ type CoinListProp ={
   image:string,
   percentage:number
 }
-export default function CoinBox({coin,onSelect,selectedIds}:{coin:CoinListProp,onSelect:(id: string)=> void,selectedIds:string[]}){
+export default function CoinBox({coin,onSelect,selectedIds}:{coin:any,onSelect:(id: string)=> void,selectedIds:string[]}){
     return(
         <div onClick={()=>onSelect(coin.id)} className={clsx(
           "flex items-center cursor-pointer w-[220px] h-[78px] rounded-md p-3",
