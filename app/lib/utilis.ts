@@ -41,6 +41,38 @@ export function formatDate() {
   return formattedDate;
 }
 
+type CoinListProp ={
+  id: string;
+  name:string,
+  image:string,  
+}
+
+export function searchItems(items:CoinListProp[], query:string) {
+  query = query.toLowerCase();
+ 
+  return items.filter(item =>
+    item.name.split(' ').some(word =>
+      word.toLowerCase().startsWith(query)
+    )
+  );
+}
+
+export function prettifyDate(inputDate:string) {
+  if (inputDate === '') {
+    return ' '
+  }
+  const date = new Date(inputDate);
+  
+  const options:Intl.DateTimeFormatOptions = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  };
+  
+  return date.toLocaleDateString('en-US', options);
+}
+
 // export function getReformedData(listOfArray:any[]){
 //    const newData = listOfArray.map(item=>{
 //     let newArr:[]=[]

@@ -44,21 +44,21 @@ export default function Converter(){
  
 
  
-  useEffect(() => {
-    setRequestedState({status:'loading'})
-    async function getData(){
-      try {
-        const response = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${timeline}`)
-        const data = await response.data
-        console.log(data)
-        setRequestedState({ status: 'success', data: data })
-      } catch (error:any) {
-        console.log(error)
-        setRequestedState({ status: 'error', error: error })
-      }
-    }
-    getData()
-  }, [timeline])
+  // useEffect(() => {
+  //   setRequestedState({status:'loading'})
+  //   async function getData(){
+  //     try {
+  //       const response = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${timeline}?api_key=CG-8CfAjVRc52vDuq5qtrTNDD1p`)
+  //       const data = await response.data
+  //       console.log(data)
+  //       setRequestedState({ status: 'success', data: data })
+  //     } catch (error:any) {
+  //       console.log(error)
+  //       setRequestedState({ status: 'error', error: error })
+  //     }
+  //   }
+  //   getData()
+  // }, [timeline])
 
   
 

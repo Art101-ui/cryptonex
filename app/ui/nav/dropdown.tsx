@@ -29,7 +29,7 @@ export default function DropDown(){
                 {dropdown ? <IoIosArrowUp/> : <IoIosArrowDown/> }
             </div>
              {dropdown &&
-               <ul className="p-3 bg-[#EBEBFD] z-20 rounded">
+               <ul className="p-3 bg-[#EBEBFD] border-[#d3d3d3] border z-20 rounded">
                   {
                     menulist.map((item)=>{
                       return (

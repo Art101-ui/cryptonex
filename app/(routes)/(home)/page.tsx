@@ -25,15 +25,15 @@ import { request } from "http";
 
 Chart.register(CategoryScale)
 const coinlist=[
-  {id:'bitcoin', coin:'Bitcoin (BTC)'},
-  {id:'ethereum', coin:'Ethereum (ETH)'},
-  {id:'tether', coin:'Tether (USDT)'},
-  {id:'usd-coin', coin:'USDC (USDC)'},
-  {id:'dogecoin', coin:'Doge Coin (DGC)'},
-  {id:'litecoin', coin:'Litecoin (LTC)'},
-  {id:'solana', coin:'Solana (SOL)'},
-  {id:'ripple', coin:'XRP (XRP)'},
-  {id:'binancecoin', coin:'BNB (BNB)'},
+  {id:'bitcoin', name:'Bitcoin (BTC)',price:34,image:'',percentage:23},
+  {id:'ethereum', coin:'Ethereum (ETH)', name:'Bitcoin (BTC)',price:34,image:'',percentage:23},
+  {id:'tether', coin:'Tether (USDT)', name:'Bitcoin (BTC)',price:34,image:'',percentage:23},
+  {id:'usd-coin', coin:'USDC (USDC)', name:'Bitcoin (BTC)',price:34,image:'',percentage:23},
+  {id:'dogecoin', coin:'Doge Coin (DGC)', name:'Bitcoin (BTC)',price:34,image:'',percentage:23},
+  {id:'litecoin', coin:'Litecoin (LTC)', name:'Bitcoin (BTC)',price:34,image:'',percentage:23},
+  {id:'solana', coin:'Solana (SOL)', name:'Bitcoin (BTC)',price:34,image:'',percentage:23},
+  {id:'ripple', coin:'XRP (XRP)', name:'Bitcoin (BTC)',price:34,image:'',percentage:23},
+  {id:'binancecoin', coin:'BNB (BNB)', name:'Bitcoin (BTC)',price:34,image:'',percentage:23},
 ]
 
 const timelineData= [
@@ -64,7 +64,7 @@ export default function Home() {
   const [status, setStatus] = useState<StatusProps>('idle')
  const [requestData,setRequestedData] = useState<RequestDataProps[]>([])
  const [timeline,setTimeline] = useState<number | string>(1)
- const [coins, setCoins] = useState<CoinListProp[]>([])
+ const [coins, setCoins] = useState(coinlist)
  const [selectedIds,setSelectedIds] = useState<string[]>(['bitcoin'])
  const [coinstatus,setcoinStatus] = useState<StatusProps>('idle')
   
@@ -79,7 +79,7 @@ export default function Home() {
        console.log(latestId)
        if(!requestData.some(data=>data.id === latestId)){
          try { 
-           const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${latestId}/market_chart?vs_currency=usd&days=1`,{signal})
+           const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${latestId}/market_chart?vs_currency=usd&days=1&x_cg_demo_api_key=CG-8CfAjVRc52vDuq5qtrTNDD1p`,{signal})
            setStatus('success')
            setRequestedData((prev)=>[...prev,{id:latestId,data:response.data}])
          } catch (error:any) {
@@ -96,44 +96,44 @@ export default function Home() {
     return () => abortController.abort();
   }, [selectedIds])
 
-  useEffect(() => {
-    const abortController = new AbortController()
-    const signal = abortController.signal
-    async function getMainCoin() {
-      setcoinStatus('loading')
-      try {
-        const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en',{signal})
-        const formattedData:CoinListProp[]
-         = response.data.map((item:any)=>{
-          return {
-            id:item.id,
-            name:item.name,
-            price:item.current_price,
-            image:item.image,
-            percentage:item.price_change_percentage_24h
-          }
-        })
-        setCoins(formattedData)
-        setcoinStatus('success')
-      } catch (error) {
-        console.log(error)
-        setcoinStatus('error')
-      }
+  // useEffect(() => {
+  //   const abortController = new AbortController()
+  //   const signal = abortController.signal
+  //   async function getMainCoin() {
+  //     setcoinStatus('loading')
+  //     try {
+  //       const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en?api_key=CG-8CfAjVRc52vDuq5qtrTNDD1p',{signal})
+  //       const formattedData
+  //        = response.data.map((item:any)=>{
+  //         return {
+  //           id:item.id,
+  //           name:item.name,
+  //           price:item.current_price,
+  //           image:item.image,
+  //           percentage:item.price_change_percentage_24h
+  //         }
+  //       })
+  //       setCoins(formattedData)
+  //       setcoinStatus('success')
+  //     } catch (error) {
+  //       console.log(error)
+  //       setcoinStatus('error')
+  //     }
       
-    }
-    getMainCoin()
+  //   }
+  //   getMainCoin()
   
-    return ()=>abortController.abort()
-  }, [])
+  //   return ()=>abortController.abort()
+  // }, [])
   
-  console.log(coins)
+  // console.log(coins)
 
   async function getDataByTimeLine(days:any){
     setStatus('loading')  
         try {
           selectedIds.map(async(item)=>{
             try {
-              const response =  await axios.get(`https://api.coingecko.com/api/v3/coins/${item}/market_chart?vs_currency=usd&days=${days}`)
+              const response =  await axios.get(`https://api.coingecko.com/api/v3/coins/${item}/market_chart?vs_currency=usd&days=${days}&x_cg_demo_api_key=CG-8CfAjVRc52vDuq5qtrTNDD1p`)
               setRequestedData((prevData) => {
                return prevData.map((value) => {
                  if (value.id === item) {

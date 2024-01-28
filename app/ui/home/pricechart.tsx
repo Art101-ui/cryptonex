@@ -28,6 +28,7 @@ function PriceChart({showHeading, chartData,height }:{showHeading?:boolean,chart
           },
           scales:{
             x:{
+              display:false,
               grid:{
                 display:false
               }
