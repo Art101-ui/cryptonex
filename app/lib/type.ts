@@ -14,4 +14,10 @@ export type FetchedDataProps={
     chartData:[]
   }
 
+ export type ChartDataProps={
+    prices:[],
+    market_caps:[],
+    total_volumes:[]
+  }
+
 export  type StatusProps = 'loading' | 'error' | 'success' | 'idle'
