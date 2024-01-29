@@ -11,6 +11,7 @@ import axios from 'axios';
 import PriceChart from '@/app/ui/home/pricechart';
 import clsx from 'clsx';
 import Chart from "chart.js/auto";
+import { input } from '@material-tailwind/react';
 
 
 Chart.register(CategoryScale)
@@ -36,14 +37,52 @@ const timelineData= [
     {id: 6, value: 'Max', days:'max'}
 ]
 
+type ChildComponentProps =  {
+  value:number | string,
+  price:number,
+  coin:string,
+  onhandleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
 export default function Converter(){
    
     const [requestState,setRequestedState] = useState<RequestStateProps>({ status: 'idle' })
       const [timeline,setTimeline] = useState<number | string>(1)
 
- 
+      const [switchcoin, setSwitchCoin] = useState(true)
 
+      const [firstInput, setfirstInput] = useState<number | string>('')
+      const [secondInput, setsecondInput] = useState<number | string>('')
+      
+
+      const bitcoinPrice = 42236;
+      const ethereumPrice = 2267.73
+      
+
+      function handleFirstInput(e: React.ChangeEvent<HTMLInputElement>):void{
+        const inputValue: string = e.target.value;
+
+        // Check if the input is a valid number (you can add more validation if needed)
+        const isValidNumber = /^\d*$/.test(inputValue);
+        const factor  = (bitcoinPrice/ethereumPrice)
+        // Update the state if it's a valid number or an empty string
+        if (isValidNumber || inputValue === '') {
+          setfirstInput(inputValue === '' ? '' : parseInt(inputValue, 10));
+          setsecondInput(inputValue === '' ? '' : (parseFloat(inputValue)*factor).toFixed(2))
+        }
+      }
+      function handleSecondInput(e: React.ChangeEvent<HTMLInputElement>):void{
+        const inputValue:string = e.target.value;
+        const isValidNumber = /^\d*$/.test(inputValue)
+        const factor  = (ethereumPrice/bitcoinPrice)
+        if(isValidNumber || inputValue===''){
+          setsecondInput(inputValue === '' ? '' : parseInt(inputValue,10))
+          setfirstInput(inputValue === '' ? '' : (parseFloat(inputValue)*factor).toFixed(2))
+        }
+      }
+      
  
+      
   useEffect(() => {
     setRequestedState({status:'loading'})
     async function getData(){
@@ -110,28 +149,20 @@ export default function Converter(){
 
           <div className="flex relative items-center justify-between gap-7 mb-8">
 
-            <div className="bg-white rounded-2xl p-6  w-1/2">
-              <p className='mb-2'>You sell</p>
-              <div className='flex justify-between items-center'>
-                <div className='flex items-center gap-1'>
-                    <Image 
-                    className=" mr-1"
-                    src= {bitcoin}
-                    alt="exchange"
-                    width={20}
-                    height={20}
-                    />
-                    <p className=' mr-1'>Bitcoin(BTC)</p>
-                    <RiArrowUpSFill/>
-                </div>
-                <input value={10} className=' remove-arrow border-none bg-transparent outline-none px-3 py-3 focus:outline-none text-right' type="number" />
-              </div>
-              <hr />
-              <h3 className='py-1'>1 BTC = $26,250.15</h3>
-            </div>
+           {switchcoin ?
+            <>
+                <ConverterCoin coin='Bitcoin' price={bitcoinPrice} value={firstInput} onhandleChange = {handleFirstInput}/>
+                <ConverterCoin coin='Ethereum' price={ethereumPrice} value={secondInput} onhandleChange = {handleSecondInput}/>
+            </> :
+            <>
+                <ConverterCoin coin='Ethereum' price={ethereumPrice} value={secondInput} onhandleChange = {handleSecondInput}/>
+                <ConverterCoin coin='Bitcoin' price={bitcoinPrice} value={firstInput} onhandleChange = {handleFirstInput}/>
+            </>
+            
+            }
 
 
-            <div className=' absolute left-1/2 transform -translate-x-1/2 bg-[#353570] rounded-full w-12 h-12 flex justify-center items-center cursor-pointer'>
+            <div onClick={()=>setSwitchCoin(prev=>!prev)} className=' absolute left-1/2 transform -translate-x-1/2 bg-[#353570] rounded-full w-12 h-12 flex justify-center items-center cursor-pointer'>
                    <Image 
                     src= {verticalSwitch}
                     alt="exchange"
@@ -140,25 +171,6 @@ export default function Converter(){
                     />
             </div>
 
-            <div className="bg-white  rounded-2xl p-6   w-1/2">
-              <p className='mb-2'>You buy</p>
-              <div className='flex justify-between items-center'>
-                <div className='flex items-center gap-1'>
-                    <Image 
-                    className=" mr-1"
-                    src= {bitcoin}
-                    alt="exchange"
-                    width={20}
-                    height={20}
-                    />
-                    <p  className=' mr-1'>Bitcoin(BTC)</p>
-                    <RiArrowUpSFill/>
-                </div>
-                <input value={10}  className=' remove-arrow border-none bg-transparent outline-none py-3 px-3 focus:outline-none text-right' type="number" />
-              </div>
-              <hr />
-              <h3 className='py-1'>1 BTC = $26,250.15</h3>
-            </div>
           </div>
 
           <div className=" w-full flex flex-col justify-center  h-[290px] p-6 bg-white mb-4 rounded-md">
@@ -181,4 +193,28 @@ export default function Converter(){
          </div>
         </>
     )
+}
+
+function ConverterCoin({coin,price,value,onhandleChange}:ChildComponentProps){
+   
+  return(
+    <div className="bg-white  rounded-2xl p-6   w-1/2">
+              <div className='flex justify-between items-center'>
+                <div className='flex items-center gap-1'>
+                    <Image 
+                    className=" mr-1"
+                    src= {bitcoin}
+                    alt="exchange"
+                    width={20}
+                    height={20}
+                    />
+                    <p  className=' mr-1'>{coin}(BTC)</p>
+                    <RiArrowUpSFill/>
+                </div>
+                <input placeholder='0' value={value} onChange={onhandleChange}  className=' remove-arrow border-none bg-transparent outline-none py-3 px-3 focus:outline-none text-right' type="number" />
+              </div>
+              <hr />
+              <h3 className='py-1'>1 BTC = ${price}</h3>
+    </div>
+  )
 }
