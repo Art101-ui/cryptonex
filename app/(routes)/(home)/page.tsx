@@ -24,16 +24,23 @@ import { request } from "http";
 
 
 Chart.register(CategoryScale)
-const coinlist=[
-  {id:'bitcoin', coin:'Bitcoin (BTC)'},
-  {id:'ethereum', coin:'Ethereum (ETH)'},
-  {id:'tether', coin:'Tether (USDT)'},
-  {id:'usd-coin', coin:'USDC (USDC)'},
-  {id:'dogecoin', coin:'Doge Coin (DGC)'},
-  {id:'litecoin', coin:'Litecoin (LTC)'},
-  {id:'solana', coin:'Solana (SOL)'},
-  {id:'ripple', coin:'XRP (XRP)'},
-  {id:'binancecoin', coin:'BNB (BNB)'},
+type CoinListProp ={
+    id: string;
+    name:string,
+    price:number,
+    image:string,
+    percentage:number
+}
+const coinlist:CoinListProp[]=[
+  {id:'bitcoin', name:'Bitcoin (BTC)',price:220, image:'', percentage:1.23},
+  {id:'ethereum', name:'Ethereum (ETH)',price:220, image:'', percentage:1.23},
+  {id:'tether', name:'Tether (USDT)',price:220, image:'', percentage:1.23},
+  {id:'usd-coin', name:'USDC (USDC)',price:220, image:'', percentage:1.23},
+  {id:'dogecoin', name:'Doge Coin (DGC)',price:220, image:'', percentage:1.23},
+  {id:'litecoin', name:'Litecoin (LTC)',price:220, image:'', percentage:1.23},
+  {id:'solana', name:'Solana (SOL)',price:220, image:'', percentage:1.23},
+  {id:'ripple', name:'XRP (XRP)',price:220, image:'', percentage:1.23},
+  {id:'binancecoin', name:'BNB (BNB)',price:220, image:'', percentage:1.23},
 ]
 
 const timelineData= [
@@ -52,13 +59,6 @@ type RequestDataProps ={
   id: string,
   data:any
 }
-type CoinListProp ={
-    id: string;
-    name:string,
-    price:number,
-    image:string,
-    percentage:number
-}
 
 export default function Home() {
   const [status, setStatus] = useState<StatusProps>('idle')
@@ -68,65 +68,65 @@ export default function Home() {
  const [selectedIds,setSelectedIds] = useState<string[]>(['bitcoin'])
  const [coinstatus,setcoinStatus] = useState<StatusProps>('idle')
   
- useEffect(() => {
-   const abortController = new AbortController();
-   const signal = abortController.signal;
-   async function getData(){
-     setStatus('loading')
-     if(selectedIds.length > 0){
-       const latestId = selectedIds[selectedIds.length-1]
+//  useEffect(() => {
+//    const abortController = new AbortController();
+//    const signal = abortController.signal;
+//    async function getData(){
+//      setStatus('loading')
+//      if(selectedIds.length > 0){
+//        const latestId = selectedIds[selectedIds.length-1]
        
-       console.log(latestId)
-       if(!requestData.some(data=>data.id === latestId)){
-         try { 
-           const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${latestId}/market_chart?vs_currency=usd&days=1`,{signal})
-           setStatus('success')
-           setRequestedData((prev)=>[...prev,{id:latestId,data:response.data}])
-         } catch (error:any) {
-           console.log(error)
-           setStatus('error')
-         }
-       }else{
-        setStatus('idle')
-        return
-       }
-     }
-   }
-    getData()
-    return () => abortController.abort();
-  }, [selectedIds])
+//        console.log(latestId)
+//        if(!requestData.some(data=>data.id === latestId)){
+//          try { 
+//            const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${latestId}/market_chart?vs_currency=usd&days=1`,{signal})
+//            setStatus('success')
+//            setRequestedData((prev)=>[...prev,{id:latestId,data:response.data}])
+//          } catch (error:any) {
+//            console.log(error)
+//            setStatus('error')
+//          }
+//        }else{
+//         setStatus('idle')
+//         return
+//        }
+//      }
+//    }
+//     getData()
+//     return () => abortController.abort();
+//   }, [selectedIds])
 
-  useEffect(() => {
-    const abortController = new AbortController()
-    const signal = abortController.signal
-    async function getMainCoin() {
-      setcoinStatus('loading')
-      try {
-        const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en',{signal})
-        const formattedData:CoinListProp[]
-         = response.data.map((item:any)=>{
-          return {
-            id:item.id,
-            name:item.name,
-            price:item.current_price,
-            image:item.image,
-            percentage:item.price_change_percentage_24h
-          }
-        })
-        setCoins(formattedData)
-        setcoinStatus('success')
-      } catch (error) {
-        console.log(error)
-        setcoinStatus('error')
-      }
+  // useEffect(() => {
+  //   const abortController = new AbortController()
+  //   const signal = abortController.signal
+  //   async function getMainCoin() {
+  //     setcoinStatus('loading')
+  //     try {
+  //       const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en',{signal})
+  //       const formattedData:CoinListProp[]
+  //        = response.data.map((item:any)=>{
+  //         return {
+  //           id:item.id,
+  //           name:item.name,
+  //           price:item.current_price,
+  //           image:item.image,
+  //           percentage:item.price_change_percentage_24h
+  //         }
+  //       })
+  //       setCoins(formattedData)
+  //       setcoinStatus('success')
+  //     } catch (error) {
+  //       console.log(error)
+  //       setcoinStatus('error')
+  //     }
       
-    }
-    getMainCoin()
+  //   }
+  //   getMainCoin()
   
-    return ()=>abortController.abort()
-  }, [])
+  //   return ()=>abortController.abort()
+  // }, [])
   
-  console.log(coins)
+  // console.log(coins)
 
   async function getDataByTimeLine(days:any){
     setStatus('loading')  
@@ -384,7 +384,10 @@ export default function Home() {
               modules={[Navigation]}
               style={{marginRight:'25px',marginLeft:'25px',position: 'unset' }}
           >
-              {coinstatus === 'loading' ? <div>Loading...</div> : coins.map((item)=>{
+              {
+              // coinstatus === 'loading' ? <div>Loading...</div> : 
+              
+              coinlist.map((item)=>{
                 return (
                   <SwiperSlide  key={item.id} className=' px-2'>
                     <CoinBox onSelect={handleSelect} selectedIds={selectedIds} coin={item}/>
