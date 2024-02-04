@@ -1,13 +1,56 @@
 'use client'
-import Image from "next/image"
-import bitcoin from '@/public/bitcoin.png'
-import { RiArrowUpSFill } from "react-icons/ri"
-import ProgressBar from "@/app/ui/progressbar"
-import { useState } from "react"
+
+import { useState, useEffect } from "react"
 import Modal from "@/app/ui/portfolio/modal"
+import axios from "axios"
+import { StatusProps, AssetsProp } from "@/app/lib/type"
+import CoinAsset from "@/app/ui/portfolio/coinasset"
+
+
 
 export default function Portfolio(){
+    
     const [modal,setModal] = useState(false)
+    const [status, setStatus] = useState<StatusProps>('idle')
+    const [listofAssets, setListOfAssets] = useState<AssetsProp[]>([]);
+    
+
+    
+
+    async function getHistoryData(id:string) {
+        try {
+          setStatus('loading')
+          const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/history?date=03-01-2024`)
+          setListOfAssets(prev=>
+            [...prev,  
+            {
+              id:response.data.id,
+              name:response.data.name,
+              symbol:response.data.symbol,
+              image: response.data.image.thumb,
+              price: response.data.market_data.current_price.usd,
+              market_cap:response.data.market_data.market_cap.usd,
+              total_volume:response.data.market_data.total_volume.usd,
+              circ_supply: 20,
+              max_supply:80,
+              twenty_four:79,
+              date:'3/23/2023',
+              purchased:9,
+            }
+            ]
+            ) 
+            setStatus('success')
+        } catch (error) {
+            console.log(error)
+            setStatus('error')
+        }
+        
+    }
+
+    async function handleAddAssets(id:string){
+       await getHistoryData(id)
+    }
+
     return (
         <div>
             {modal && 
@@ -15,7 +58,7 @@ export default function Portfolio(){
                 <div onClick={(e)=>{
                     e.stopPropagation()
                 }}>
-                    <Modal onModal={setModal}/>
+                    <Modal onhandleListAssets={handleAddAssets} onModal={setModal}/>
                 </div>
               </div>
             }
@@ -24,55 +67,19 @@ export default function Portfolio(){
                 <h1 className=" text-[24px]">Portfolio</h1> 
                 <button onClick={()=>setModal(prev=>!prev)} className=" flex bg-[#6161D6] text-white justify-center w-[250px] h-[45px] cursor-pointer font-bold py-3 px-4 rounded-md">Add Asset</button>
                 </div>
-                <div className="flex w-full">
-                <div className="bg-[#7878FA] rounded-l-lg w-1/3 p-4">
-                    <div className='flex items-center gap-1 mb-5'>
-                        <Image 
-                        className=" mr-1"
-                        src= {bitcoin}
-                        alt="exchange"
-                        width={32}
-                        height={32}
-                        />
-                        <p className=' text-[24px]'>Bitcoin(BTC)</p>
-                    </div>
-                    <h3 className=" text-[16px] mb-1">Total Value</h3>
-                    <div className=" flex">
-                        <span className=" mr-2 text-[28px]">$29,850 USD</span> 
-                        <span className="flex items-center text-[16px] text-[#01F1E3]"><RiArrowUpSFill/> 6.76%</span>
-                    </div>
-                    <p className=" text-[14px]">Purchased 03.23.2023</p>
-                </div>
-                <div className=" flex w-2/3 px-4 py-6 bg-white gap-2 rounded-r-lg">
-                    <div className=" w-1/2 flex flex-col gap-2">
-                        <div className=" rounded-lg border border-[#2D2D51] px-[10px] py-3">
-                        <h1 className=" text-[20px]">$29,850</h1> 
-                        <p className=" text-[14px]">Current price</p>
-                        </div>
-                        <div className=" rounded-lg border border-[#2D2D51] px-[10px] py-3">
-                            <div className="flex items-center gap-2 text-[20px] text-[#01F1E3]">
-                                44%
-                                <div className='h-[6px] rounded-sm w-full  bg-[#01F1E3]/50'>
-                                    <ProgressBar percentage={44} color=" bg-[#01F1E3]"/>
-                                </div>
-                            </div>
-                            <p className="  text-[14px]">Market cap vs volume</p>
-                        </div>
-                    </div>
-                    <div className="w-1/2 flex flex-col gap-2">
-                        <div className=" rounded-lg border border-[#2D2D51] px-[10px] py-3">
-                        <span className="flex items-center text-[20px] text-[#01F1E3]"><RiArrowUpSFill/> 6.76%</span> 
-                        <p className=" text-[14px]">24h%</p>
-                        </div>
-                        <div className=" rounded-lg border border-[#2D2D51] px-[10px] py-3">
-                            <span className="flex items-center text-[20px] text-[#01F1E3]"><RiArrowUpSFill/> 6.76%</span> 
-                            <p className=" text-[14px]">Circ supply vs max supply</p>
-                        </div>         
-                    </div>
-                </div>
-                </div>
+                {status === 'error' && <div className=" text-center">Error : Try again</div> }
+                {status === 'loading' && <h1 className=" text-center">Loading...</h1>}
+                {status === 'success' && 
+                  listofAssets.map(item=>{
+                    return (
+                        <CoinAsset key={item.id} asset={item}/>
+                    )
+                  })
+                }
             </div>
             
         </div>
     )
 }
+
+

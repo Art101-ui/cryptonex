@@ -20,4 +20,19 @@ export type FetchedDataProps={
     total_volumes:[]
   }
 
+  export type AssetsProp ={
+    id:string,
+    name:string,
+    symbol:string,
+    image:string,
+    price:number,
+    market_cap:number,
+    total_volume:number
+    circ_supply: number,
+    max_supply:number,
+    twenty_four:number,
+    date:string,
+    purchased:number,
+}
+
 export  type StatusProps = 'loading' | 'error' | 'success' | 'idle'
