@@ -25,6 +25,14 @@ export function convertToThousand(value:number){
   return Math.round(value/1000)
 }
 
+export function convertToBillion(value:number){
+  return (value/1000000000).toFixed(2)
+}
+
+export function convertToTrillion(value:number){
+  return (value/1000000000000).toFixed(2)
+}
+
 
 export function formatDate() {
   const months = [

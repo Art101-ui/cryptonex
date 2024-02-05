@@ -35,4 +35,20 @@ export type FetchedDataProps={
     purchased:number,
 }
 
+export type RequestDataType =
+| { status: 'idle' }
+| { status: 'loading' }
+| { status: 'success', data: any }
+| { status: 'error', error: any };
+
+export type Data = {
+  coins: number,
+  markets: number,
+  market_cap: number,
+  total_volume: number,
+  btc_percentage: number,
+  eth_percentage: number,
+  t4h_percentage: number
+}
+
 export  type StatusProps = 'loading' | 'error' | 'success' | 'idle'
