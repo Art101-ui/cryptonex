@@ -49,6 +49,17 @@ export function formatDate() {
   return formattedDate;
 }
 
+
+export function searchItems(items:any[], query:string) {
+  query = query.toLowerCase();
+ 
+  return items.filter(item =>
+    item.name.split(' ').some((word:string) =>
+      word.toLowerCase().startsWith(query)
+    )
+  );
+}
+
 // export function getReformedData(listOfArray:any[]){
 //    const newData = listOfArray.map(item=>{
 //     let newArr:[]=[]
