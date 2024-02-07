@@ -11,11 +11,9 @@ export default function Input({placeholder}:{placeholder:string}){
     const [dropdown, setDropDown] = useState(false)
     const [searchInput, setSearchInput] = useState('')
     const {searchCoins, loading, error} = useAppSelector((state)=> state.searchCoinReducer)
-    const dispatch = useDispatch<AppDispatch>();
+   
 
-    useEffect(() => {
-        dispatch(fetchSearchCoins());
-      }, [dispatch]);
+  
 
     const searchedResult = useMemo(()=>searchItems(searchCoins,searchInput),[searchCoins,searchInput])
  
