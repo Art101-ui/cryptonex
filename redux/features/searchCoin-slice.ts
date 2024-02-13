@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import axios from 'axios'
-import { useAppSelector } from '../store'
+
 
 type InitialState = {
     id:string,
@@ -18,13 +18,13 @@ type DataState = {
 
 
 
-const initialState:DataState = {
+const initialState: DataState = {
     searchCoins: [],
     error:null,
     loading:false
 }
 
-const SEARCH_COINS_URL = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en'
+const SEARCH_COINS_URL = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_COINGECKO_API_KEY}`
 
 export const fetchSearchCoins = createAsyncThunk('searchCoins/fetchSearchCoins', async () => {
     try {

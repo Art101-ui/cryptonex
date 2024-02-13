@@ -3,7 +3,7 @@ export type FetchedDataProps={
     symbol:string,
     name:string,
     image:string,
-    current_price:string,
+    current_price:number,
     one_hour:number,
     twenty_four:number,
     seven_day:number,

@@ -22,7 +22,7 @@ const links = [
 
 export default function BottomBar(){
     const pathname = usePathname()
-    console.log(pathname)
+
     return(
         <div className="flex items-center gap-8 h-full justify-between">
            <div className="flex items-center gap-2">

@@ -11,11 +11,9 @@ export default function Input({placeholder}:{placeholder:string}){
     const [dropdown, setDropDown] = useState(false)
     const [searchInput, setSearchInput] = useState('')
     const {searchCoins, loading, error} = useAppSelector((state)=> state.searchCoinReducer)
-   
+    
 
-  
-
-    const searchedResult = useMemo(()=>searchItems(searchCoins,searchInput),[searchCoins,searchInput])
+    const searchedResult = useMemo(()=>searchItems(searchCoins ?? [],searchInput),[searchCoins,searchInput])
  
     return (
         <div className="relative flex flex-1 flex-shrink-0">
@@ -57,7 +55,5 @@ export default function Input({placeholder}:{placeholder:string}){
 }
 
 
-function fetchUserData(): any {
-    throw new Error("Function not implemented.");
-}
+
 
