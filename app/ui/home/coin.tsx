@@ -6,8 +6,11 @@ import { FetchedDataProps } from '@/app/lib/type'
 import { ScriptableContext } from 'chart.js'
 import { reduceData, getDayNumber, getPercentage } from '@/app/lib/utilis'
 import  LineChart  from '@/app/ui/home/linechart'
+import Currency from '../currency'
+import { useState } from 'react'
 
 export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:number}){
+  const [usd,setUsd] = useState<number>(coinData.current_price)
     function reformDataLength(listOfArray:[]){
         let newArr:[]=[]
         if(listOfArray.length > 100 && listOfArray.length < 750){
@@ -51,7 +54,7 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
                 />
                 <span>{coinData.name}({coinData.symbol.toUpperCase()})</span>
             </li>
-            <li className='w-1/4 text-center'>${coinData.current_price}</li>
+            <li className='w-1/4 text-center'>$<Currency coin={(coinData.current_price).toFixed(4)}/></li>
             <li className="  text-[14px] flex items-center justify-center  w-1/5">
                 {coinData.one_hour > 0
                 ?<RiArrowUpSFill className = 'text-[#00B1A7]' />

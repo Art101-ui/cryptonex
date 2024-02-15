@@ -25,6 +25,14 @@ export function convertToThousand(value:number){
   return Math.round(value/1000)
 }
 
+export function convertToBillion(value:number){
+  return (value/1000000000).toFixed(2)
+}
+
+export function convertToTrillion(value:number){
+  return (value/1000000000000).toFixed(2)
+}
+
 
 export function formatDate() {
   const months = [
@@ -39,6 +47,17 @@ export function formatDate() {
 
   const formattedDate = `${month} ${day}, ${year}`;
   return formattedDate;
+}
+
+
+export function searchItems(items:any[], query:string) {
+  query = query.toLowerCase();
+ 
+  return items.filter(item =>
+    item.name.split(' ').some((word:string) =>
+      word.toLowerCase().startsWith(query)
+    )
+  );
 }
 
 // export function getReformedData(listOfArray:any[]){

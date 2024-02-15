@@ -300,9 +300,6 @@ export default function Home() {
     ]
   }
 
-  console.log('first chart',firstreformedPrice)
-  console.log('second chart',secondreformedPrice)
-  console.log('third chart',thirdreformedPrice)
 
 
   var volumeChart = {
