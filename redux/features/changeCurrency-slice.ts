@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
 type InitialState = {
@@ -14,7 +14,7 @@ const changeCurrencySlice = createSlice({
     name:'changeCurrency',
     initialState,
     reducers: {
-        changeCurrency:(state,action)=>{
+        changeCurrency:(state,action:PayloadAction<string>)=>{
             state.currency = action.payload
         },
     },

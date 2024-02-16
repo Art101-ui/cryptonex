@@ -7,13 +7,14 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { fetchCoins } from "@/redux/features/coinstable-slice";
+import DefaultSpinner from '../loadingSpinner'
 
 
 
 export default function CoinList(){
   const [data,setData] = useState<FetchedDataProps[]>([])
   const [dataStatus, setDataStatus] = useState()
-  const [page, setPage] = useState<number>(1)
+  const [page, setPage] = useState<number>(2)
   const [hasMore, sethasMore] = useState(true)
   const elementRef = useRef(null)
   const currency = useAppSelector(state=>state.changeCurrencyReducer.currency)
@@ -24,11 +25,6 @@ export default function CoinList(){
     useEffect(() => {
       setData(coins)
     }, [coins])
-
-    // useEffect(() => {
-    //   setPage(1)
-    // }, [currency])
-    
 
     
     useEffect(() => {
@@ -115,7 +111,7 @@ export default function CoinList(){
                 )
             })
          }
-         {hasMore && <div ref={elementRef}>Loading...</div>}
+         {hasMore && <div ref={elementRef} className="flex justify-center items-center"><DefaultSpinner/></div>}
         </div>
       )
 }
