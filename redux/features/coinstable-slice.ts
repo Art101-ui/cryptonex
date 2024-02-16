@@ -72,12 +72,13 @@ const coinstableSlice = createSlice({
             .addCase(fetchCoins.fulfilled, (state, action)=>{
                 const {currency,page} = action.meta.arg
 
-                state.status = 'success' 
+               
                 if(currency && page==1){
                     state.coins = action.payload
                 }else if(page! > 1){
                     state.coins = state.coins.concat(action.payload);
-                }          
+                } 
+                state.status = 'success'          
             })
             .addCase(fetchCoins.rejected, (state,action)=>{
                 state.status = 'error'

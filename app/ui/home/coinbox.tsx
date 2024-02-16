@@ -3,6 +3,7 @@ import bitcoin from '@/public/bitcoin.png'
 import { RiArrowUpSFill, RiArrowDownSFill } from "react-icons/ri"
 import clsx from "clsx"
 import { MouseEventHandler } from "react"
+import { FetchedDataProps } from "@/app/lib/type"
 
 type CoinListProp ={
   id: string;
@@ -11,7 +12,7 @@ type CoinListProp ={
   image:string,
   percentage:number
 }
-export default function CoinBox({coin,onSelect,selectedIds}:{coin:CoinListProp,onSelect:(id: string)=> void,selectedIds:string[]}){
+export default function CoinBox({coin,onSelect,selectedIds}:{coin:FetchedDataProps,onSelect:(id: string)=> void,selectedIds:string[]}){
     return(
         <div onClick={()=>onSelect(coin.id)} className={clsx(
           "flex items-center cursor-pointer w-[220px] h-[78px] rounded-md p-3",
@@ -27,12 +28,12 @@ export default function CoinBox({coin,onSelect,selectedIds}:{coin:CoinListProp,o
               />
             <div className=''>
               <h2 className="mb-2 text-[16px]">{coin.name}</h2>
-              <p className="flex gap-2 text-[14px]">${Math.abs(coin.price).toFixed(2)}<span className="flex items-center">
-                { coin.price < 0
+              <p className="flex gap-2 text-[14px]">${Math.abs(coin.current_price).toFixed(2)}<span className="flex items-center">
+                { coin.current_price < 0
                  ? <RiArrowUpSFill className = 'text-[#01F1E3]' />
                  : <RiArrowDownSFill className= ' text-[#FE2264]'/>}
                 
-                {coin.percentage.toFixed(2)}%</span>
+                {coin.twenty_four.toFixed(2)}%</span>
               </p>
             </div>
           </div>

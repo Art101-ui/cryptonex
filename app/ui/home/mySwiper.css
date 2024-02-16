@@ -1,7 +1,7 @@
 /* MySwiper.css */
 .my-swiper {
     position: relative;
-    
+    overflow-x: scroll;
   }
   
   .swiper-button-prev, .swiper-button-next {

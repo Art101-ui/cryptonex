@@ -14,6 +14,11 @@ export type FetchedDataProps={
     chartData:[]
   }
 
+ export type RequestDataProps ={
+    id: string,
+    data:any
+  }
+
  export type ChartDataProps={
     prices:[],
     market_caps:[],
