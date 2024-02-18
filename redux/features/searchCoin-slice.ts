@@ -1,17 +1,10 @@
+import { SearchCoinProps } from '@/app/lib/type'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import axios from 'axios'
 
 
-type InitialState = {
-    id:string,
-    symbol:string,
-    name:string,
-    image:string,
-    current_price:number
-}
-
 type DataState = {
-    searchCoins: InitialState[] | []; // Change 'any' to the specific type of your data if known
+    searchCoins: SearchCoinProps[] |  []; // Change 'any' to the specific type of your data if known
     loading: boolean;
     error: any | null; // Change 'string' to the specific type of your error if known
   }
@@ -29,13 +22,20 @@ const SEARCH_COINS_URL = `https://api.coingecko.com/api/v3/coins/markets?vs_curr
 export const fetchSearchCoins = createAsyncThunk('searchCoins/fetchSearchCoins', async () => {
     try {
         const response = await axios.get(SEARCH_COINS_URL);
-        const data = response.data.map((item :InitialState) =>{
+        const data = response.data.map((item :any) =>{
             return {
                 id: item.id,
                 symbol:item.symbol,
                 name: item.name,
                 image: item.image,
                 current_price: item.current_price,
+                market_cap: item.market_cap,
+                volume: item.total_volume,
+                circulating_supply: item.circulating_supply,
+                total_supply: item.total_supply,
+                twenty_four: item.price_change_percentage_24h, 
+                date:'',
+                purchased:''              
             }
         })
         return data;
