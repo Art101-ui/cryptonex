@@ -3,53 +3,53 @@
 import { useState, useEffect } from "react"
 import Modal from "@/app/ui/portfolio/modal"
 import axios from "axios"
-import { StatusProps, AssetsProp } from "@/app/lib/type"
+import { SearchCoinProps, StatusProps } from "@/app/lib/type"
 import CoinAsset from "@/app/ui/portfolio/coinasset"
+import { useAppSelector } from "@/redux/store"
+
+// type SearchCoinProps = {
+//   id:string,
+//   symbol:string,
+//   name:string,
+//   image:string,
+//   current_price:number,
+//   market_cap:number,
+//   total_volume:number,
+//   circulating_supply:number,
+//   max_supply:number,
+//   price_change_percentage_24h:number
+// }
 
 
 
 export default function Portfolio(){
-    
+    const storedlist = typeof localStorage!== 'undefined'? (localStorage.getItem('listofAssets') ? JSON.parse(localStorage.getItem('listofAssets') as string) : []):[];
     const [modal,setModal] = useState(false)
     const [status, setStatus] = useState<StatusProps>('idle')
-    const [listofAssets, setListOfAssets] = useState<AssetsProp[]>([]);
+    const [listofAssets, setListOfAssets] = useState<SearchCoinProps[]>(storedlist);
+
+    const {searchCoins, loading, error} = useAppSelector((state)=> state.searchCoinReducer)
     
 
+    function handleAddAssets(id:string,amount:string,date:string,){
+      const selectedCoin = searchCoins.find(item=>item.id===id) as SearchCoinProps ;
+       setListOfAssets([...listofAssets,{...selectedCoin,purchased:amount,date:date}])
+    }
+
+    console.log(listofAssets)
+    console.log(searchCoins)
     
+      // Save state to local storage when it changes
+  useEffect(() => {
+    localStorage.setItem('listofAssets', JSON.stringify(listofAssets));
+  }, [listofAssets]);
 
-    async function getHistoryData(id:string) {
-        try {
-          setStatus('loading')
-          const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/history?date=03-01-2024`)
-          setListOfAssets(prev=>
-            [...prev,  
-            {
-              id:response.data.id,
-              name:response.data.name,
-              symbol:response.data.symbol,
-              image: response.data.image.thumb,
-              price: response.data.market_data.current_price.usd,
-              market_cap:response.data.market_data.market_cap.usd,
-              total_volume:response.data.market_data.total_volume.usd,
-              circ_supply: 20,
-              max_supply:80,
-              twenty_four:79,
-              date:'3/23/2023',
-              purchased:9,
-            }
-            ]
-            ) 
-            setStatus('success')
-        } catch (error) {
-            console.log(error)
-            setStatus('error')
-        }
-        
-    }
+ 
+   function handleDeleteAsset(id:string){
+    setListOfAssets(listofAssets.filter(item=>item.id !== id))
+   }
 
-    async function handleAddAssets(id:string){
-       await getHistoryData(id)
-    }
+    
 
     return (
         <div>
@@ -69,10 +69,10 @@ export default function Portfolio(){
                 </div>
                 {status === 'error' && <div className=" text-center">Error : Try again</div> }
                 {status === 'loading' && <h1 className=" text-center">Loading...</h1>}
-                {status === 'success' && 
+                { 
                   listofAssets.map(item=>{
                     return (
-                        <CoinAsset key={item.id} asset={item}/>
+                        <CoinAsset key={item.id} onDeleteAsset={handleDeleteAsset} asset={item}/>
                     )
                   })
                 }

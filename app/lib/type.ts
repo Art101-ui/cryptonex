@@ -25,19 +25,19 @@ export type FetchedDataProps={
     total_volumes:[]
   }
 
-  export type AssetsProp ={
-    id:string,
+  export type SearchCoinProps ={
+    id:string ,
     name:string,
     symbol:string,
     image:string,
-    price:number,
+    current_price:number,
     market_cap:number,
-    total_volume:number
-    circ_supply: number,
-    max_supply:number,
+    volume:number
+    circulating_supply: number,
+    total_supply:number,
     twenty_four:number,
     date:string,
-    purchased:number,
+    purchased:string,
 }
 
 export type RequestDataType =
