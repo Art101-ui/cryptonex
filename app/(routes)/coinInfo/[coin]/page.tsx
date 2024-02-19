@@ -1,16 +1,17 @@
 'use client'
 import Image from "next/image"
 import bitcoin from '@/public/bitcoin.png'
-import { IoMdArrowDropdown } from "react-icons/io";
+import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import { FaPlusCircle } from "react-icons/fa";
 import { CategoryScale, ScriptableContext } from 'chart.js';
 import Chart from "chart.js/auto";
-import { reduceData, getDayNumber, changeDate } from "@/app/lib/utilis";
+import { reduceData, getDayNumber, changeDate, convertToTrillion, convertToBillion, convertToMillion } from "@/app/lib/utilis";
 import PriceChart from "@/app/ui/home/pricechart";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import LineChart from "@/app/ui/home/linechart";
+import clsx from "clsx";
 
 
 Chart.register(CategoryScale)
@@ -159,10 +160,18 @@ const coinItem = requestState.status === 'success' ? requestState.data : null
                         />
                         <span className=" text-[28px]">{coinItem?.name}</span> 
                     </div>
-                    <a href="https://www.bitcoin.org/" target="_blank">{coinItem?.link}</a>
-                    <h1 className=" my-6 flex items-center text-[40px]">$41,625.34 <span className=" ml-3 flex items-center text-[20px]"><IoMdArrowDropdown/>{coinItem?.twenty_four_percentage}%</span></h1>
-                    <hr />
-                    <div className=" my-4 flex items-center justify-between">
+                    <a className=" underline" href={coinItem?.link} target="_blank">Official Website</a>
+                    <h1 className=" my-9 flex items-center justify-between text-[40px]">${coinItem?.price}<span className={
+                      clsx(
+                      " flex items-center text-[20px]",
+                      {' text-[#00B1A7]' :coinItem?.twenty_four_percentage as number > 0 },
+                      {' text-[#FE2264]' :coinItem?.twenty_four_percentage as number < 0 }
+                      
+                      )}>
+                        {coinItem?.twenty_four_percentage as number < 0 ? <IoMdArrowDropdown/> :<IoMdArrowDropup/>}{Math.abs(coinItem?.twenty_four_percentage as number)}%
+                      </span></h1>
+                    <hr/>
+                    <div className="  my-8 flex items-center justify-between">
                         <div>
                             <h3 className=" text-[16px]">All time High:</h3>
                             <span className=" text-[14px]">{changeDate(coinItem?.ath_date as string)}</span>
@@ -186,20 +195,20 @@ const coinItem = requestState.status === 'success' ? requestState.data : null
                         {isLoading ? <div className='h-full'>Loading...</div>:<LineChart height="h-full" width=" w-full" chartData={priceChart}/> }       
                     </div>
 
-                    <div className=" h-1/2 rounded-md bg-white grid grid-cols-2  gap-3 p-3">
-                        <div className="flex flex-col items-center"><FaPlusCircle/>Market Cap <span className=" font-medium"> $749,864,345,056</span></div>
-                        <div className="flex flex-col items-center"><FaPlusCircle/>Volume 24h <span className=" font-medium">$749,864,345,056</span></div>
-                        <div className="flex flex-col items-center"><FaPlusCircle/>Volume / Market <span className=" font-medium">$749,864,345,056</span></div>
-                        <div className="flex flex-col items-center"><FaPlusCircle/>Total Volume <span className=" font-medium">$749,864,345,056</span></div>
-                        <div className="flex flex-col items-center"><FaPlusCircle/>Circulating Supply <span className=" font-medium">$749,864,345,056</span></div>
-                        <div className="flex flex-col items-center"><FaPlusCircle/>Max Supply <span className=" font-medium">$749,864,345,056</span></div>
+                    <div className=" h-1/2 rounded-md bg-white grid grid-cols-2  gap-3 p-3 text-[14px]">
+                        <div className="flex flex-col items-center"><FaPlusCircle/>MARKET CAP <span className=" font-medium">USD {convertToTrillion(coinItem?.market_cap as number)}T</span></div>
+                        <div className="flex flex-col items-center"><FaPlusCircle/>FULLY DILUTED VALUATION <span className=" font-medium">USD {convertToTrillion(coinItem?.fdl as number)}T</span></div>
+                        <div className="flex flex-col items-center"><FaPlusCircle/>VOLUME/MARKET <span className=" font-medium">USD {(coinItem?.volume as number/(coinItem?.market_cap as number)).toFixed(3)}B</span></div>
+                        <div className="flex flex-col items-center"><FaPlusCircle/>TOTAL VOLUME(24H) <span className=" font-medium">USD {(convertToBillion(coinItem?.volume as number))}</span></div>
+                        <div className="flex flex-col items-center"><FaPlusCircle/>CIRCULATING SUPPLY <span className=" font-medium">{convertToMillion(coinItem?.circulating_supply as number)}M BTC</span></div>
+                        <div className="flex flex-col items-center"><FaPlusCircle/>MAX SUPPLY <span className=" font-medium">{convertToMillion(coinItem?.max_supply as number)}M BTC</span></div>
                     </div>
                 </div>
             </div>
 
             <div className="w-full rounded-md bg-white p-3">
                 <h1 className=" text-[24px] mb-3">About</h1>
-                <div dangerouslySetInnerHTML={{ __html: coinItem?.description as string }} />
+                <div className=" text-[14px]" dangerouslySetInnerHTML={{ __html: coinItem?.description as string }} />
             </div>
 
         </div>

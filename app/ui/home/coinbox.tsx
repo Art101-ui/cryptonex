@@ -29,11 +29,11 @@ export default function CoinBox({coin,onSelect,selectedIds}:{coin:FetchedDataPro
             <div className=''>
               <h2 className="mb-2 text-[16px]">{coin.name}</h2>
               <p className="flex gap-2 text-[14px]">${Math.abs(coin.current_price).toFixed(2)}<span className="flex items-center">
-                { coin.current_price < 0
+                { coin.current_price > 0
                  ? <RiArrowUpSFill className = 'text-[#01F1E3]' />
                  : <RiArrowDownSFill className= ' text-[#FE2264]'/>}
                 
-                {coin.twenty_four.toFixed(2)}%</span>
+                {Math.abs(coin.twenty_four).toFixed(2)}%</span>
               </p>
             </div>
           </div>
