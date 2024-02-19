@@ -8,7 +8,6 @@ import { Line } from "react-chartjs-2";
 Chart.register(CategoryScale)
 function PriceChart({showHeading, selectedIds, chartData,height }:{showHeading?:boolean,chartData:RequestDataProps[], height:string, selectedIds:string[]}) {
    
-  console.log('ChartData',chartData)
   const prices = chartData.map(item=>{
     let newArr:[]=[]
     if(item.data.prices.length > 100 && item.data.prices.length < 750){
@@ -36,7 +35,7 @@ function PriceChart({showHeading, selectedIds, chartData,height }:{showHeading?:
           labels: firstreformedPrice.map((data) => data.time), 
           datasets: [
             {
-              label: selectedIds[0].charAt(0).toUpperCase() + selectedIds[0].slice(1),
+              label: selectedIds[0] ? selectedIds[0].charAt(0).toUpperCase() + selectedIds[0].slice(1) : '',
               data: firstreformedPrice.map((data) => data.value),
               backgroundColor: (context: ScriptableContext<"line">) => {
                 const ctx = context.chart.ctx;

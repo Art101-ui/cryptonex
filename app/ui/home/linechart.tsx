@@ -2,9 +2,9 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 
 
-function LineChart({ chartData }:{chartData:any}) {
+function LineChart({ chartData, width,height }:{chartData:any,width:string,height:string}) {
   return (
-    <div className="chart-container w-[120px] h-[37px] ">
+    <div className={width +' '+ height}>
       <Line
         data={chartData}
         options={{

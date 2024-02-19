@@ -25,6 +25,10 @@ export function convertToThousand(value:number){
   return Math.round(value/1000)
 }
 
+export function convertToMillion(value:number){
+  return Math.round(value/1000000)
+}
+
 export function convertToBillion(value:number){
   return (value/1000000000).toFixed(2)
 }
@@ -60,18 +64,21 @@ export function searchItems(items:any[], query:string) {
   );
 }
 
-// export function getReformedData(listOfArray:any[]){
-//    const newData = listOfArray.map(item=>{
-//     let newArr:[]=[]
-//     if(listOfArray.length > 100 && listOfArray.length < 750){
-//       newArr = reduceData(listOfArray,20)
-//     }else if(listOfArray.length <= 2000 ){
-//         newArr = reduceData(listOfArray,80)
-//     }else if(listOfArray.length <= 4000 ){
-//         newArr = reduceData(listOfArray,200)
-//     }
-//      return {time:item.prices[0],value:item.prices[1]}
-//    })
-//    return newData
-// }
+export function changeDate(dateString: string): string {
+  // Create a new Date object from the provided date string
+  const date = new Date(dateString);
+
+  // Define options for formatting the date
+  const options: Intl.DateTimeFormatOptions = {
+      weekday: 'short', // Abbreviated weekday name (e.g., "Wed")
+      month: 'short', // Abbreviated month name (e.g., "Nov")
+      day: '2-digit', // Two-digit day of the month (e.g., "10")
+      year: 'numeric' // Full numeric representation of the year (e.g., "2021")
+  };
+
+  // Format the date using the specified options
+  const formattedDate = date.toLocaleDateString('en-US', options);
+
+  return formattedDate;
+}
   
