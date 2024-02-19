@@ -175,7 +175,7 @@ export default function Converter(){
 
           <div className=" w-full flex flex-col justify-center  h-[290px] p-6 bg-white mb-4 rounded-md">
             <h1 className=' text-xl'>Bitcoin (BTC) to Ethereum (ETH)</h1>
-            {isLoading ? <div className='h-full'>Loading...</div>:<PriceChart chartData={priceChart} height=' h-full'/> }
+            {/* {isLoading ? <div className='h-full'>Loading...</div>:<PriceChart chartData={priceChart} height=' h-full'/> } */}
           </div>
 
           <div className=" bg-[#CCCCFA] h-[42px] w-[490px] p-[2px]  gap-2 rounded-md flex">

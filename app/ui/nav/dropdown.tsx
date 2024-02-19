@@ -56,7 +56,7 @@ export default function DropDown(){
                 {dropdown ? <IoIosArrowUp/> : <IoIosArrowDown/> }
             </div>
              {dropdown &&
-               <ul className="p-3 shadow-lg bg-[#EBEBFD] z-20 rounded">
+               <ul className=" shadow-lg bg-[#EBEBFD] z-20 rounded">
                   {
                     menulist.map((item)=>{
                       return (
@@ -67,7 +67,7 @@ export default function DropDown(){
                           setDropdown(false)
                           setSelectedId(item.id)
                         }}
-                          className="flex items-center gap-1 hover:text-yellow-50 cursor-pointer ">
+                          className="flex items-center justify-center gap-1 p-1 hover:bg-[#6161D6] hover:text-white cursor-pointer ">
                           {item.icon}
                           <span>{item.currency}</span>
                       </li>)
