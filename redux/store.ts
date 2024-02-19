@@ -3,6 +3,7 @@ import searchCoinReducer from './features/searchCoin-slice';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import changeCurrencyReducer from './features/changeCurrency-slice';
 import coinstableReducer from './features/coinstable-slice';
+import mainCoinChartReducer from './features/mainCoinChart-slice'
 
 
 export const store = configureStore({
@@ -10,7 +11,7 @@ export const store = configureStore({
         searchCoinReducer,
         changeCurrencyReducer,
         coinstableReducer,
-        
+        mainCoinChartReducer
     }
 })
 

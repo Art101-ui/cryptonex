@@ -20,7 +20,7 @@ export default function CoinList(){
   const currency = useAppSelector(state=>state.changeCurrencyReducer.currency)
   
   const {coins, status} = useAppSelector((state)=> state.coinstableReducer);
-    const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
       setData(coins)
@@ -105,7 +105,7 @@ export default function CoinList(){
          {
             data.map((item,index)=>{
                 return(
-                   <Link key={item.id} href={`/coinInfo/${item.name}`}>
+                   <Link key={item.id} href={`/coinInfo/${item.name.toLowerCase()}`}>
                      <Coin  coinData={item} index={index+1}/>              
                    </Link>
                 )

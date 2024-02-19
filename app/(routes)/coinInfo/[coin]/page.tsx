@@ -5,20 +5,38 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { FaPlusCircle } from "react-icons/fa";
 import { CategoryScale, ScriptableContext } from 'chart.js';
 import Chart from "chart.js/auto";
-import { reduceData, getDayNumber } from "@/app/lib/utilis";
+import { reduceData, getDayNumber, changeDate } from "@/app/lib/utilis";
 import PriceChart from "@/app/ui/home/pricechart";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import LineChart from "@/app/ui/home/linechart";
+
 
 Chart.register(CategoryScale)
 
 
 type FetchedDataProps={
-    prices:[],
-    market_caps:[],
-    total_volumes:[]
-  }
+  id: string,
+  symbol: string,
+  name: string,
+  description:string,
+  link: string,
+  image: string,
+  price: number,
+  ath: number,
+  ath_date: string,
+  atl: number,
+  atl_date: string,
+  market_cap: number,
+  fdl: number,
+  volume: number,
+  twenty_four_percentage: number,
+  total_supply: number,
+  max_supply: number,
+  circulating_supply: number,
+  chartData: []
+}
 
 type RequestStateProps =
   | { status: 'idle' }
@@ -30,25 +48,55 @@ export default function CoinInfo(){
     const [requestState,setRequestedState] = useState<RequestStateProps>({ status: 'idle' })
 
     const pathname = usePathname()
-    const coin = pathname.split('/')[2].toLowerCase()
+    const coin = pathname.split('/')[2]
 
 
 
 useEffect(() => {
+  const abortController = new AbortController()
+  const signal  = abortController.signal
   setRequestedState({status:'loading'})
   async function getData(){
     try {
-      const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=7`)
+      const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${coin}?localization=false&tickers=false&market_data=true&community_data=true&developer_data=false&sparkline=true`,{signal})
       const data = await response.data
       console.log(data)
       
-      setRequestedState({ status: 'success', data: data })
+      setRequestedState(
+        { 
+          status: 'success',
+          data: {
+            id: data.id,
+            symbol: data.symbol,
+            name: data.name,
+            description:data.description.en,
+            link: data.links.homepage[0],
+            image: data.image.large,
+            price: data.market_data.current_price.usd,
+            ath: data.market_data.ath.usd,
+            ath_date: data.market_data.ath_date.usd,
+            atl: data.market_data.atl.usd,
+            atl_date: data.market_data.atl_date.usd,
+            market_cap: data.market_data.market_cap.usd,
+            fdl:data.market_data.fully_diluted_valuation.usd,
+            volume: data.market_data.total_volume.usd,
+            twenty_four_percentage: data.market_data.price_change_percentage_24h,
+            total_supply: data.market_data.total_supply,
+            max_supply: data.market_data.max_supply,
+            circulating_supply: data.market_data.circulating_supply,
+            chartData: data.market_data.sparkline_7d.price
+          } 
+        }
+        
+      )
     } catch (error:any) {
       console.log(error)
       setRequestedState({ status: 'error', error: error })
     }
   }
   getData()
+
+  return ()=>abortController.abort()
 }, [])
 
 
@@ -64,19 +112,19 @@ function reformDataLength(listOfArray:[]){
   }
   return newArr
 }
-
-var prices = requestState.status==='success' ? reformDataLength(requestState.data.prices) : []
+// console.log(requestState.status==='success' && requestState.data.market_data.sparkline_7d.prices)
+var prices = requestState.status==='success' ? reformDataLength(requestState.data.chartData) : []
 
 const reformedPrices = prices.map((item)=>{
   return {time:getDayNumber(item[0]), value:item[1]}
 }) 
 
 var priceChart = {
-  labels: reformedPrices.map((data) => data.time), 
+  labels: Array(prices.length).fill(null).map((item,index)=>++index), 
   datasets: [
     {
       label: coin,
-      data: reformedPrices.map((data) => data.value),
+      data: prices.map((data) => data),
       backgroundColor: (context: ScriptableContext<"line">) => {
         const ctx = context.chart.ctx;
         const gradient = ctx.createLinearGradient(0, 0, 0, 250);
@@ -94,7 +142,7 @@ var priceChart = {
 }
 
 const isLoading = requestState.status === 'loading'
-
+const coinItem = requestState.status === 'success' ? requestState.data : null
 
 
     return(
@@ -104,30 +152,29 @@ const isLoading = requestState.status === 'loading'
                     <div className="flex items-center">
                         <Image 
                             className=" mr-2 object-contain"
-                            src= {bitcoin}
+                            src= {coinItem?.image as string}
                             alt="flash_circle"
                             width={30}
                             height={30}
                         />
-                        <span className=" text-[28px]">{coin}</span> 
+                        <span className=" text-[28px]">{coinItem?.name}</span> 
                     </div>
-                    <a href="https://www.bitcoin.org/" target="_blank">www.bitcoin.org</a>
-                    <h1 className=" my-6 flex items-center text-[40px]">$41,625.34 <span className=" ml-3 flex items-center text-[20px]"><IoMdArrowDropdown/>0.7%</span></h1>
-                    <h2 className=" mb-11 text-[20px]">Profit: $1,504</h2>
+                    <a href="https://www.bitcoin.org/" target="_blank">{coinItem?.link}</a>
+                    <h1 className=" my-6 flex items-center text-[40px]">$41,625.34 <span className=" ml-3 flex items-center text-[20px]"><IoMdArrowDropdown/>{coinItem?.twenty_four_percentage}%</span></h1>
                     <hr />
                     <div className=" my-4 flex items-center justify-between">
                         <div>
                             <h3 className=" text-[16px]">All time High:</h3>
-                            <span className=" text-[14px]">Tue, Jul 24, 2018</span>
+                            <span className=" text-[14px]">{changeDate(coinItem?.ath_date as string)}</span>
                         </div>
-                        <h1 className=" text-[20px]">$1.32</h1>
+                        <h1 className=" text-[20px]">${coinItem?.ath}</h1>
                     </div>
                     <div className="flex items-center justify-between">
                         <div>
                             <h3 className=" text-[16px]">All time High:</h3>
-                            <span className=" text-[14px]">Tue, Jul 24, 2018</span>
+                            <span className=" text-[14px]">{changeDate(coinItem?.atl_date as string)}</span>
                         </div>
-                        <h1 className=" text-[20px]">$1.32</h1>
+                        <h1 className=" text-[20px]">${coinItem?.atl}</h1>
                     </div>
                 </div>
 
@@ -136,7 +183,7 @@ const isLoading = requestState.status === 'loading'
 
                     <div className=" h-1/2 bg-white flex flex-col justify-center p-3 rounded-md">   
                         <h1 className=' text-xl'>Last 7d</h1>
-                        {isLoading ? <div className='h-full'>Loading...</div>:<PriceChart chartData={priceChart} height=' h-full'/> }       
+                        {isLoading ? <div className='h-full'>Loading...</div>:<LineChart height="h-full" width=" w-full" chartData={priceChart}/> }       
                     </div>
 
                     <div className=" h-1/2 rounded-md bg-white grid grid-cols-2  gap-3 p-3">
@@ -152,7 +199,7 @@ const isLoading = requestState.status === 'loading'
 
             <div className="w-full rounded-md bg-white p-3">
                 <h1 className=" text-[24px] mb-3">About</h1>
-                <p>Bitcoin is the first successful internet money based on peer-to-peer technology; whereby no central bank or authority is involved in the transaction and production of the Bitcoin currency. It was created by an anonymous individual/group under the name, Satoshi Nakamoto. The source code is available publicly as an open source project, anybody can look at it and be part of the developmental process. Bitcoin is changing the way we see money as we speak. The idea was to produce a means of exchange, independent of any central authority, that could be transferred electronically in a secure, verifiable and immutable way. It is a decentralized peer-to-peer internet currency making mobile payment easy, very low transaction fees, protects your identity, and it works anywhere all the time with no central authority and banks. Bitcoin is designed to have only 21 million BC ever created, thus making it a deflationary currency. Bitcoin uses the SHA-256 hashing algorithm with an average transaction confirmation time of 10 minutes. Miners today are mining Bitcoin using ASIC chip dedicated to only mining Bitcoin, and the hash rate has shot up to peta hashes. Being the first successful online cryptography currency, Bitcoin has inspired other alternative currencies such as Litecoin, Peercoin, Primecoin, and so on. The cryptocurrency then took off with the innovation of the turing-complete smart contract by Ethereum which led to the development of other amazing projects such as EOS, Tron, and even crypto-collectibles such as Cryptokitties.</p>
+                <div dangerouslySetInnerHTML={{ __html: coinItem?.description as string }} />
             </div>
 
         </div>

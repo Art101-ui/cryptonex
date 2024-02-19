@@ -17,8 +17,10 @@ import CoinListHeading from "@/app/ui/home/coinlistheading";
 import CoinList from "@/app/ui/home/coinlist";
 import { ChartDataProps, FetchedDataProps, StatusProps } from "@/app/lib/type";
 import { request } from "http";
-import { useAppSelector } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 import  DefaultSpinner  from "@/app/ui/loadingSpinner";
+import { useDispatch } from "react-redux";
+import { addSelectedId, fetchCoinChart, removeSelectedId } from "@/redux/features/mainCoinChart-slice";
 
 
 const timelineData= [
@@ -43,12 +45,16 @@ export default function Home() {
  const [requestData,setRequestedData] = useState<RequestDataProps[]>([])
  const [timeline,setTimeline] = useState<number | string>(1)
 
- const [selectedIds,setSelectedIds] = useState<string[]>(['bitcoin'])
+ const [selectedIds,setSelectedIds] = useState<string[]>([])
   
  const {coins,status} = useAppSelector((state)=> state.coinstableReducer);
  const [data,setData] = useState<FetchedDataProps[]>([]);
  const [datastatus,setDataStatus] = useState<'loading' | 'error' | 'idle' | 'success'>('idle');
  
+
+ const {chartCoins,selectedCoins} = useAppSelector((state)=> state.mainCoinChartReducer);
+ const dispatch = useDispatch<AppDispatch>()
+
  useEffect(() => {
    setData(coins)
  }, [coins])
@@ -56,28 +62,37 @@ export default function Home() {
  useEffect(() => {
    setDataStatus(status);
  }, [datastatus])
- 
+
  useEffect(() => {
-   const abortController = new AbortController();
-   const signal = abortController.signal;
-   async function getData(){  
-     if(selectedIds.length > 0){
-       const latestId = selectedIds[selectedIds.length-1]
-       if(!requestData.some(data=>data.id === latestId)){
-         try { 
-           const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${latestId}/market_chart?vs_currency=usd&days=1&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_COINGECKO_API_KEY}`,{signal})
-           setRequestedData((prev)=>[...prev,{id:latestId,data:response.data}])
-         } catch (error:any) {
-           console.log(error)           
-         }
-       }else{
-        return
-       }
-     }
-   }
-    getData()
-    return () => abortController.abort();
-  }, [selectedIds])
+   setRequestedData(chartCoins)
+ }, [chartCoins])
+
+ useEffect(() => {
+   setSelectedIds(selectedCoins)
+ }, [selectedCoins])
+ 
+ 
+//  useEffect(() => {
+//    const abortController = new AbortController();
+//    const signal = abortController.signal;
+//    async function getData(){  
+//      if(selectedIds.length > 0){
+//        const latestId = selectedIds[selectedIds.length-1]
+//        if(!requestData.some(data=>data.id === latestId)){
+//          try { 
+//            const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${latestId}/market_chart?vs_currency=usd&days=1&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_COINGECKO_API_KEY}`,{signal})
+//            setRequestedData((prev)=>[...prev,{id:latestId,data:response.data}])
+//          } catch (error:any) {
+//            console.log(error)           
+//          }
+//        }else{
+//         return
+//        }
+//      }
+//    }
+//     getData()
+//     return () => abortController.abort();
+//   }, [selectedIds])
 
 
 
@@ -105,17 +120,18 @@ export default function Home() {
 
   function handleSelect(id:string){ 
     if (selectedIds.some(selectedId=>selectedId===id)) {
-      setSelectedIds(selectedIds.filter(selectedId=>selectedId!==id))
-      setRequestedData(requestData.filter(item=>item.id !== id))
+      dispatch(removeSelectedId(id))
     }else{
       if(selectedIds.length<3){
-        setSelectedIds([...selectedIds,id])
+        dispatch(addSelectedId(id))
+        dispatch(fetchCoinChart(id));
       }else{
         return
       }
     }   
   }
 
+  console.log(selectedCoins)
   const isLoading = datastatus === 'loading'
 
   return (

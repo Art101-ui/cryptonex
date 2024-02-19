@@ -34,8 +34,8 @@ export default function CoinAsset({asset,onDeleteAsset}:CoinAssetProps){
             <p className=" text-[16px]"><span className="  font-bold">{asset.purchased}</span> Purchased in {asset.date}</p>
         </div>
         <div className=" flex flex-col w-2/3   px-4 py-4 bg-white gap-2 rounded-r-lg">
-            <div className="  w-full h-5  flex justify-end">
-               <MdDelete onClick={()=>{onDeleteAsset(asset.id)}} size={30} className=' h-full text-red-600 cursor-pointer' />
+            <div className="  w-full h-7  flex justify-end">
+               <MdDelete onClick={()=>{onDeleteAsset(asset.id)}} size={30} className=' hover:bg-red-300 rounded-full  h-full text-red-600 cursor-pointer' />
             </div>
             <div className=" flex w-full">
                 <div className=" w-1/2 flex flex-col gap-2">

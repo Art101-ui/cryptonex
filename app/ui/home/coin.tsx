@@ -101,7 +101,7 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
                 </div>
             </li>
             <li className=' w-1/3 flex justify-center '>
-                <LineChart chartData={priceChart}/>
+                <LineChart width=' w-[120px]' height=' h-[37px]' chartData={priceChart}/>
             </li>
         </ul>
     )
