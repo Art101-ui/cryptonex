@@ -5,26 +5,29 @@ import Image from "next/image"
 import { RiArrowUpSFill } from "react-icons/ri";
 import verticalSwitch from '@/public/verticalSwitch.png'
 import { CategoryScale, ScriptableContext } from 'chart.js';
-import { getDayNumber, reduceData } from '@/app/lib/utilis';
-import { useEffect, useState } from 'react';
+import { getDayNumber, reduceData, reformDataLength, searchItems } from '@/app/lib/utilis';
+import { SetStateAction, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import PriceChart from '@/app/ui/home/pricechart';
 import clsx from 'clsx';
 import Chart from "chart.js/auto";
 import { input } from '@material-tailwind/react';
+import { useAppSelector } from '@/redux/store';
+import { FetchedDataProps } from '@/app/lib/type';
+import LineChart from '@/app/ui/home/linechart';
 
 
 Chart.register(CategoryScale)
-type FetchedDataProps={
-    prices:[],
-    market_caps:[],
-    total_volumes:[]
-  }
+// type FetchedDataProps={
+//     prices:[],
+//     market_caps:[],
+//     total_volumes:[]
+//   }
 
 type RequestStateProps =
   | { status: 'idle' }
   | { status: 'loading' }
-  | { status: 'success', data: FetchedDataProps }
+  | { status: 'success', data: any }
   | { status: 'error', error: Error };
   
 const timelineData= [
@@ -38,43 +41,60 @@ const timelineData= [
 ]
 
 type ChildComponentProps =  {
+  selectedId?: string,
+  handleSelectedId:React.Dispatch<SetStateAction<string>>,
   value:number | string,
-  price:number,
-  coin:string,
+  coin: FetchedDataProps,
+  coins:FetchedDataProps[],
   onhandleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function Converter(){
-   
-    const [requestState,setRequestedState] = useState<RequestStateProps>({ status: 'idle' })
-      const [timeline,setTimeline] = useState<number | string>(1)
 
-      const [switchcoin, setSwitchCoin] = useState(true)
-
-      const [firstInput, setfirstInput] = useState<number | string>('')
-      const [secondInput, setsecondInput] = useState<number | string>('')
+    const [switchcoin, setSwitchCoin] = useState(true)
+    const [coinData,setCoinData] = useState<FetchedDataProps[] | []>([])
+    const [firstInput, setfirstInput] = useState<number | string>('')
+    const [secondInput, setsecondInput] = useState<number | string>('')
       
 
-      const bitcoinPrice = 42236;
-      const ethereumPrice = 2267.73
+      const {coins} = useAppSelector((state)=> state.coinstableReducer);
+      useEffect(() => {
+        setCoinData(coins)
+      }, [coins])
       
+
+      const [firstselectedId, setFirstSelectedId] = useState('bitcoin')
+      const [secondselectedId, setSecondSelectedId] = useState('ethereum')
+      const firstselectedItem = coinData.find(item=>item.id === firstselectedId) as FetchedDataProps
+      const secondselectedItem = coinData.find(item=>item.id === secondselectedId) as FetchedDataProps
+
 
       function handleFirstInput(e: React.ChangeEvent<HTMLInputElement>):void{
         const inputValue: string = e.target.value;
 
         // Check if the input is a valid number (you can add more validation if needed)
         const isValidNumber = /^\d*$/.test(inputValue);
-        const factor  = (bitcoinPrice/ethereumPrice)
+        const factor  = (firstselectedItem.current_price/secondselectedItem.current_price)
         // Update the state if it's a valid number or an empty string
         if (isValidNumber || inputValue === '') {
           setfirstInput(inputValue === '' ? '' : parseInt(inputValue, 10));
           setsecondInput(inputValue === '' ? '' : (parseFloat(inputValue)*factor).toFixed(2))
         }
       }
+      
+      useEffect(() => {
+        const factor = firstselectedItem && (firstselectedItem.current_price) / (secondselectedItem && (secondselectedItem.current_price));
+        setfirstInput(1)
+        setsecondInput(factor && factor.toFixed(2))
+      }, [firstselectedItem,secondselectedItem])
+      
+
+
+
       function handleSecondInput(e: React.ChangeEvent<HTMLInputElement>):void{
         const inputValue:string = e.target.value;
         const isValidNumber = /^\d*$/.test(inputValue)
-        const factor  = (ethereumPrice/bitcoinPrice)
+        const factor  = (secondselectedItem.current_price/firstselectedItem.current_price)
         if(isValidNumber || inputValue===''){
           setsecondInput(inputValue === '' ? '' : parseInt(inputValue,10))
           setfirstInput(inputValue === '' ? '' : (parseFloat(inputValue)*factor).toFixed(2))
@@ -83,48 +103,42 @@ export default function Converter(){
       
  
       
-  useEffect(() => {
-    setRequestedState({status:'loading'})
-    async function getData(){
-      try {
-        const response = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${timeline}`)
-        const data = await response.data
-        console.log(data)
-        setRequestedState({ status: 'success', data: data })
-      } catch (error:any) {
-        console.log(error)
-        setRequestedState({ status: 'error', error: error })
+ 
+
+  function checkForUndefined(firstPrice:[],secondPrice:[]){
+    let prices: number[]= [];
+    if (firstPrice && secondPrice && firstPrice.length === secondPrice.length) {
+      if(switchcoin){
+        prices = firstPrice.map((item, index) => {
+               return item / secondPrice[index];          
+       });
+      }else{
+        prices = secondPrice.map((item, index) => {
+          return item / firstPrice[index];          
+  });
       }
+    } else {
+        // Handle case where arrays are undefined or have different lengths
+        console.error('Arrays are undefined or have different lengths.');
     }
-    getData()
-  }, [timeline])
-
-  
-
-  function reformDataLength(listOfArray:[]){
-    let newArr:[]=[]
-    if(listOfArray.length > 100 && listOfArray.length < 750){
-      newArr = reduceData(listOfArray,20)
-    }else if(listOfArray.length <= 2000 ){
-        newArr = reduceData(listOfArray,80)
-    }else if(listOfArray.length <= 4000 ){
-        newArr = reduceData(listOfArray,200)
-    }
-    return newArr
+    return prices;
   }
-  
-  var prices = requestState.status==='success' ? reformDataLength(requestState.data.prices) : []
 
-  const reformedPrices = prices.map((item)=>{
-    return {time:getDayNumber(item[0]), value:item[1]}
-  }) 
+  
+  let reformedfirstPrice =firstselectedItem && reformDataLength(firstselectedItem.chartData)
+  let reformedSecondPrice =secondselectedItem && reformDataLength(secondselectedItem.chartData)
+  
+
+
+  var prices =  checkForUndefined(reformedfirstPrice,reformedSecondPrice);
+
   
   var priceChart = {
-    labels: reformedPrices.map((data) => data.time), 
+    labels: Array(prices.length).fill(null).map((i,index)=>++index), 
     datasets: [
       {
-        label: "Bitcoin",
-        data: reformedPrices.map((data) => data.value),
+        label: "",
+        data: prices.map((data) => data),
         backgroundColor: (context: ScriptableContext<"line">) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 250);
@@ -141,7 +155,6 @@ export default function Converter(){
     ]
   }
 
-  const isLoading = requestState.status === 'loading'
     return(
         <>
           <h1 className=" text-[#424286] text-[20px]">Online currency converter</h1>
@@ -151,12 +164,12 @@ export default function Converter(){
 
            {switchcoin ?
             <>
-                <ConverterCoin coin='Bitcoin' price={bitcoinPrice} value={firstInput} onhandleChange = {handleFirstInput}/>
-                <ConverterCoin coin='Ethereum' price={ethereumPrice} value={secondInput} onhandleChange = {handleSecondInput}/>
+                <ConverterCoin handleSelectedId={setFirstSelectedId} coins={coinData} coin={firstselectedItem}  value={firstInput} onhandleChange = {handleFirstInput}/>
+                <ConverterCoin handleSelectedId={setSecondSelectedId} coins={coinData} coin={secondselectedItem}  value={secondInput} onhandleChange = {handleSecondInput}/>
             </> :
             <>
-                <ConverterCoin coin='Ethereum' price={ethereumPrice} value={secondInput} onhandleChange = {handleSecondInput}/>
-                <ConverterCoin coin='Bitcoin' price={bitcoinPrice} value={firstInput} onhandleChange = {handleFirstInput}/>
+               <ConverterCoin handleSelectedId={setSecondSelectedId} coins={coinData} coin={secondselectedItem}  value={secondInput} onhandleChange = {handleSecondInput}/>
+               <ConverterCoin handleSelectedId={setFirstSelectedId} coins={coinData} coin={firstselectedItem}  value={firstInput} onhandleChange = {handleFirstInput}/>
             </>
             
             }
@@ -174,47 +187,60 @@ export default function Converter(){
           </div>
 
           <div className=" w-full flex flex-col justify-center  h-[290px] p-6 bg-white mb-4 rounded-md">
-            <h1 className=' text-xl'>Bitcoin (BTC) to Ethereum (ETH)</h1>
-            {/* {isLoading ? <div className='h-full'>Loading...</div>:<PriceChart chartData={priceChart} height=' h-full'/> } */}
+            <h1 className=' text-xl'>{firstselectedItem?.name +' - '+ firstselectedItem?.symbol?.toUpperCase()} to {secondselectedItem?.name +' - '+ secondselectedItem?.symbol?.toUpperCase()}</h1>
+            <LineChart chartData={priceChart} height=' h-full' width=' w-full'/> 
           </div>
-
-          <div className=" bg-[#CCCCFA] h-[42px] w-[490px] p-[2px]  gap-2 rounded-md flex">
-            {timelineData.map((item)=>{
-            return(
-                <div key={item.id} className={clsx(
-                "  px-5 py-2 text-[14px] grow flex items-center p-2 rounded-md cursor-pointer ",
-                {'bg-[#6161D6]' : timeline === item.days}
-                )}
-                onClick={()=>setTimeline(item.days)}
-                >
-                {item.value}</div>
-            )
-            })}
-         </div>
         </>
     )
 }
 
-function ConverterCoin({coin,price,value,onhandleChange}:ChildComponentProps){
-   
+function ConverterCoin({coins,handleSelectedId,coin,value,onhandleChange}:ChildComponentProps){
+  const [dropdown, setDropDown] = useState(false)
+
+  
   return(
-    <div className="bg-white  rounded-2xl p-6   w-1/2">
-              <div className='flex justify-between items-center'>
-                <div className='flex items-center gap-1'>
+    <div className="bg-white relative  rounded-2xl p-6   w-1/2">
+              <div className='flex justify-between w-full items-center'>
+                <div onClick={()=>setDropDown(prev=>!prev)} className='flex items-center gap-2 w-1/2 cursor-pointer'>
                     <Image 
                     className=" mr-1"
-                    src= {bitcoin}
+                    src= {coin?.image || ''}
                     alt="exchange"
                     width={20}
                     height={20}
                     />
-                    <p  className=' mr-1'>{coin}(BTC)</p>
-                    <RiArrowUpSFill/>
+                    {/* {coin?.name}({coin?.symbol.toUpperCase()}) */}
+                    <div className=' flex bg-slate-600  items-center'>
+
+                      <input readOnly  value={(coin?.name || '') +'-'+(coin?.symbol.toUpperCase() || '')}  className=' border-none  cursor-pointer w-[180px] outline-none focus:outline-none'/>
+                    </div>
                 </div>
-                <input placeholder='0' value={value} onChange={onhandleChange}  className=' remove-arrow border-none bg-transparent outline-none py-3 px-3 focus:outline-none text-right' type="number" />
+                <input placeholder='0' value={value ?? ''} onChange={onhandleChange}  className=' remove-arrow border-none  w-1/2  h-3 bg-transparent outline-none py-3 px-3 focus:outline-none text-right' type="number" />
               </div>
+              {dropdown &&
+                  <ul className=" p-1 absolute top-18 rounded max-h-[200px] overflow-y-auto w-[200px] shadow-lg bg-white">
+                    {coins.map(item=>{
+                        return (
+                            <li 
+                            onClick={()=>{
+                               
+                                setDropDown(false)
+                                handleSelectedId(item.id)}}  key={item.id} className=" flex items-center p-2 cursor-pointer hover:bg-slate-200">
+                                <Image 
+                                    className=" mr-2 object-contain"
+                                    src= {item.image}
+                                    alt={item.id}
+                                    width={25}
+                                    height={25}
+                                /> 
+                                {item.name}
+                            </li>
+                        )
+                    })}
+                  </ul>
+                }
               <hr />
-              <h3 className='py-1'>1 BTC = ${price}</h3>
+              <h3 className='py-1'>1 {coin?.symbol.toUpperCase()} = ${coin?.current_price}</h3>
     </div>
   )
 }

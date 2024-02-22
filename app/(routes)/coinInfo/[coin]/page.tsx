@@ -116,9 +116,6 @@ function reformDataLength(listOfArray:[]){
 // console.log(requestState.status==='success' && requestState.data.market_data.sparkline_7d.prices)
 var prices = requestState.status==='success' ? reformDataLength(requestState.data.chartData) : []
 
-const reformedPrices = prices.map((item)=>{
-  return {time:getDayNumber(item[0]), value:item[1]}
-}) 
 
 var priceChart = {
   labels: Array(prices.length).fill(null).map((item,index)=>++index), 

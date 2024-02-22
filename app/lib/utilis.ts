@@ -64,6 +64,20 @@ export function searchItems(items:any[], query:string) {
   );
 }
 
+export  function reformDataLength(listOfArray:[]){
+  let newArr:[]=[]
+  if(listOfArray.length > 100 && listOfArray.length < 240){
+    newArr = reduceData(listOfArray,5)
+  }else if(listOfArray.length > 240 && listOfArray.length < 750){
+    newArr = reduceData(listOfArray,20)
+  }else if(listOfArray.length <= 2000 ){
+      newArr = reduceData(listOfArray,80)
+  }else if(listOfArray.length <= 4000 ){
+      newArr = reduceData(listOfArray,200)
+  }
+  return newArr
+}
+
 export function changeDate(dateString: string): string {
   // Create a new Date object from the provided date string
   const date = new Date(dateString);

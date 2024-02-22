@@ -19,7 +19,7 @@ export default function CoinList(){
   const elementRef = useRef(null)
   const currency = useAppSelector(state=>state.changeCurrencyReducer.currency)
   
-  const {coins, status} = useAppSelector((state)=> state.coinstableReducer);
+  const {coins} = useAppSelector((state)=> state.coinstableReducer);
   const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => {
