@@ -12,6 +12,7 @@ interface CoinAssetProps {
     onDeleteAsset: (id: string)=> void
   }
 
+  
 export default function CoinAsset({asset,onDeleteAsset}:CoinAssetProps){
     const mc_tv = parseFloat(((asset.market_cap/asset.volume)).toFixed(2))
     const cs_ts = parseFloat(((asset.circulating_supply/asset.total_supply)).toFixed(2))

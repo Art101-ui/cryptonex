@@ -94,9 +94,6 @@ function PriceChart({showHeading, selectedIds, chartData,height }:{showHeading?:
     {id:2, color:'bg-[#fe2264b3]' ,coin: selectedIds[2]},
   ]
 
-  // let item = selectedIds.map(item=>{
-  //   return {id:0, color:'rgba(116, 116, 242, 0.7)', coin:item}
-  // })
 
   return (
     <div className={`chart-container w-full ${height}`}>

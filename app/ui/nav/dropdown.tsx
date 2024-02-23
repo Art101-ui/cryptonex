@@ -1,15 +1,14 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { IoIosArrowUp,IoIosArrowDown } from "react-icons/io";
 import { PiCurrencyDollarSimpleFill } from "react-icons/pi";
 import { MdEuro } from "react-icons/md";
 import { PiCurrencyGbp } from "react-icons/pi";
 import { changeCurrency } from "@/redux/features/changeCurrency-slice";
 import { useDispatch } from "react-redux";
-import { AppDispatch, store, useAppSelector } from "@/redux/store";
-import coinstableSlice, { fetchCoins,changePrice } from "@/redux/features/coinstable-slice";
-import axios from "axios";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { fetchCoins } from "@/redux/features/coinstable-slice";
 import { fetchSearchCoins } from "@/redux/features/searchCoin-slice";
 
 
@@ -21,12 +20,6 @@ type MenuList ={
     icon: any
 }
 
-type CurrencyData ={
-    currency:string,
-    value:number,
-    symbol?:string,
-    icon?: any
-}
 
 const menulist: MenuList[]=[
     {id:0, currency:'USD', symbol:'usd', icon: <PiCurrencyDollarSimpleFill/>},
@@ -41,7 +34,6 @@ export default function DropDown(){
   const [dropdown, setDropdown] = useState(false)
   const [selectedId, setSelectedId] = useState<number>(0)
   const dispatch = useDispatch<AppDispatch>()
-  const coin = useAppSelector(state=>state.changeCurrencyReducer.currency)
 
   
   

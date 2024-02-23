@@ -1,9 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import Image from "next/image";
-import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { fetchSearchCoins } from "@/redux/features/searchCoin-slice";
+import { useAppSelector } from "@/redux/store";
 import { searchItems } from "../lib/utilis";
 import Link from "next/link";
 

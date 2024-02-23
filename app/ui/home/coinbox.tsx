@@ -1,5 +1,4 @@
 import Image from "next/image"
-import bitcoin from '@/public/bitcoin.png'
 import { RiArrowUpSFill, RiArrowDownSFill } from "react-icons/ri"
 import clsx from "clsx"
 import { MouseEventHandler } from "react"
@@ -7,13 +6,7 @@ import { FetchedDataProps } from "@/app/lib/type"
 import { getCurrencySymbol } from "@/app/lib/utilis"
 import { useAppSelector } from "@/redux/store"
 
-type CoinListProp ={
-  id: string;
-  name:string,
-  price:number,
-  image:string,
-  percentage:number
-}
+
 export default function CoinBox({coin,onSelect,selectedIds}:{coin:FetchedDataProps,onSelect:(id: string)=> void,selectedIds:string[]}){
   const currency = useAppSelector(state=>state.changeCurrencyReducer.currency)
     return(
