@@ -1,5 +1,3 @@
-import { ChartDataProps, FetchedDataProps } from "./type";
-
 export function getDayNumber(timestamp:EpochTimeStamp) {
     const date = new Date(timestamp);
     return date.getDate();
@@ -64,6 +62,20 @@ export function searchItems(items:any[], query:string) {
   );
 }
 
+export  function reformDataLength(listOfArray:[]){
+  let newArr:[]=[]
+  if(listOfArray.length > 100 && listOfArray.length < 240){
+    newArr = reduceData(listOfArray,5)
+  }else if(listOfArray.length > 240 && listOfArray.length < 750){
+    newArr = reduceData(listOfArray,20)
+  }else if(listOfArray.length <= 2000 ){
+      newArr = reduceData(listOfArray,80)
+  }else if(listOfArray.length <= 4000 ){
+      newArr = reduceData(listOfArray,200)
+  }
+  return newArr
+}
+
 export function changeDate(dateString: string): string {
   // Create a new Date object from the provided date string
   const date = new Date(dateString);
@@ -82,3 +94,67 @@ export function changeDate(dateString: string): string {
   return formattedDate;
 }
   
+export function getCurrentDateTime(): string {
+  const now = new Date();
+
+  // Get the date components
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const year = now.getFullYear();
+
+  // Get the time components
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+
+  // Assemble the date and time in the desired format
+  const dateTime = `${month}/${day}/${year} ${hours}:${minutes}`;
+
+  return dateTime;
+}
+
+export function handleUndefinedForChart(firstPrice:[],secondPrice:[],switchcoin:boolean){
+  let prices: number[]= [];
+  if (firstPrice && secondPrice && firstPrice.length === secondPrice.length) {
+    if(switchcoin){
+      prices = firstPrice.map((item, index) => {
+             return item / secondPrice[index];          
+     });
+    }else{
+      prices = secondPrice.map((item, index) => {
+        return item / firstPrice[index];          
+});
+    }
+  } else {
+      // Handle case where arrays are undefined or have different lengths
+      console.error('Arrays are undefined or have different lengths.');
+  }
+  return prices;
+}
+
+export function handleUndefinedForValue(item:any){
+  if(item===undefined || item === null){
+   return ' '
+  }else{
+   return item;
+  }
+}
+
+export function getCurrencySymbol(currency:string,word?:boolean){
+  if(currency==='usd'){
+    if(word){
+      return 'USD'
+    }
+    return '$'
+  }else if(currency==='gbp'){
+    if(word){
+      return 'GBP'
+    }
+    return '£'
+  }else if(currency==='eur'){
+    if(word){
+      return 'EUR'
+    }
+    return '€'
+  }
+}
+

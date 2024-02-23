@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { fetchSearchCoins } from "@/redux/features/searchCoin-slice";
 import { searchItems } from "../lib/utilis";
+import Link from "next/link";
 
 
 export default function Input({placeholder}:{placeholder:string}){
@@ -34,18 +35,21 @@ export default function Input({placeholder}:{placeholder:string}){
                 if(loading) return <div>Loading...</div>
                 if(error) return <div>Error</div>
                 return (
-                    <li onClick={()=>{
-                        setDropDown(false)
-                        }}  key={item.id} className=" flex items-center p-2 cursor-pointer hover:bg-slate-200">
-                             <Image 
-                                className=" mr-2 object-contain"
-                                src= {item.image}
-                                alt={item.id}
-                                width={25}
-                                height={25}
-                              />
-                            {item.name}
-                    </li>
+                    <Link key={item.id} href={`/coinInfo/${item.name.toLowerCase()}`}>
+                        <li onClick={()=>{
+                            setDropDown(false)
+                            }} className=" flex items-center p-2 cursor-pointer hover:bg-slate-200">
+                                <Image 
+                                    className=" mr-2 object-contain"
+                                    src= {item.image}
+                                    alt={item.id}
+                                    width={25}
+                                    height={25}
+                                />
+                                {item.name}
+                        </li>
+                    
+                    </Link>
                 )
                 })}
             </ul>

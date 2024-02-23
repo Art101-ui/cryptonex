@@ -4,6 +4,8 @@ import { RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri"
 import ProgressBar from "@/app/ui/progressbar"
 import { SearchCoinProps } from "@/app/lib/type"
 import clsx from "clsx"
+import { getCurrencySymbol } from "@/app/lib/utilis";
+import { useAppSelector } from "@/redux/store";
 
 interface CoinAssetProps {
     asset: SearchCoinProps;
@@ -13,7 +15,8 @@ interface CoinAssetProps {
 export default function CoinAsset({asset,onDeleteAsset}:CoinAssetProps){
     const mc_tv = parseFloat(((asset.market_cap/asset.volume)).toFixed(2))
     const cs_ts = parseFloat(((asset.circulating_supply/asset.total_supply)).toFixed(2))
-    console.log(asset.purchased)
+    
+    const currency = useAppSelector(state=>state.changeCurrencyReducer.currency)
     return(
         <div className="flex w-full mb-5">
         <div className="bg-[#cecef1] rounded-l-lg w-1/3 p-4">
@@ -29,7 +32,7 @@ export default function CoinAsset({asset,onDeleteAsset}:CoinAssetProps){
             </div>
             <h3 className=" text-[16px] mb-1">Total Value</h3>
             <div className=" mb-2">
-                <span className=" mr-2 text-[28px]">${asset.current_price}</span> 
+                <span className=" mr-2 text-[28px]">{getCurrencySymbol(currency)}{asset.current_price}</span> 
             </div>
             <p className=" text-[16px]"><span className="  font-bold">{asset.purchased}</span> Purchased in {asset.date}</p>
         </div>
@@ -40,7 +43,7 @@ export default function CoinAsset({asset,onDeleteAsset}:CoinAssetProps){
             <div className=" flex w-full">
                 <div className=" w-1/2 flex flex-col gap-2">
                     <div className=" rounded-lg  px-[10px] py-2">
-                        <h1 className=" text-[20px]">${(asset.current_price).toFixed(2)}</h1> 
+                        <h1 className=" text-[20px]">{getCurrencySymbol(currency)}{(asset.current_price).toFixed(2)}</h1> 
                         <p className=" text-[14px]">Current price</p>
                     </div>
                     <div className=" rounded-lg  px-[10px] py-2">
