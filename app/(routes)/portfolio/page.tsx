@@ -2,23 +2,10 @@
 
 import { useState, useEffect } from "react"
 import Modal from "@/app/ui/portfolio/modal"
-import axios from "axios"
 import { SearchCoinProps, StatusProps } from "@/app/lib/type"
 import CoinAsset from "@/app/ui/portfolio/coinasset"
 import { useAppSelector } from "@/redux/store"
 
-// type SearchCoinProps = {
-//   id:string,
-//   symbol:string,
-//   name:string,
-//   image:string,
-//   current_price:number,
-//   market_cap:number,
-//   total_volume:number,
-//   circulating_supply:number,
-//   max_supply:number,
-//   price_change_percentage_24h:number
-// }
 
 
 
@@ -27,12 +14,16 @@ export default function Portfolio(){
     const [modal,setModal] = useState(false)
     const [status, setStatus] = useState<StatusProps>('idle')
     const [listofAssets, setListOfAssets] = useState<SearchCoinProps[]>(storedlist);
+    const [coinData,setCoinData] = useState<SearchCoinProps[] | []>([])
 
     const {searchCoins, loading, error} = useAppSelector((state)=> state.searchCoinReducer)
     
+    useEffect(() => {
+      setCoinData(searchCoins)
+    }, [searchCoins]);
 
     function handleAddAssets(id:string,amount:string,date:string,){
-      const selectedCoin = searchCoins.find(item=>item.id===id) as SearchCoinProps ;
+      const selectedCoin = coinData.find(item=>item.id===id) as SearchCoinProps ;
        setListOfAssets([...listofAssets,{...selectedCoin,purchased:amount,date:date}])
     }
 

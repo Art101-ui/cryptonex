@@ -41,14 +41,3 @@ export default function Layout({children}:{children:React.ReactNode}){
     )
 }
 
-
-// function Button({children, page}:LinkProps){
-//    return(
-//      <div className={clsx("flex justify-center items-center hover:bg-blue-700 w-1/2 h-full font-bold py-3 px-4 rounded-md",
-//        {'bg-[#6161D6] text-white' : page ==='coin'},
-//        {' text-[#6161D6]' : page ==='converter'}
-//      )}>
-//         {children}
-//      </div>
-//    )
-// }

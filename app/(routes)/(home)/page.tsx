@@ -41,19 +41,19 @@ type RequestDataProps ={
 }
 
 export default function Home() {
+  const {coins,status} = useAppSelector((state)=> state.coinstableReducer);
+  const {chartCoins,selectedCoins} = useAppSelector((state)=> state.mainCoinChartReducer);
+  const dispatch = useDispatch<AppDispatch>()
 
  const [requestData,setRequestedData] = useState<RequestDataProps[]>([])
  const [timeline,setTimeline] = useState<number | string>(1)
 
  const [selectedIds,setSelectedIds] = useState<string[]>([])
   
- const {coins,status} = useAppSelector((state)=> state.coinstableReducer);
  const [data,setData] = useState<FetchedDataProps[]>([]);
  const [datastatus,setDataStatus] = useState<'loading' | 'error' | 'idle' | 'success'>('idle');
  
 
- const {chartCoins,selectedCoins} = useAppSelector((state)=> state.mainCoinChartReducer);
- const dispatch = useDispatch<AppDispatch>()
 
  useEffect(() => {
    setData(coins)
@@ -71,30 +71,6 @@ export default function Home() {
    setSelectedIds(selectedCoins)
  }, [selectedCoins])
  
- 
-//  useEffect(() => {
-//    const abortController = new AbortController();
-//    const signal = abortController.signal;
-//    async function getData(){  
-//      if(selectedIds.length > 0){
-//        const latestId = selectedIds[selectedIds.length-1]
-//        if(!requestData.some(data=>data.id === latestId)){
-//          try { 
-//            const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${latestId}/market_chart?vs_currency=usd&days=1&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_COINGECKO_API_KEY}`,{signal})
-//            setRequestedData((prev)=>[...prev,{id:latestId,data:response.data}])
-//          } catch (error:any) {
-//            console.log(error)           
-//          }
-//        }else{
-//         return
-//        }
-//      }
-//    }
-//     getData()
-//     return () => abortController.abort();
-//   }, [selectedIds])
-
-
 
   async function getDataByTimeLine(days:any){
         try {
@@ -131,7 +107,6 @@ export default function Home() {
     }   
   }
 
-  console.log(selectedCoins)
   const isLoading = datastatus === 'loading'
 
   return (

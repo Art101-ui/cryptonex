@@ -6,7 +6,7 @@ import { fetchSearchCoins } from "./features/searchCoin-slice";
 import { store } from "./store"
 import { Provider } from "react-redux"
 
-store.dispatch(fetchSearchCoins());
+store.dispatch(fetchSearchCoins('usd'));
 store.dispatch(fetchCoins({currency:'usd',page:1}))
 store.dispatch(fetchCoinChart('bitcoin'))
 

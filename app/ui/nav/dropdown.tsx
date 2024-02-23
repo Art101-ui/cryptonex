@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, store, useAppSelector } from "@/redux/store";
 import coinstableSlice, { fetchCoins,changePrice } from "@/redux/features/coinstable-slice";
 import axios from "axios";
+import { fetchSearchCoins } from "@/redux/features/searchCoin-slice";
 
 
 
@@ -63,6 +64,7 @@ export default function DropDown(){
                       <li key={item.id}
                         onClick={()=>{ 
                           dispatch(changeCurrency(item.symbol))
+                          dispatch(fetchSearchCoins(item.symbol))
                           dispatch(fetchCoins({currency:item.symbol,page:1}))
                           setDropdown(false)
                           setSelectedId(item.id)
