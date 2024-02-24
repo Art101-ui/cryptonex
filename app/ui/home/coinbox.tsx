@@ -12,8 +12,8 @@ export default function CoinBox({coin,onSelect,selectedIds}:{coin:FetchedDataPro
     return(
         <div onClick={()=>onSelect(coin.id)} className={clsx(
           "flex items-center cursor-pointer w-[220px] h-[78px] rounded-md p-3",
-          {'bg-[#6161D680] text-white': selectedIds.some(selectedId=>selectedId===coin.id)},
-          {'bg-white ': !selectedIds.some(selectedId=>selectedId===coin.id)}
+          {'bg-[#6161D680]/50 text-white': selectedIds.some(selectedId=>selectedId===coin.id)},
+          {'bg-white dark:bg-[#191925] ': !selectedIds.some(selectedId=>selectedId===coin.id)}
         )}>
             <Image 
               className=" mr-3"
@@ -24,10 +24,16 @@ export default function CoinBox({coin,onSelect,selectedIds}:{coin:FetchedDataPro
               />
             <div className=''>
               <h2 className="mb-2 text-[16px]">{coin.name}</h2>
-              <p className="flex gap-2 text-[14px]">{getCurrencySymbol(currency)}{Math.abs(coin.current_price).toFixed(2)}<span className="flex items-center">
-                { coin.current_price > 0
-                 ? <RiArrowUpSFill className = 'text-[#01F1E3]' />
-                 : <RiArrowDownSFill className= ' text-[#FE2264]'/>}
+              <p className="flex gap-2 text-[14px]">{getCurrencySymbol(currency)}{Math.abs(coin.current_price).toFixed(2)}
+              <span className={clsx(
+                "flex items-center",
+                {'dark:text-[#01F1E3]' : coin.twenty_four > 0},
+                {'dark:text-[#FE2264]' : coin.twenty_four < 0},
+                )}>
+                { coin.twenty_four >= 0
+                 ? <RiArrowUpSFill className=' text-[#01F1E3]' />
+                 : <RiArrowDownSFill className='text-[#FE2264]' />
+                 }
                 
                 {Math.abs(coin.twenty_four).toFixed(2)}%</span>
               </p>

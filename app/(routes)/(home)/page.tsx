@@ -113,8 +113,8 @@ export default function Home() {
     <div>
       <main className=" mb-10">
         <div className="flex justify-between items-center mb-6">
-          <p>Select the currency to view statistics</p>
-          <button className=" bg-white rounded py-2 px-3 flex items-center justify-center">
+          <p className=" dark:text-[#D1D1D1]">Select the currency to view statistics</p>
+          <button className=" bg-white dark:bg-[#232336] rounded py-2 px-3 flex items-center justify-center">
             <LuBarChart3 className = 'mr-2'/>
             Compare</button>
         </div>
