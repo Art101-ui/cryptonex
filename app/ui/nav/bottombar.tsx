@@ -45,9 +45,8 @@ export default function BottomBar(){
                           className={
                              clsx(
                                 "flex items-center gap-2",
-                                
-                                {'text-[#353570] font-medium' : pathname=== link.href },
-                                { ' font-light' : pathname !== link.href  }        
+                                {'text-[#353570] dark:text-[#FFFFFF] font-medium' : pathname=== link.href },
+                                { ' font-light dark:text-[#FFFFFF]/50' : pathname !== link.href  }        
                                 
                              )
                           }>
