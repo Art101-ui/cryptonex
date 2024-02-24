@@ -110,7 +110,7 @@ function PriceChart({showHeading, selectedIds, chartData,height }:{showHeading?:
                       item.coin && (
                         <>
                           <div className={' w-6 h-5 ' + item.color}></div>
-                          <p className=" text-[16px]">{item.coin.charAt(0).toUpperCase()+item.coin.slice(1)}</p>
+                          <p className=" text-[16px] dark:text-[#B9B9BA]">{item.coin.charAt(0).toUpperCase()+item.coin.slice(1)}</p>
                         </>
                       )
 
