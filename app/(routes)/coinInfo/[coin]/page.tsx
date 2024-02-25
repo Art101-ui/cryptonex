@@ -149,7 +149,7 @@ const coinItem = requestState.status === 'success' ? requestState.data : null
     return(
         <div className="px-[70px]  py-5 ">  
             <div className="h-[500px] flex w-full items-center gap-4 justify-between mb-5">
-                <div className=" w-1/2 h-full rounded-md bg-white p-3">
+                <div className=" w-1/2 h-full rounded-md bg-white dark:bg-[#191932] p-3">
                     <div className="flex items-center">
                         <Image 
                             className=" mr-2 object-contain"
@@ -190,12 +190,12 @@ const coinItem = requestState.status === 'success' ? requestState.data : null
 
                 <div className=" w-1/2 h-full flex flex-col gap-3">
 
-                    <div className=" h-1/2 bg-white flex flex-col justify-center p-3 rounded-md">   
+                    <div className=" h-1/2 bg-white dark:bg-[#191932] flex flex-col justify-center p-3 rounded-md">   
                         <h1 className=' text-xl'>Last 7d</h1>
                         {isLoading ? <div className='h-full'>Loading...</div>:<LineChart height="h-full" width=" w-full" chartData={priceChart}/> }       
                     </div>
 
-                    <div className=" h-1/2 rounded-md bg-white grid grid-cols-2  gap-3 p-3 text-[14px]">
+                    <div className=" h-1/2 rounded-md bg-white dark:bg-[#191932] grid grid-cols-2  gap-3 p-3 text-[14px]">
                         <div className="flex flex-col items-center"><FaPlusCircle/>MARKET CAP <span className=" font-medium">{getCurrencySymbol(currency,true)} {convertToTrillion(coinItem?.market_cap as number)}T</span></div>
                         <div className="flex flex-col items-center"><FaPlusCircle/>FULLY DILUTED VALUATION <span className=" font-medium">{getCurrencySymbol(currency,true)} {convertToTrillion(coinItem?.fdl as number)}T</span></div>
                         <div className="flex flex-col items-center"><FaPlusCircle/>VOLUME/MARKET <span className=" font-medium">{getCurrencySymbol(currency,true)} {(coinItem?.volume as number/(coinItem?.market_cap as number)).toFixed(3)}B</span></div>
@@ -206,9 +206,9 @@ const coinItem = requestState.status === 'success' ? requestState.data : null
                 </div>
             </div>
 
-            <div className="w-full rounded-md bg-white p-3">
+            <div className="w-full rounded-md bg-white dark:bg-[#191932] p-3">
                 <h1 className=" text-[24px] mb-3">About</h1>
-                <div className=" text-[14px]" dangerouslySetInnerHTML={{ __html: coinItem?.description as string }} />
+                <div className=" text-[14px] dark:text-[#D1D1D1]" dangerouslySetInnerHTML={{ __html: coinItem?.description as string }} />
             </div>
 
         </div>

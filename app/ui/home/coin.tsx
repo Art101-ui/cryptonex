@@ -22,9 +22,9 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
             data: prices.map((data) => data),
             backgroundColor: (context: ScriptableContext<"line">) => {
               const ctx = context.chart.ctx;
-              const gradient = ctx.createLinearGradient(0, 0, 0, 38);
-              gradient.addColorStop(0, coinData.seven_day > 0 ? "rgba(0, 177, 167, 0.3)":'rgba(254, 34, 100, 0.3)');
-              gradient.addColorStop(1, coinData.seven_day > 0 ? "rgba(255, 255, 255, 0.01)":'rgba(255, 255, 255, 0.01)');
+              const gradient = ctx.createLinearGradient(0, 0, 0,25);
+              gradient.addColorStop(0, coinData.seven_day > 0 ? "rgba(0, 177, 167, 0.5)":'rgba(254, 34, 100, 0.5)');
+              gradient.addColorStop(1, coinData.seven_day > 0 ? "rgba(255, 255, 255, 0.04)":'rgba(255, 255, 255, 0.04)');
               return gradient;
             },
             borderColor: coinData.seven_day > 0 ? 'rgba(0, 177, 167, 1)' : 'rgba(254, 34, 100, 1)',

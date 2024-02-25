@@ -99,7 +99,7 @@ function PriceChart({showHeading, selectedIds, chartData,height }:{showHeading?:
     <div className={`chart-container w-full ${height}`}>
       {showHeading && <div>
         {/* <h1 className=" text-[20px]">Bitcoin (BTC)</h1> */}
-        <h1 className=" text-[28px]">{formatDate()}</h1>
+        <h1 className=" text-[24px] md:text-[28px]">{formatDate()}</h1>
         <ul className="flex items-center gap-4">
           {
             chartCoins.map(item=>{
