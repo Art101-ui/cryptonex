@@ -36,7 +36,7 @@ export default function Input({placeholder}:{placeholder:string}){
                     <Link key={item.id} href={`/coinInfo/${item.name.toLowerCase()}`}>
                         <li onClick={()=>{
                             setDropDown(false)
-                            }} className=" flex items-center p-2 cursor-pointer hover:bg-slate-200">
+                            }} className=" flex items-center p-2 cursor-pointer hover:bg-[#6161D6]">
                                 <Image 
                                     className=" mr-2 object-contain"
                                     src= {item.image}

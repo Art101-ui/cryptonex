@@ -16,25 +16,35 @@ export default function Portfolio(){
     const [listofAssets, setListOfAssets] = useState<SearchCoinProps[]>(storedlist);
     const [coinData,setCoinData] = useState<SearchCoinProps[] | []>([])
 
-    const {searchCoins, loading, error} = useAppSelector((state)=> state.searchCoinReducer)
+    const {searchCoins} = useAppSelector((state)=> state.searchCoinReducer)
     
     useEffect(() => {
       setCoinData(searchCoins)
     }, [searchCoins]);
+    
+        // Save state to local storage when it changes
+    useEffect(() => {
+      localStorage.setItem('listofAssets', JSON.stringify(listofAssets));
+    }, [listofAssets]);
 
+
+    const [exists,setExists] = useState(false)
     function handleAddAssets(id:string,amount:string,date:string,){
-      const selectedCoin = coinData.find(item=>item.id===id) as SearchCoinProps ;
-       setListOfAssets([...listofAssets,{...selectedCoin,purchased:amount,date:date}])
+      if(!listofAssets.find(item=>item.id===id)){
+        const selectedCoin = coinData.find(item=>item.id===id) as SearchCoinProps ;
+        setListOfAssets([...listofAssets,{...selectedCoin,purchased:amount,date:date}])
+      }else{
+        console.log('Already exists')
+        setExists(true)
+        setTimeout(() => {
+          setExists(false)
+        }, 3000);
+      
+      }
     }
 
     console.log(listofAssets)
-    console.log(searchCoins)
-    
-      // Save state to local storage when it changes
-  useEffect(() => {
-    localStorage.setItem('listofAssets', JSON.stringify(listofAssets));
-  }, [listofAssets]);
-
+  
  
    function handleDeleteAsset(id:string){
     setListOfAssets(listofAssets.filter(item=>item.id !== id))
@@ -55,9 +65,11 @@ export default function Portfolio(){
             }
             <div className="px-[70px]  py-5 ">
                 <div className="flex items-center justify-between mb-6">
-                <h1 className=" text-[24px]">Portfolio</h1> 
-                <button onClick={()=>setModal(prev=>!prev)} className=" flex bg-[#6161D6] text-white justify-center w-[250px] h-[45px] cursor-pointer font-bold py-3 px-4 rounded-md">Add Asset</button>
+                  <h1 className=" text-[24px]">Portfolio</h1> 
+                  <button onClick={()=>setModal(prev=>!prev)} className=" flex bg-[#6161D6]/50 text-white justify-center w-[250px] h-[45px] cursor-pointer font-bold py-3 px-4 rounded-md">Add Asset</button>
                 </div>
+                { exists &&
+                  <span className=" flex justify-center mb-4 text-red-600">Coin Already Exists</span>}
                 {status === 'error' && <div className=" text-center">Error : Try again</div> }
                 {status === 'loading' && <h1 className=" text-center">Loading...</h1>}
                 { 
