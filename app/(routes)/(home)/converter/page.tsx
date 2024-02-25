@@ -108,8 +108,8 @@ export default function Converter(){
 
     return(
         <>
-          <h1 className=" text-[#424286] text-[20px]">Online currency converter</h1>
-          <h3 className=" text-[#424286]/80 text-[16px] mb-7">{getCurrentDateTime()}</h3>  
+          <h1 className=" text-[#424286] dark:text-white text-[20px]">Online currency converter</h1>
+          <h3 className=" text-[#424286]/80  dark:text-[#D1D1D1] text-[16px] mb-7">{getCurrentDateTime()}</h3>  
 
           <div className="flex relative items-center justify-between gap-7 mb-8">
 
@@ -148,18 +148,19 @@ export default function Converter(){
             }
 
 
-            <div onClick={()=>setSwitchCoin(prev=>!prev)} className=' absolute left-1/2 transform -translate-x-1/2 bg-[#353570] rounded-full w-12 h-12 flex justify-center items-center cursor-pointer'>
+            <div onClick={()=>setSwitchCoin(prev=>!prev)} className=' absolute left-1/2 transform -translate-x-1/2 bg-[#6161D6] rounded-full w-12 h-12 flex justify-center items-center cursor-pointer'>
                    <Image 
                     src= {verticalSwitch}
                     alt="exchange"
                     width={24}
                     height={24}
+                    
                     />
             </div>
 
           </div>
 
-          <div className=" w-full flex flex-col justify-center  h-[290px] p-6 bg-white mb-4 rounded-md">
+          <div className=" w-full flex flex-col justify-center  h-[290px] p-6 bg-white dark:bg-[#191932] mb-4 rounded-md">
             <h1 className=' text-xl flex items-center gap-1'>
               {switchcoin ? handleUndefinedForValue(firstselectedItem?.name)  +'-'+ handleUndefinedForValue(firstselectedItem?.symbol?.toUpperCase()) : handleUndefinedForValue(secondselectedItem?.name)  +'-'+ handleUndefinedForValue(secondselectedItem?.symbol?.toUpperCase())} 
                                 <IoArrowForward/> 
@@ -176,7 +177,7 @@ function ConverterCoin({coins,handleSelectedId,coin,value,onhandleChange}:ChildC
   const currency = useAppSelector(state=>state.changeCurrencyReducer.currency)
   
   return(
-    <div className="bg-white relative  rounded-2xl p-6   w-1/2">
+    <div className="bg-white dark:bg-[#191932] relative  rounded-2xl p-6   w-1/2">
               <div className='flex justify-between w-full mb-2 items-center'>
                 <div onClick={()=>setDropDown(prev=>!prev)} className='flex items-center gap-2 w-1/2 cursor-pointer'>
                     <Image 
@@ -187,22 +188,22 @@ function ConverterCoin({coins,handleSelectedId,coin,value,onhandleChange}:ChildC
                     height={20}
                     />
                     {/* {coin?.name}({coin?.symbol.toUpperCase()}) */}
-                    <div className=' flex bg-slate-600  items-center'>
+                    <div className=' flex   items-center'>
 
-                      <input readOnly  value={(coin?.name || '') +'-'+(coin?.symbol.toUpperCase() || '')}  className=' border-none  cursor-pointer w-[180px] outline-none focus:outline-none'/>
+                      <input readOnly  value={(coin?.name || '') +'-'+(coin?.symbol.toUpperCase() || '')}  className=' border-none bg-transparent  cursor-pointer w-[180px] outline-none focus:outline-none'/>
                     </div>
                 </div>
                 <input placeholder='0' value={value ?? ''} onChange={onhandleChange}  className=' remove-arrow border-none  w-1/2  h-3 bg-transparent outline-none py-3 px-3 focus:outline-none text-right' type="number" />
               </div>
               {dropdown &&
-                  <ul className=" p-1 absolute top-18 rounded max-h-[200px] overflow-y-auto w-[200px] shadow-lg bg-white">
+                  <ul className=" p-1 absolute top-18  max-h-[200px] overflow-y-auto w-[200px] shadow-lg bg-white dark:bg-[#191925]">
                     {coins.map(item=>{
                         return (
                             <li 
                             onClick={()=>{
                                
                                 setDropDown(false)
-                                handleSelectedId(item.id)}}  key={item.id} className=" flex items-center p-2 cursor-pointer hover:bg-slate-200">
+                                handleSelectedId(item.id)}}  key={item.id} className=" flex items-center p-2 cursor-pointer hover:bg-[#6161D6]">
                                 <Image 
                                     className=" mr-2 object-contain"
                                     src= {item.image}
@@ -217,7 +218,7 @@ function ConverterCoin({coins,handleSelectedId,coin,value,onhandleChange}:ChildC
                   </ul>
                 }
               <hr />
-              <h3 className='py-1'>1 {coin?.symbol.toUpperCase()} = {getCurrencySymbol(currency)}{coin?.current_price}</h3>
+              <h3 className='py-1 dark:text-[#D1D1D1]'>1 {coin?.symbol.toUpperCase()} = {getCurrencySymbol(currency)}{coin?.current_price}</h3>
     </div>
   )
 }
