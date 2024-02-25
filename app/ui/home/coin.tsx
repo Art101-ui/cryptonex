@@ -4,7 +4,7 @@ import { RiArrowUpSFill, RiArrowDownSFill } from 'react-icons/ri'
 import ProgressBar from '../progressbar'
 import { FetchedDataProps } from '@/app/lib/type'
 import { ScriptableContext } from 'chart.js'
-import { reduceData, getDayNumber, getPercentage, getCurrencySymbol } from '@/app/lib/utilis'
+import { reduceData, reformDataLength, getPercentage, getCurrencySymbol } from '@/app/lib/utilis'
 import  LineChart  from '@/app/ui/home/linechart'
 import Currency from '../currency'
 import { useState } from 'react'
@@ -12,13 +12,6 @@ import { useAppSelector } from '@/redux/store'
 
 export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:number}){
   const currency = useAppSelector(state=>state.changeCurrencyReducer.currency)
-    function reformDataLength(listOfArray:[]){
-        let newArr:[]=[]
-        if(listOfArray.length > 100 && listOfArray.length < 750){
-          newArr = reduceData(listOfArray,5)
-        }
-        return newArr
-      }
       
       var prices =  reformDataLength(coinData.chartData) || []
      
@@ -30,8 +23,8 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
             backgroundColor: (context: ScriptableContext<"line">) => {
               const ctx = context.chart.ctx;
               const gradient = ctx.createLinearGradient(0, 0, 0, 38);
-              gradient.addColorStop(0, coinData.seven_day > 0 ? "rgba(0, 177, 167, 0.8)":'rgba(254, 34, 100, 0.8)');
-              gradient.addColorStop(1, coinData.seven_day > 0 ? "rgba(255, 255, 255, 0.3)":'rgba(255, 255, 255, 0.3)');
+              gradient.addColorStop(0, coinData.seven_day > 0 ? "rgba(0, 177, 167, 0.3)":'rgba(254, 34, 100, 0.3)');
+              gradient.addColorStop(1, coinData.seven_day > 0 ? "rgba(255, 255, 255, 0.01)":'rgba(255, 255, 255, 0.01)');
               return gradient;
             },
             borderColor: coinData.seven_day > 0 ? 'rgba(0, 177, 167, 1)' : 'rgba(254, 34, 100, 1)',
@@ -43,7 +36,7 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
         ]
       }
     return(
-        <ul className=" p-5 gap-2 w-full rounded-xl   text-[14px] flex items-center bg-white">
+        <ul className=" p-5 gap-2 w-full rounded-xl   text-[14px] flex items-center bg-white dark:bg-[#191925]">
             <li className=' w-1/12 text-center '>{index}</li>
             <li className='flex  justify-start w-1/3  items-center'>
               <Image 

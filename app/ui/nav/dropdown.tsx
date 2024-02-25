@@ -1,15 +1,14 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { IoIosArrowUp,IoIosArrowDown } from "react-icons/io";
 import { PiCurrencyDollarSimpleFill } from "react-icons/pi";
 import { MdEuro } from "react-icons/md";
 import { PiCurrencyGbp } from "react-icons/pi";
 import { changeCurrency } from "@/redux/features/changeCurrency-slice";
 import { useDispatch } from "react-redux";
-import { AppDispatch, store, useAppSelector } from "@/redux/store";
-import coinstableSlice, { fetchCoins,changePrice } from "@/redux/features/coinstable-slice";
-import axios from "axios";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { fetchCoins } from "@/redux/features/coinstable-slice";
 import { fetchSearchCoins } from "@/redux/features/searchCoin-slice";
 
 
@@ -21,12 +20,6 @@ type MenuList ={
     icon: any
 }
 
-type CurrencyData ={
-    currency:string,
-    value:number,
-    symbol?:string,
-    icon?: any
-}
 
 const menulist: MenuList[]=[
     {id:0, currency:'USD', symbol:'usd', icon: <PiCurrencyDollarSimpleFill/>},
@@ -41,7 +34,6 @@ export default function DropDown(){
   const [dropdown, setDropdown] = useState(false)
   const [selectedId, setSelectedId] = useState<number>(0)
   const dispatch = useDispatch<AppDispatch>()
-  const coin = useAppSelector(state=>state.changeCurrencyReducer.currency)
 
   
   
@@ -51,13 +43,13 @@ export default function DropDown(){
   
     return(
         <div className="flex flex-col">
-            <div onClick={()=>setDropdown(prev=>!prev)} className="p-3 bg-[#EBEBFD] h-full w-[104px] flex items-center justify-between gap-1 mb-2 rounded cursor-pointer">
+            <div onClick={()=>setDropdown(prev=>!prev)} className="p-3 bg-[#EBEBFD] dark:bg-[#191925] h-full w-[104px] flex items-center justify-between gap-1 mb-2 rounded cursor-pointer">
                 {selectedItem ?  selectedItem.icon : menulist[selectedId].icon}
                 <span className="text-sm">{selectedItem ?  selectedItem.currency : 'USD'}</span>
                 {dropdown ? <IoIosArrowUp/> : <IoIosArrowDown/> }
             </div>
              {dropdown &&
-               <ul className=" shadow-lg bg-[#EBEBFD] z-20 rounded">
+               <ul className=" shadow-lg bg-[#EBEBFD] dark:bg-[#191925] z-20 rounded">
                   {
                     menulist.map((item)=>{
                       return (
@@ -69,7 +61,7 @@ export default function DropDown(){
                           setDropdown(false)
                           setSelectedId(item.id)
                         }}
-                          className="flex items-center justify-center gap-1 p-1 hover:bg-[#6161D6] hover:text-white cursor-pointer ">
+                          className="flex items-center gap-2 p-1 px-3 hover:bg-[#6161D6] hover:text-white cursor-pointer ">
                           {item.icon}
                           <span>{item.currency}</span>
                       </li>)

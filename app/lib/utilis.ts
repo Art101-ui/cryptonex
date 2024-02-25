@@ -1,3 +1,4 @@
+
 export function getDayNumber(timestamp:EpochTimeStamp) {
     const date = new Date(timestamp);
     return date.getDate();

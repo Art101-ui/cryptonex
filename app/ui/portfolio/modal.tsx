@@ -80,12 +80,12 @@ export default function Modal({onModal,onhandleListAssets}:ModalProp){
                                 }}  className=" disabled:bg-[#6161D6]/30 disabled:text-white/30 w-1/2 text-white bg-[#6161D6] rounded-md px-[20px] py-[12px]">Save and Continue</button>
                         </div>
                         {dropdown &&
-                          <ul className=" p-1 absolute top-12 rounded max-h-[300px] overflow-y-auto w-[300px] bg-white">
+                          <ul className=" p-1 absolute top-12 rounded max-h-[300px] overflow-y-auto w-[300px] bg-white dark:bg-[#191925]">
                              {searchedResult.map(item=>{
                                 return (
                                     <li onClick={()=>{
                                         setDropDown(false)
-                                        setSelectedId(item.id)}}  key={item.id} className=" flex items-center p-2 cursor-pointer hover:bg-slate-200">
+                                        setSelectedId(item.id)}}  key={item.id} className=" flex items-center p-2 cursor-pointer hover:bg-[#6161D6]">
                                         <Image 
                                             className=" mr-2 object-contain"
                                             src= {item.image}

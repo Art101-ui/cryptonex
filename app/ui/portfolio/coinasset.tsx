@@ -12,6 +12,7 @@ interface CoinAssetProps {
     onDeleteAsset: (id: string)=> void
   }
 
+  
 export default function CoinAsset({asset,onDeleteAsset}:CoinAssetProps){
     const mc_tv = parseFloat(((asset.market_cap/asset.volume)).toFixed(2))
     const cs_ts = parseFloat(((asset.circulating_supply/asset.total_supply)).toFixed(2))
@@ -19,7 +20,7 @@ export default function CoinAsset({asset,onDeleteAsset}:CoinAssetProps){
     const currency = useAppSelector(state=>state.changeCurrencyReducer.currency)
     return(
         <div className="flex w-full mb-5">
-        <div className="bg-[#cecef1] rounded-l-lg w-1/3 p-4">
+        <div className="bg-[#cecef1] dark:bg-[#191932] rounded-l-lg w-1/3 p-4">
             <div className='flex items-center gap-1 mb-5'>
                 <Image 
                 className=" mr-1"
@@ -34,26 +35,26 @@ export default function CoinAsset({asset,onDeleteAsset}:CoinAssetProps){
             <div className=" mb-2">
                 <span className=" mr-2 text-[28px]">{getCurrencySymbol(currency)}{asset.current_price}</span> 
             </div>
-            <p className=" text-[16px]"><span className="  font-bold">{asset.purchased}</span> Purchased in {asset.date}</p>
+            <p className=" text-[16px] dark:text-[#D1D1D1]"><span className="  font-bold">{asset.purchased}</span> Purchased in {asset.date}</p>
         </div>
-        <div className=" flex flex-col w-2/3   px-4 py-4 bg-white gap-2 rounded-r-lg">
+        <div className=" flex flex-col w-2/3   px-4 py-4 bg-white dark:bg-[#2D2D51] gap-2 rounded-r-lg">
             <div className="  w-full h-7  flex justify-end">
-               <MdDelete onClick={()=>{onDeleteAsset(asset.id)}} size={30} className=' hover:bg-red-300 rounded-full  h-full text-red-600 cursor-pointer' />
+               <MdDelete onClick={()=>{onDeleteAsset(asset.id)}} size={23} className=' rounded-full hover:bg-red-100  h-full text-red-600 cursor-pointer' />
             </div>
             <div className=" flex w-full">
                 <div className=" w-1/2 flex flex-col gap-2">
                     <div className=" rounded-lg  px-[10px] py-2">
                         <h1 className=" text-[20px]">{getCurrencySymbol(currency)}{(asset.current_price).toFixed(2)}</h1> 
-                        <p className=" text-[14px]">Current price</p>
+                        <p className=" text-[14px] dark:text-[#D1D1D1]">Current price</p>
                     </div>
                     <div className=" rounded-lg  px-[10px] py-2">
-                        <div className="flex items-center gap-2 text-[20px] text-[#627EEA]">
+                        <div className="flex items-center gap-2 text-[20px] text-[#00B8C6]">
                             {mc_tv}%
-                            <div className='h-[6px] rounded-sm w-full  bg-[#C0CBF7]'>
-                                <ProgressBar percentage={mc_tv} color=" bg-[#7691fa]"/>
+                            <div className='h-[6px] rounded-sm w-[200px]  bg-[#00B8C6]/30'>
+                                <ProgressBar percentage={mc_tv} color=" bg-[#00B8C6]"/>
                             </div>
                         </div>
-                        <p className="  text-[14px]">Market cap vs volume</p>
+                        <p className="  text-[14px] dark:text-[#D1D1D1]">Market cap vs volume</p>
                     </div>
                 </div>
                 <div className="w-1/2 flex flex-col gap-2">
@@ -68,15 +69,14 @@ export default function CoinAsset({asset,onDeleteAsset}:CoinAssetProps){
                             }    
                             
                             {(Math.abs(asset.twenty_four).toFixed(2))}%</span> 
-                    <p className=" text-[14px]">24h%</p>
+                    <p className=" text-[14px] dark:text-[#D1D1D1]">24h%</p>
                     </div>
                     <div className=" rounded-lg  px-[10px] py-2">
                         <span className="flex items-center text-[20px] text-[#00B8C6]"
                             ><RiArrowUpSFill/> {cs_ts * 100}%</span> 
-                        <p className=" text-[14px]">Circ. supply vs total supply</p>
+                        <p className=" text-[14px] dark:text-[#D1D1D1]">Circ. supply vs total supply</p>
                     </div>         
                 </div>
-
             </div>
         </div>
     </div>

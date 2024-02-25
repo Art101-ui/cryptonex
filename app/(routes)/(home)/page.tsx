@@ -113,8 +113,8 @@ export default function Home() {
     <div>
       <main className=" mb-10">
         <div className="flex justify-between items-center mb-6">
-          <p>Select the currency to view statistics</p>
-          <button className=" bg-white rounded py-2 px-3 flex items-center justify-center">
+          <p className=" dark:text-[#D1D1D1]">Select the currency to view statistics</p>
+          <button className=" bg-white dark:bg-[#232336] rounded py-2 px-3 flex items-center justify-center">
             <LuBarChart3 className = 'mr-2'/>
             Compare</button>
         </div>
@@ -142,21 +142,22 @@ export default function Home() {
           </div>
 
         <div className=" flex items-center mb-6  justify-between">
-          <div className=" w-[570px]  h-[400px] p-5 bg-white rounded-md">
+          <div className=" w-[570px]  h-[400px] p-5 bg-white dark:bg-[#191932] rounded-md">
             {isLoading ? <div className=" w-full h-full flex items-center justify-center"><DefaultSpinner/></div> : <PriceChart selectedIds={selectedIds}  showHeading={true} height=' h-[250px]' chartData={requestData}/> }
           </div>
-          <div className=" w-[570px]  h-[400px] p-5 bg-white rounded-md">
+          <div className=" w-[570px]  h-[400px] p-5 bg-white dark:bg-[#191932] rounded-md">
             {isLoading ? <div className=" w-full h-full flex items-center justify-center"><DefaultSpinner/></div> : <VolumeChart  chartData={requestData}/>}
           </div>
         </div>
 
 
-        <div className=" bg-[#CCCCFA] h-[42px] w-[490px] p-[2px]  gap-2 rounded-md flex">
+        <div className=" bg-[#CCCCFA] dark:bg-[#232336] h-[42px] w-[490px] p-[2px]  gap-2 rounded-md flex">
           {timelineData.map((item,index)=>{
             return(
               <div key={item.id} className={clsx(
                 "  px-5 py-2 text-[14px] grow flex items-center p-2 rounded-md cursor-pointer ",
-                {'bg-[#6161D6]' : timeline === item.days}
+                {'bg-[#6161D6]/50 dark:text-[#E4E4F0]' : timeline === item.days},
+                {'dark:text-[#A7A7CC] font-light' : timeline !== item.days},
               )}
               onClick={()=>{
                 setTimeline(item.days)

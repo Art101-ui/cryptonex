@@ -96,7 +96,7 @@ function VolumeChart({ chartData }:{chartData:RequestDataProps[]}) {
     <div className="chart-container w-full h-[250px] ">
       <div>
         <h1 className=" text-[28px]">Volume 24h</h1>
-        <p className=" text-[16px]">{formatDate()}</p>
+        <p className=" text-[16px] dark:text-[#B9B9BA]">{formatDate()}</p>
       </div>
       <Bar
         data={volumeChart}

@@ -6,9 +6,6 @@ import { RiArrowUpSFill } from "react-icons/ri";
 import ProgressBar from "../progressbar";
 import bitcoin from '@/public/bitcoin.png'
 import ethereum from '@/public/ethereum.png'
-import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
-import { RequestDataType } from "@/app/lib/type";
 import { getGlobalData } from "@/app/lib/data";
 import { convertToBillion, convertToTrillion } from "@/app/lib/utilis";
 
