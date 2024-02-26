@@ -108,10 +108,10 @@ export default function Converter(){
 
     return(
         <>
-          <h1 className=" text-[#424286] dark:text-white text-[20px]">Online currency converter</h1>
-          <h3 className=" text-[#424286]/80  dark:text-[#D1D1D1] text-[16px] mb-7">{getCurrentDateTime()}</h3>  
+          <h1 className=" text-[#424286] dark:text-white sm:text-left text-center text-[20px]">Online currency converter</h1>
+          <h3 className=" text-[#424286]/80  dark:text-[#D1D1D1] text-[16px] mb-7 sm:text-left text-center">{getCurrentDateTime()}</h3>  
 
-          <div className="flex relative items-center justify-between gap-7 mb-8">
+          <div className="sm:flex relative items-center justify-between gap-7 mb-8">
 
            {switchcoin ?
             <>
@@ -148,7 +148,7 @@ export default function Converter(){
             }
 
 
-            <div onClick={()=>setSwitchCoin(prev=>!prev)} className=' absolute left-1/2 transform -translate-x-1/2 bg-[#6161D6] rounded-full w-12 h-12 flex justify-center items-center cursor-pointer'>
+            <div onClick={()=>setSwitchCoin(prev=>!prev)} className=' absolute top-24 sm:top-8 left-1/2 transform -translate-x-1/2 bg-[#6161D6] rounded-full w-12 h-12 flex justify-center items-center cursor-pointer'>
                    <Image 
                     src= {verticalSwitch}
                     alt="exchange"
@@ -160,13 +160,13 @@ export default function Converter(){
 
           </div>
 
-          <div className=" w-full flex flex-col justify-center  h-[290px] p-6 bg-white dark:bg-[#191932] mb-4 rounded-md">
-            <h1 className=' text-xl flex items-center gap-1'>
+          <div className=" w-full flex flex-col justify-between gap-2  h-[290px] p-6 bg-white dark:bg-[#191932] mb-4 rounded-md">
+            <h1 className=' text-md sm:text-xl flex items-center gap-1'>
               {switchcoin ? handleUndefinedForValue(firstselectedItem?.name)  +'-'+ handleUndefinedForValue(firstselectedItem?.symbol?.toUpperCase()) : handleUndefinedForValue(secondselectedItem?.name)  +'-'+ handleUndefinedForValue(secondselectedItem?.symbol?.toUpperCase())} 
                                 <IoArrowForward/> 
               {switchcoin ? handleUndefinedForValue(secondselectedItem?.name) + '-'+ handleUndefinedForValue(secondselectedItem?.symbol?.toUpperCase()) : handleUndefinedForValue(firstselectedItem?.name) +'-'+ handleUndefinedForValue(firstselectedItem?.symbol?.toUpperCase())}
             </h1>
-            <LineChart chartData={priceChart} height=' h-full' width=' w-full'/> 
+            <LineChart chartData={priceChart} height=' h-[200px] ' width=' w-full'/> 
           </div>
         </>
     )
@@ -177,7 +177,7 @@ function ConverterCoin({coins,handleSelectedId,coin,value,onhandleChange}:ChildC
   const currency = useAppSelector(state=>state.changeCurrencyReducer.currency)
   
   return(
-    <div className="bg-white dark:bg-[#191932] relative  rounded-2xl p-6   w-1/2">
+    <div className="bg-white dark:bg-[#191932] relative sm:mb-0 mb-5  rounded-2xl p-6 w-full  sm:w-1/2">
               <div className='flex justify-between w-full mb-2 items-center'>
                 <div onClick={()=>setDropDown(prev=>!prev)} className='flex items-center gap-2 w-1/2 cursor-pointer'>
                     <Image 
