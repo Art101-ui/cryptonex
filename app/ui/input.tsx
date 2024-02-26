@@ -15,7 +15,7 @@ export default function Input({placeholder}:{placeholder:string}){
     const searchedResult = useMemo(()=>searchItems(searchCoins ?? [],searchInput),[searchCoins,searchInput])
  
     return (
-        <div className="relative flex flex-1 flex-shrink-0">
+        <div className="relative hidden   lg:flex flex-1 flex-shrink-0">
             <label htmlFor="search" className="sr-only">
                 Search
             </label>

@@ -4,7 +4,7 @@ import { RiArrowUpSFill, RiArrowDownSFill } from 'react-icons/ri'
 import ProgressBar from '../progressbar'
 import { FetchedDataProps } from '@/app/lib/type'
 import { ScriptableContext } from 'chart.js'
-import { reduceData, reformDataLength, getPercentage, getCurrencySymbol } from '@/app/lib/utilis'
+import { reduceData, reformDataLength, getPercentage, getCurrencySymbol, roundValue } from '@/app/lib/utilis'
 import  LineChart  from '@/app/ui/home/linechart'
 import Currency from '../currency'
 import { useState } from 'react'
@@ -36,7 +36,7 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
         ]
       }
     return(
-        <ul className=" p-5 gap-2 w-full rounded-xl   text-[14px] flex items-center bg-white dark:bg-[#191925]">
+        <ul className=" p-3 xl:p-5 gap-2 w-full rounded-xl   text-[14px] flex items-center bg-white dark:bg-[#191925]">
             <li className=' w-1/12 text-center '>{index}</li>
             <li className='flex  justify-start w-1/3  items-center'>
               <Image 
@@ -46,10 +46,13 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
                 width={30}
                 height={30}
                 />
-                <span>{coinData.name}({coinData.symbol.toUpperCase()})</span>
+                <span className='sm:text-[16px] flex gap-1 items-center text-[14px]'>
+                  {coinData.name}
+                  <span className='md:block hidden'>({coinData.symbol.toUpperCase()})</span>
+                </span>
             </li>
-            <li className='w-1/4 text-center'>{getCurrencySymbol(currency)}<Currency coin={(coinData.current_price).toFixed(4)}/></li>
-            <li className="  text-[14px] flex items-center justify-center  w-1/5">
+            <li className='w-1/4 text-center'>{getCurrencySymbol(currency)}<Currency coin={(roundValue(coinData.current_price).toString())}/></li>
+            <li className="  md:flex hidden  text-[14px]  items-center justify-center  w-1/5">
                 {coinData.one_hour > 0
                 ?<RiArrowUpSFill className = 'text-[#00B1A7]' />
                 :<RiArrowDownSFill className = ' text-[#FE2264]'/>}
@@ -58,7 +61,7 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
                  : 'text-[#FE2264]'
                 }>{Math.abs((coinData.one_hour)).toFixed(1)}%</span>
             </li>
-            <li className="  text-[14px] flex items-center justify-center  w-1/5">
+            <li className="  xl:flex hidden  text-[14px] items-center justify-center  w-1/5">
             {coinData.twenty_four > 0
                 ?<RiArrowUpSFill className = 'text-[#00B1A7]' />
                 :<RiArrowDownSFill className = ' text-[#FE2264]'/>}
@@ -67,7 +70,7 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
                  : 'text-[#FE2264]'
                 }>{Math.abs((coinData.twenty_four)).toFixed(1)}%</span>
             </li>
-            <li className="  text-[14px] flex items-center justify-center  w-1/5">
+            <li className=" xl:flex hidden  text-[14px]  items-center justify-center  w-1/5">
             {coinData.seven_day > 0
                 ?<RiArrowUpSFill className = 'text-[#00B1A7]' />
                 :<RiArrowDownSFill className = ' text-[#FE2264]'/>}
@@ -76,7 +79,7 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
                  : 'text-[#FE2264]'
                 }>{Math.abs((coinData.seven_day)).toFixed(1)}%</span>
             </li>
-            <li className=' w-1/2'>
+            <li className='sm:block hidden  w-1/2'>
                 <div className='flex justify-between'>
                     <p className='text-[12px]'>{getCurrencySymbol(currency)}{(coinData.total_volume / 1e9).toFixed(1)}B</p>
                     <p className='text-[12px]'>{getCurrencySymbol(currency)}{(coinData.market_cap / 1e9).toFixed(1)}B</p>
@@ -85,7 +88,7 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
                    <ProgressBar color=" bg-[#7878FA]" percentage={getPercentage(coinData.total_volume,coinData.market_cap)}/>
                 </div>
             </li>
-            <li className=' w-1/2 '>
+            <li className=' w-1/2 lg:block hidden'>
                 <div className='flex justify-between '>
                     <p className='text-[12px]'>{getCurrencySymbol(currency)}{(coinData.circulating_supply / 1e9).toFixed(1)}B</p>
                     <p className='text-[12px]'>{getCurrencySymbol(currency)}{(coinData.total_supply / 1e9).toFixed(1)}B</p>
@@ -95,7 +98,7 @@ export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:n
                 </div>
             </li>
             <li className=' w-1/3 flex justify-center '>
-                <LineChart width=' w-[120px]' height=' h-[37px]' chartData={priceChart}/>
+                <LineChart width=' w-[90px] md:w-[120px]' height=' h-[37px]' chartData={priceChart}/>
             </li>
         </ul>
     )

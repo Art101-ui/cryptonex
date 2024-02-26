@@ -18,8 +18,8 @@ export default function Layout({children}:{children:React.ReactNode}){
   ];
     const pathname =  usePathname()
     return(
-        <div className=" px-3 md:px-[72px] pb-[40px]  ">
-            {/* <div className=" bg-white dark:bg-[#232336] flex w-[450px] h-[45px] rounded-md mb-6">
+        <div className=" px-5 md:px-[72px] pb-[40px]  ">
+            <div className=" bg-white dark:bg-[#232336] flex w-full sm:w-[450px] h-[45px] rounded-md mb-6">
                 {links.map(link=>{
                   return(
                     <Link 
@@ -34,7 +34,7 @@ export default function Layout({children}:{children:React.ReactNode}){
                     </Link>
                   )
                 })}
-            </div> */}
+            </div>
             <div>
               {children}
             </div>

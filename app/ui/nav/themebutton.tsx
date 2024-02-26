@@ -25,9 +25,13 @@ export default function ThemeSwitch() {
 
   const theme = ()=>{
       if (resolvedTheme === 'dark') {
-        return <FiSun className = 'w-[22px] h-[22px]' onClick={() => setTheme('light')} />
+        return <FiSun className = 'w-[22px] h-[22px]' onClick={(e:Event) =>{ 
+          e.stopPropagation()
+          setTheme('light')}} />
       }else if (resolvedTheme === 'light') {
-        return <FiMoon className = 'w-[22px] h-[22px]' onClick={() => setTheme('dark')} />
+        return <FiMoon className = 'w-[22px] h-[22px]' onClick={(e:Event) => {
+          e.stopPropagation()
+          setTheme('dark')}} />
       }    
   }
 

@@ -33,20 +33,6 @@ const timelineData= [
   {id: 6, value: 'Max', days:'max'}
 ]
 
-const fakedata=[
-  {id:0, name:'Bitcoin',image:'',current_price:25,twenty_four:25,symbol:'BTC'},
-  {id:1, name:'Bitcoin',image:'',current_price:25,twenty_four:25,symbol:'BTC'},
-  {id:2, name:'Bitcoin',image:'',current_price:25,twenty_four:25,symbol:'BTC'},
-  {id:3, name:'Bitcoin',image:'',current_price:25,twenty_four:25,symbol:'BTC'},
-  {id:4, name:'Bitcoin',image:'',current_price:25,twenty_four:25,symbol:'BTC'},
-  {id:5, name:'Bitcoin',image:'',current_price:25,twenty_four:25,symbol:'BTC'},
-  {id:6, name:'Bitcoin',image:'',current_price:25,twenty_four:25,symbol:'BTC'},
-  {id:7, name:'Bitcoin',image:'',current_price:25,twenty_four:25,symbol:'BTC'},
-  {id:8, name:'Bitcoin',image:'',current_price:25,twenty_four:25,symbol:'BTC'},
-  {id:9, name:'Bitcoin',image:'',current_price:25,twenty_four:25,symbol:'BTC'},
-]
-
-
 
 type RequestDataProps ={
   id: string,
@@ -126,7 +112,7 @@ export default function Home() {
     <div>
       <main className=" mb-10">
         <div className="flex justify-between items-center mb-6 gap-3">
-          <p className=" dark:text-[#D1D1D1]">Select the currency to view statistics</p>
+          <p className=" dark:text-[#D1D1D1] text-[14px] sm:text-[16px]">Select the currency to view statistics</p>
           <button className=" bg-white dark:bg-[#232336] rounded py-2 px-3 flex items-center justify-center">
             <LuBarChart3 className = 'mr-2'/>
             Compare</button>
@@ -163,10 +149,10 @@ export default function Home() {
           </div>
 
         <div className=" md:flex items-center mb-6 gap-8 justify-between">
-          <div className=" w-full md:w-1/2 mb-8 md:mb-0 h-[360px] md:h-[400px] p-5 bg-white dark:bg-[#191932] rounded-md">
-            {isLoading ? <div className=" w-full h-full flex items-center justify-center"><DefaultSpinner/></div> : <PriceChart selectedIds={selectedIds}  showHeading={true} height=' h-[250px]' chartData={requestData}/> }
+          <div className=" w-full md:w-1/2 mb-8 md:mb-0 h-[300px] md:h-[380px] p-3 md:p-5 bg-white dark:bg-[#191932] rounded-md">
+            {isLoading ? <div className=" w-full h-full flex items-center justify-center"><DefaultSpinner/></div> : <PriceChart selectedIds={selectedIds}  showHeading={true} chartData={requestData}/> }
           </div>
-          <div className=" w-full md:w-1/2 h-[360px] md:h-[400px] p-5 bg-white dark:bg-[#191932] rounded-md">
+          <div className=" w-full md:w-1/2 h-[300px] md:h-[380px] p-3 md:p-5 bg-white dark:bg-[#191932] rounded-md">
             {isLoading ? <div className=" w-full h-full flex items-center justify-center"><DefaultSpinner/></div> : <VolumeChart  chartData={requestData}/>}
           </div>
         </div>
@@ -192,14 +178,14 @@ export default function Home() {
     </main>
 
   {/* Coins Table */}
-      {/* <section>
+      <section>
         <div className="mb-6">
           <div className="mb-3">
             <CoinListHeading/>
           </div>
            <CoinList/>
         </div>       
-      </section> */}
+      </section>
     </div>
   )
         }

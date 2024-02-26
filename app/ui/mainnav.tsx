@@ -8,7 +8,7 @@ export default function MainNav(){
                 <TopBar/>
                 
             </div>
-            <div className= 'bg-white dark:bg-[#13121A] w-full px-[72px] py-4  h-[70px]'>
+            <div className= ' bg-white dark:bg-[#13121A] w-full px-5 md:px-[72px] py-2 sm:py-4  h-[55px] sm:h-[70px]'>
                 <BottomBar/>
             </div>
         </div>

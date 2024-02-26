@@ -43,7 +43,9 @@ export default function DropDown(){
   
     return(
         <div className="flex flex-col">
-            <div onClick={()=>setDropdown(prev=>!prev)} className="p-3 bg-[#EBEBFD] dark:bg-[#191925] h-full w-[104px] flex items-center justify-between gap-1 mb-2 rounded cursor-pointer">
+            <div onClick={(e)=>{
+              e.stopPropagation()
+              setDropdown(prev=>!prev)}} className="p-3 bg-[#EBEBFD] dark:bg-[#191925] h-full w-[104px] flex items-center justify-between gap-1 mb-2 rounded cursor-pointer">
                 {selectedItem ?  selectedItem.icon : menulist[selectedId].icon}
                 <span className="text-sm">{selectedItem ?  selectedItem.currency : 'USD'}</span>
                 {dropdown ? <IoIosArrowUp/> : <IoIosArrowDown/> }
