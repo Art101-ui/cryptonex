@@ -17,11 +17,11 @@ export default function CoinBox({coin,onSelect,selectedIds}:{coin:FetchedDataPro
           {'bg-white dark:bg-[#191925] ': !selectedIds.some(selectedId=>selectedId===coin.id)}
         )}>
             <Image 
-              className=" w-[25px] h-[25px] md:w-[30px] md:h-[30px] "
+              className="  "
               src= {coin.image}
               alt="exchange"
-              width={0}
-              height={0}
+              width={27}
+              height={27}
               />
             <div className=''>
               <h2 className=" md:mb-2 text-[16px]">
