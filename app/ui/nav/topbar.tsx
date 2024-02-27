@@ -16,7 +16,6 @@ import { Data } from "@/app/lib/type";
 
 export default function TopBar(){
 
-
   const [data, setData] = useState<Data | null>(null)
 
   useEffect(() => {

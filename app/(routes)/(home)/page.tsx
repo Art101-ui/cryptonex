@@ -40,7 +40,7 @@ type RequestDataProps ={
 }
 
 export default function Home() {
-  const {coins,status} = useAppSelector((state)=> state.coinstableReducer);
+  const {coins} = useAppSelector((state)=> state.coinstableReducer);
   const {chartCoins,selectedCoins} = useAppSelector((state)=> state.mainCoinChartReducer);
   const dispatch = useDispatch<AppDispatch>()
 
@@ -50,7 +50,7 @@ export default function Home() {
  const [selectedIds,setSelectedIds] = useState<string[]>([])
   
  const [data,setData] = useState<FetchedDataProps[]>([]);
- const [datastatus,setDataStatus] = useState<'loading' | 'error' | 'success'>('loading');
+
  
 
 
@@ -58,10 +58,6 @@ export default function Home() {
    setData(coins)
  }, [coins])
  
- useEffect(() => {
-   setDataStatus(status);
- }, [datastatus])
-
  useEffect(() => {
    setRequestedData(chartCoins)
  }, [chartCoins])
@@ -106,7 +102,6 @@ export default function Home() {
     }   
   }
 
-  const isLoading = datastatus === 'loading'
 
   return (
     <div>
@@ -150,10 +145,10 @@ export default function Home() {
 
         <div className=" md:flex items-center mb-6 gap-8 justify-between">
           <div className=" w-full md:w-1/2 mb-8 md:mb-0 h-[300px] md:h-[380px] p-3 md:p-5 bg-white dark:bg-[#191932] rounded-md">
-            {isLoading ? <div className=" w-full h-full flex items-center justify-center"><DefaultSpinner/></div> : <PriceChart selectedIds={selectedIds}  showHeading={true} chartData={requestData}/> }
+            <PriceChart selectedIds={selectedIds}  showHeading={true} chartData={requestData}/>
           </div>
           <div className=" w-full md:w-1/2 h-[300px] md:h-[380px] p-3 md:p-5 bg-white dark:bg-[#191932] rounded-md">
-            {isLoading ? <div className=" w-full h-full flex items-center justify-center"><DefaultSpinner/></div> : <VolumeChart  chartData={requestData}/>}
+            <VolumeChart  chartData={requestData}/>
           </div>
         </div>
 
