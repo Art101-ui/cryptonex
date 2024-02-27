@@ -196,7 +196,7 @@ function ConverterCoin({coins,handleSelectedId,coin,value,onhandleChange}:ChildC
                 <input placeholder='0' value={value ?? ''} onChange={onhandleChange}  className=' remove-arrow border-none  w-1/2  h-3 bg-transparent outline-none py-3 px-3 focus:outline-none text-right' type="number" />
               </div>
               {dropdown &&
-                  <ul className=" p-1 absolute top-18  max-h-[200px] overflow-y-auto w-[200px] shadow-lg bg-white dark:bg-[#191925]">
+                  <ul className=" p-1 absolute top-18  max-h-[200px] z-40 overflow-y-auto w-[200px] shadow-lg bg-white dark:bg-[#191925]">
                     {coins.map(item=>{
                         return (
                             <li 
