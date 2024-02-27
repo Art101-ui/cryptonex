@@ -14,14 +14,14 @@ import { changeCurrency} from './changeCurrency-slice'
 
 type DataState = {
     coins: FetchedDataProps[] | []; // Change 'any' to the specific type of your data if known
-    status: 'idle' | 'loading' | 'error' | 'success'// Change 'string' to the specific type of your error if known
+    status: 'loading' | 'error' | 'success'// Change 'string' to the specific type of your error if known
   }
 
 
 
 const initialState: DataState = {
     coins: [],
-    status:'idle'
+    status:'loading'
 }
 
 // const COINS_URL = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d&locale=en&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_COINGECKO_API_KEY}`

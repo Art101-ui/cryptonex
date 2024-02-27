@@ -50,7 +50,7 @@ export default function Home() {
  const [selectedIds,setSelectedIds] = useState<string[]>([])
   
  const [data,setData] = useState<FetchedDataProps[]>([]);
- const [datastatus,setDataStatus] = useState<'loading' | 'error' | 'idle' | 'success'>('idle');
+ const [datastatus,setDataStatus] = useState<'loading' | 'error' | 'success'>('loading');
  
 
 
