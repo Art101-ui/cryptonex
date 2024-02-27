@@ -36,7 +36,7 @@ export default async function TopBar(){
             Coins
             <span className="ml-2">{coins}</span>
           </div>
-          <div className="text-[12px] text-white flex items-center">
+          <div className=" sm:flex hidden text-[12px] text-white  items-center">
             <Image 
             className=" mr-2"
             src= {exchange}
@@ -47,11 +47,11 @@ export default async function TopBar(){
             Exchange
             <span className="ml-2">{markets}</span>
           </div>
-          <div className=" text-[12px] text-white flex items-center">
+          <div className=" md:flex hidden text-[12px] text-white  items-center">
               <RiArrowUpSFill className = 'text-[#01F1E3]' />
             <span className="ml-2">{convertToBillion(total_volume)}B</span>
           </div>
-          <div className="flex items-center text-[12px] text-white">
+          <div className=" md:flex hidden items-center text-[12px] text-white">
             <span className="mr-2">${convertToTrillion(market_cap)}T</span>
             <div className='h-1 rounded-sm w-[53px]  bg-gray-300'>
               <ProgressBar color="bg-white" percentage={t4h_percentage}/>

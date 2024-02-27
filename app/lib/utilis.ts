@@ -159,3 +159,20 @@ export function getCurrencySymbol(currency:string,word?:boolean){
   }
 }
 
+export function roundValue(value:number):number {
+    
+  const valueString = value.toString();
+  
+  const decimalIndex = valueString.indexOf('.');
+  if (decimalIndex !== -1) {
+      
+      const decimalPlaces = valueString.length - decimalIndex - 3;
+      const multiplier = Math.pow(10, decimalPlaces);
+      
+     
+      return Math.round(value * multiplier) / multiplier;
+  } else {
+      
+      return value;
+  }
+}

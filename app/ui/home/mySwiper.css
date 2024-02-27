@@ -1,7 +1,8 @@
 /* MySwiper.css */
 .my-swiper {
     position: relative;
-    overflow-x: scroll;
+    max-width: 1300px;
+    
   }
   
   .swiper-button-prev, .swiper-button-next {

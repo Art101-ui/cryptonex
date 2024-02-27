@@ -147,9 +147,9 @@ const coinItem = requestState.status === 'success' ? requestState.data : null
    }
 
     return(
-        <div className="px-[70px]  py-5 ">  
-            <div className="h-[500px] flex w-full items-center gap-4 justify-between mb-5">
-                <div className=" w-1/2 h-full rounded-md bg-white p-3">
+        <div className=" px-5 md:px-[70px]  py-5 ">  
+            <div className=" h-full md:h-[500px] md:flex w-full items-center gap-4 justify-between mb-10 md:mb-5">
+                <div className=" w-full md:w-1/2 h-full rounded-md bg-white dark:bg-[#191932] p-3 mb-8 md:mb-0">
                     <div className="flex items-center">
                         <Image 
                             className=" mr-2 object-contain"
@@ -158,12 +158,12 @@ const coinItem = requestState.status === 'success' ? requestState.data : null
                             width={30}
                             height={30}
                         />
-                        <span className=" text-[28px]">{coinItem?.name}</span> 
+                        <span className=" text-[24px] md:text-[28px]">{coinItem?.name}</span> 
                     </div>
                     <a className=" underline" href={coinItem?.link} target="_blank">Official Website</a>
-                    <h1 className=" my-9 flex items-center justify-between text-[40px]">{getCurrencySymbol(currency)}{coinItem?.price}<span className={
+                    <h1 className=" my-9 flex items-center justify-between text-[28px] md:text-[40px]">{getCurrencySymbol(currency)}{coinItem?.price}<span className={
                       clsx(
-                      " flex items-center text-[20px]",
+                      " flex items-center text-[16px] md:text-[20px]",
                       {' text-[#00B1A7]' :coinItem?.twenty_four_percentage as number > 0 },
                       {' text-[#FE2264]' :coinItem?.twenty_four_percentage as number < 0 }
                       
@@ -188,27 +188,27 @@ const coinItem = requestState.status === 'success' ? requestState.data : null
                 </div>
 
 
-                <div className=" w-1/2 h-full flex flex-col gap-3">
+                <div className="w-full md:w-1/2 h-full flex flex-col gap-8 md:gap-3">
 
-                    <div className=" h-1/2 bg-white flex flex-col justify-center p-3 rounded-md">   
+                    <div className=" h-full md:h-1/2 bg-white dark:bg-[#191932] flex flex-col justify-center p-3 rounded-md">   
                         <h1 className=' text-xl'>Last 7d</h1>
                         {isLoading ? <div className='h-full'>Loading...</div>:<LineChart height="h-full" width=" w-full" chartData={priceChart}/> }       
                     </div>
 
-                    <div className=" h-1/2 rounded-md bg-white grid grid-cols-2  gap-3 p-3 text-[14px]">
-                        <div className="flex flex-col items-center"><FaPlusCircle/>MARKET CAP <span className=" font-medium">{getCurrencySymbol(currency,true)} {convertToTrillion(coinItem?.market_cap as number)}T</span></div>
-                        <div className="flex flex-col items-center"><FaPlusCircle/>FULLY DILUTED VALUATION <span className=" font-medium">{getCurrencySymbol(currency,true)} {convertToTrillion(coinItem?.fdl as number)}T</span></div>
-                        <div className="flex flex-col items-center"><FaPlusCircle/>VOLUME/MARKET <span className=" font-medium">{getCurrencySymbol(currency,true)} {(coinItem?.volume as number/(coinItem?.market_cap as number)).toFixed(3)}B</span></div>
-                        <div className="flex flex-col items-center"><FaPlusCircle/>TOTAL VOLUME(24H) <span className=" font-medium">{getCurrencySymbol(currency,true)} {(convertToBillion(coinItem?.volume as number))}</span></div>
-                        <div className="flex flex-col items-center"><FaPlusCircle/>CIRCULATING SUPPLY <span className=" font-medium">{convertToMillion(coinItem?.circulating_supply as number)}M BTC</span></div>
-                        <div className="flex flex-col items-center"><FaPlusCircle/>MAX SUPPLY <span className=" font-medium">{convertToMillion(coinItem?.max_supply as number)}M BTC</span></div>
+                    <div className=" h-full md:h-1/2 rounded-md bg-white dark:bg-[#191932] grid grid-cols-2  gap-3 p-[6px] lg:p-3 text-[14px]">
+                      <div className="flex flex-col items-center text-[12px] md:text-[14px]"><FaPlusCircle/>MARKET CAP <span className=" font-medium">{getCurrencySymbol(currency,true)} {convertToTrillion(coinItem?.market_cap as number)}T</span></div>
+                      <div className="flex flex-col items-center  text-[12px] md:text-[14px]"><FaPlusCircle/>F_DILUTED VALUATION <span className=" font-medium">{getCurrencySymbol(currency,true)} {convertToTrillion(coinItem?.fdl as number)}T</span></div>
+                      <div className="flex flex-col items-center  text-[12px] md:text-[14px]"><FaPlusCircle/>VOLUME/MARKET <span className=" font-medium">{getCurrencySymbol(currency,true)} {(coinItem?.volume as number/(coinItem?.market_cap as number)).toFixed(3)}B</span></div>
+                      <div className="flex flex-col items-center  text-[12px] md:text-[14px]"><FaPlusCircle/>TOTAL VOLUME(24H) <span className=" font-medium">{getCurrencySymbol(currency,true)} {(convertToBillion(coinItem?.volume as number))}</span></div>
+                      <div className="flex flex-col items-center  text-[12px] md:text-[14px]"><FaPlusCircle/>CIRCULATING SUPPLY <span className=" font-medium">{convertToMillion(coinItem?.circulating_supply as number)}M BTC</span></div>
+                      <div className="flex flex-col items-center  text-[12px] md:text-[14px]"><FaPlusCircle/>MAX SUPPLY <span className=" font-medium">{convertToMillion(coinItem?.max_supply as number)}M BTC</span></div>
                     </div>
                 </div>
             </div>
 
-            <div className="w-full rounded-md bg-white p-3">
+            <div className="w-full rounded-md bg-white dark:bg-[#191932] p-3">
                 <h1 className=" text-[24px] mb-3">About</h1>
-                <div className=" text-[14px]" dangerouslySetInnerHTML={{ __html: coinItem?.description as string }} />
+                <div className=" text-[14px] dark:text-[#D1D1D1]" dangerouslySetInnerHTML={{ __html: coinItem?.description as string }} />
             </div>
 
         </div>

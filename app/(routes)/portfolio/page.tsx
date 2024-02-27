@@ -63,10 +63,10 @@ export default function Portfolio(){
                 </div>
               </div>
             }
-            <div className="px-[70px]  py-5 ">
+            <div className=" px-5 md:px-[70px]  py-5 ">
                 <div className="flex items-center justify-between mb-6">
-                  <h1 className=" text-[24px]">Portfolio</h1> 
-                  <button onClick={()=>setModal(prev=>!prev)} className=" flex bg-[#6161D6]/50 text-white justify-center w-[250px] h-[45px] cursor-pointer font-bold py-3 px-4 rounded-md">Add Asset</button>
+                  <h1 className=" text-[22px] sm:text-[24px]">Portfolio</h1> 
+                  <button onClick={()=>setModal(prev=>!prev)} className=" flex bg-[#6161D6]/50 text-white justify-center w-[150px] sm:w-[250px] h-[45px] cursor-pointer font-bold py-3 px-4 rounded-md">Add Asset</button>
                 </div>
                 { exists &&
                   <span className=" flex justify-center mb-4 text-red-600">Coin Already Exists</span>}

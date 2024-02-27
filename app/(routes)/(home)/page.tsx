@@ -34,7 +34,6 @@ const timelineData= [
 ]
 
 
-
 type RequestDataProps ={
   id: string,
   data:any
@@ -112,22 +111,30 @@ export default function Home() {
   return (
     <div>
       <main className=" mb-10">
-        <div className="flex justify-between items-center mb-6">
-          <p className=" dark:text-[#D1D1D1]">Select the currency to view statistics</p>
+        <div className="flex justify-between items-center mb-6 gap-3">
+          <p className=" dark:text-[#D1D1D1] text-[14px] sm:text-[16px]">Select the currency to view statistics</p>
           <button className=" bg-white dark:bg-[#232336] rounded py-2 px-3 flex items-center justify-center">
             <LuBarChart3 className = 'mr-2'/>
             Compare</button>
         </div>
 
         {/* Swiper */}
-          <div className="relative mb-8 max-w-[1200px] ">
+          <div className="relative mb-8  ">
               <Swiper
-                  slidesPerView={4}
-                  spaceBetween={50}
+                  breakpoints={{
+                    300: { slidesPerView: 3, spaceBetween: 30 },
+                    480: { slidesPerView: 4, spaceBetween: 30 },
+                    540: { slidesPerView: 5, spaceBetween: 30 },
+                    768: { slidesPerView: 3, spaceBetween: 50 },
+                    900: { slidesPerView: 4, spaceBetween: 50 },
+                    1300: { slidesPerView: 5, spaceBetween: 150 },
+                  }}   
+                  slidesPerView={5}
+                  spaceBetween={50}  
                   navigation={true}
                   modules={[Navigation]}
-                  className=" flex gap-5 flex-nowrap"
-                  style={{marginRight:'25px',marginLeft:'25px',position: 'unset'}}
+                  className=" flex gap-5"
+                  style={{marginRight:'18px',marginLeft:'18px',position: 'unset'}}
               >       
                   <ul className="">
                     {data.map((item)=>{
@@ -141,21 +148,21 @@ export default function Home() {
               </Swiper>
           </div>
 
-        <div className=" flex items-center mb-6  justify-between">
-          <div className=" w-[570px]  h-[400px] p-5 bg-white dark:bg-[#191932] rounded-md">
-            {isLoading ? <div className=" w-full h-full flex items-center justify-center"><DefaultSpinner/></div> : <PriceChart selectedIds={selectedIds}  showHeading={true} height=' h-[250px]' chartData={requestData}/> }
+        <div className=" md:flex items-center mb-6 gap-8 justify-between">
+          <div className=" w-full md:w-1/2 mb-8 md:mb-0 h-[300px] md:h-[380px] p-3 md:p-5 bg-white dark:bg-[#191932] rounded-md">
+            {isLoading ? <div className=" w-full h-full flex items-center justify-center"><DefaultSpinner/></div> : <PriceChart selectedIds={selectedIds}  showHeading={true} chartData={requestData}/> }
           </div>
-          <div className=" w-[570px]  h-[400px] p-5 bg-white dark:bg-[#191932] rounded-md">
+          <div className=" w-full md:w-1/2 h-[300px] md:h-[380px] p-3 md:p-5 bg-white dark:bg-[#191932] rounded-md">
             {isLoading ? <div className=" w-full h-full flex items-center justify-center"><DefaultSpinner/></div> : <VolumeChart  chartData={requestData}/>}
           </div>
         </div>
 
 
-        <div className=" bg-[#CCCCFA] dark:bg-[#232336] h-[42px] w-[490px] p-[2px]  gap-2 rounded-md flex">
+        <div className=" bg-[#CCCCFA] dark:bg-[#232336] h-[42px] w-full md:w-[490px] p-[2px]  gap-2 rounded-md flex">
           {timelineData.map((item,index)=>{
             return(
               <div key={item.id} className={clsx(
-                "  px-5 py-2 text-[14px] grow flex items-center p-2 rounded-md cursor-pointer ",
+                "  text-[14px] grow flex items-center justify-center rounded-md cursor-pointer ",
                 {'bg-[#6161D6]/50 dark:text-[#E4E4F0]' : timeline === item.days},
                 {'dark:text-[#A7A7CC] font-light' : timeline !== item.days},
               )}

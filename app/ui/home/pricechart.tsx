@@ -6,7 +6,7 @@ import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 
 Chart.register(CategoryScale)
-function PriceChart({showHeading, selectedIds, chartData,height }:{showHeading?:boolean,chartData:RequestDataProps[], height:string, selectedIds:string[]}) {
+function PriceChart({showHeading, selectedIds, chartData }:{showHeading?:boolean,chartData:RequestDataProps[], selectedIds:string[]}) {
    
   const prices = chartData.map(item=>{
     let newArr:[]=[]
@@ -96,10 +96,10 @@ function PriceChart({showHeading, selectedIds, chartData,height }:{showHeading?:
 
 
   return (
-    <div className={`chart-container w-full ${height}`}>
+    <div className=' chart-container w-full md:h-[250px] h-[220px]'>
       {showHeading && <div>
         {/* <h1 className=" text-[20px]">Bitcoin (BTC)</h1> */}
-        <h1 className=" text-[28px]">{formatDate()}</h1>
+        <h1 className=" text-[19px] md:text-[28px]">{formatDate()}</h1>
         <ul className="flex items-center gap-4">
           {
             chartCoins.map(item=>{
@@ -110,7 +110,7 @@ function PriceChart({showHeading, selectedIds, chartData,height }:{showHeading?:
                       item.coin && (
                         <>
                           <div className={' w-6 h-5 ' + item.color}></div>
-                          <p className=" text-[16px] dark:text-[#B9B9BA]">{item.coin.charAt(0).toUpperCase()+item.coin.slice(1)}</p>
+                          <p className=" text-[13px] md:text-[16px] dark:text-[#B9B9BA]">{item.coin.charAt(0).toUpperCase()+item.coin.slice(1)}</p>
                         </>
                       )
 
