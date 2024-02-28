@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 import Coin from "./coin";
-import { FetchedDataProps, StatusProps } from "@/app/lib/type";
+import { FetchedDataProps } from "@/app/lib/type";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";

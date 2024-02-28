@@ -1,13 +1,11 @@
-import bitcoin from '@/public/bitcoin.png'
 import Image from "next/image"
 import { RiArrowUpSFill, RiArrowDownSFill } from 'react-icons/ri'
 import ProgressBar from '../progressbar'
 import { FetchedDataProps } from '@/app/lib/type'
 import { ScriptableContext } from 'chart.js'
-import { reduceData, reformDataLength, getPercentage, getCurrencySymbol, roundValue } from '@/app/lib/utilis'
+import { reformDataLength, getPercentage, getCurrencySymbol, roundValue } from '@/app/lib/utilis'
 import  LineChart  from '@/app/ui/home/linechart'
 import Currency from '../currency'
-import { useState } from 'react'
 import { useAppSelector } from '@/redux/store'
 
 export default function Coin({coinData,index}:{coinData:FetchedDataProps,index:number}){

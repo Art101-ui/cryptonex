@@ -12,7 +12,7 @@ import ThemeButton from "./themebutton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const links = [
     { name: 'Home', href: '/', icon: GoHomeFill },

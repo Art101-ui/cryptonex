@@ -7,7 +7,7 @@ import { MdEuro } from "react-icons/md";
 import { PiCurrencyGbp } from "react-icons/pi";
 import { changeCurrency } from "@/redux/features/changeCurrency-slice";
 import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "@/redux/store";
+import { AppDispatch } from "@/redux/store";
 import { fetchCoins } from "@/redux/features/coinstable-slice";
 import { fetchSearchCoins } from "@/redux/features/searchCoin-slice";
 

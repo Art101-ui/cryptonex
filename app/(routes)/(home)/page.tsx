@@ -15,10 +15,8 @@ import VolumeChart from "@/app/ui/home/volumechart";
 import clsx from "clsx";
 import CoinListHeading from "@/app/ui/home/coinlistheading";
 import CoinList from "@/app/ui/home/coinlist";
-import { ChartDataProps, FetchedDataProps, StatusProps } from "@/app/lib/type";
-import { request } from "http";
+import { FetchedDataProps } from "@/app/lib/type";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import  DefaultSpinner  from "@/app/ui/loadingSpinner";
 import { useDispatch } from "react-redux";
 import { addSelectedId, fetchCoinChart, removeSelectedId } from "@/redux/features/mainCoinChart-slice";
 

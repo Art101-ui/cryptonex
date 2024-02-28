@@ -1,12 +1,10 @@
 'use client'
 import Image from "next/image"
-import bitcoin from '@/public/bitcoin.png'
 import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import { FaPlusCircle } from "react-icons/fa";
 import { CategoryScale, ScriptableContext } from 'chart.js';
 import Chart from "chart.js/auto";
-import { reduceData, getDayNumber, changeDate, convertToTrillion, convertToBillion, convertToMillion, getCurrencySymbol, reformDataLength } from "@/app/lib/utilis";
-import PriceChart from "@/app/ui/home/pricechart";
+import {changeDate, convertToTrillion, convertToBillion, convertToMillion, getCurrencySymbol, reformDataLength } from "@/app/lib/utilis";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";

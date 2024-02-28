@@ -1,26 +1,11 @@
 
-import Image, { StaticImageData } from "next/image"
-import bitcoin from "@/public/bitcoin.png"
-import ethereum from '@/public/ethereum.png'
+import Image from "next/image"
 import { IoMdArrowDropdown } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
 import { SetStateAction, useMemo, useState } from "react";
 import { useAppSelector } from "@/redux/store";
 import { searchItems } from "@/app/lib/utilis";
 
-
-const coins = [
-    {id:'bitcoin', name:'Bitcoin',image:bitcoin},
-    {id:'ethereum', name:'Ethereum',image:ethereum},
-    {id:'usd-coin', name:'USD',image:bitcoin},
-    {id:'tether', name:'Tether',image:ethereum},    
-]
-
-type CoinProp={
-    id:string,
-    name:string,
-    image:StaticImageData
-}
 
 type ModalProp={
     onModal: React.Dispatch<SetStateAction<boolean>>,

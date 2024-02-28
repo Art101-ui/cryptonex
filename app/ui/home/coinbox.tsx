@@ -1,11 +1,11 @@
 import Image from "next/image"
 import { RiArrowUpSFill, RiArrowDownSFill } from "react-icons/ri"
 import clsx from "clsx"
-import { MouseEventHandler } from "react"
+
 import { FetchedDataProps } from "@/app/lib/type"
 import { getCurrencySymbol } from "@/app/lib/utilis"
 import { useAppSelector } from "@/redux/store"
-import bitcoin from '@/public/bitcoin.png'
+
 
 
 export default function CoinBox({coin,onSelect,selectedIds}:{coin:FetchedDataProps,onSelect:(id: string)=> void,selectedIds:string[]}){
