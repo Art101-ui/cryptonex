@@ -1,6 +1,7 @@
 
 
 import type { Metadata } from 'next'
+import Head from 'next/head';
 import { Inter } from 'next/font/google'
 import favicon_16 from '@/public/favicon/favicon_16.png'
 import favicon_32 from '@/public/favicon/favicon_32.png'
@@ -24,6 +25,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Head>
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
       <body className={`${inter.className} dark:bg-[#13121A] bg-[#CCCCFA66]`}>
         <Provider>
           <ReduxProvider>
