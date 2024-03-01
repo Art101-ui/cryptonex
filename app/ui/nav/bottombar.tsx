@@ -43,7 +43,7 @@ export default function BottomBar(){
                         width={30}
                         height={30}
                         />
-                    <h1 className=" text-[18px] sm:text-[21px]">CryptoNex</h1>
+                    <h1 className=" text-[18px] sm:text-[21px]">Crypto-Nex</h1>
                 </div>
                 <div className="sm:flex hidden items-center gap-8">
                     {
