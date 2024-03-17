@@ -44,7 +44,7 @@ export default function Modal({onModal,onhandleListAssets}:ModalProp){
                                     />
                                         <h1 className="text-white">{selectedItem ? selectedItem.name : ''}</h1>
                                 </>
-                                : <h1>No coins selected</h1>
+                                : <h1 className=" text-white">No coins selected</h1>
                                 }
                             </div>
                             <div className="w-full sm:w-2/3 relative flex flex-col gap-4 justify-between">
