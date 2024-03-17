@@ -53,7 +53,7 @@ export default function Modal({onModal,onhandleListAssets}:ModalProp){
                                     <IoMdArrowDropdown/>        
                                 </div>
                                 <input value={amount} onChange={(e)=>setAmount(e.target.value)} className="bg-[#191925] p-2 outline-none rounded remove-arrow text-white" type="number" />
-                                <input value={date} onChange={(e)=>setDate(e.target.value)} className=" bg-[#191925] p-2 outline-none rounded text-white " type="date" />
+                                <input value={date} onChange={(e)=>setDate(e.target.value)} className=" bg-[#191925] p-2 outline-none rounded text-white w-full " type="date" />
                                 <div className="sm:flex items-center gap-2  justify-between">
                                     <button onClick={()=>onModal(false)} className=" sm:mb-0 mb-2 w-full sm:w-1/2 text-white bg-[#191925] rounded-md px-[32px] py-[12px]">Cancel</button>
                                     
